@@ -20,7 +20,11 @@ const MealTable = () => {
 
   useEffect(() => {
     console.log('date : ', date)
-  }, [date])
+    console.log('breakfastMenu : ', breakfastMenu)
+    console.log('lunchKoreaMenu : ', lunchKoreaMenu)
+    console.log('lunchMenu : ', lunchMenu)
+    console.log('dinnerMenu : ', dinnerMenu)
+  }, [date, breakfastMenu, lunchKoreaMenu, lunchMenu, dinnerMenu])
 
   const today =
     String(koreaNow.getFullYear()) +
@@ -44,7 +48,7 @@ const MealTable = () => {
         // axios     .defaults     .headers     .common['x-access-token'] = jwt
 
         const response = await axios
-          .get(`http://3.38.35.114/admin.menus`, {
+          .post(`http://3.38.35.114/admin/menus`, {
             menus: [
               { mealTypeIdx: 1, name: breakfastMenu, availableAt: date },
               { mealTypeIdx: 2, name: lunchMenu, availableAt: date },
@@ -151,7 +155,7 @@ const MealTable = () => {
             />
           </CCol>
         </CRow>
-        <CButton type="submit" onSubmit={mealTableRegistration}>
+        <CButton type="submit" onClick={mealTableRegistration}>
           등록하기
         </CButton>
         <CButton type="submit">수정하기</CButton>
