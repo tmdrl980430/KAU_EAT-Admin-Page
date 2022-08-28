@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   CButton,
@@ -15,8 +15,51 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
+import axios from 'axios'
 
 const Login = () => {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+
+  const [id, setId] = useState('')
+  const [password, setPassword] = useState('')
+
+  const postLoginAdmin = async () => {
+    console.log('postLoginAdmin')
+    setLoading(true)
+
+    if (id != '' && password != '') {
+      try {
+        // 요청이 시작 할 때에는 error 와 users 를 초기화하고
+        setError(null)
+        console.log('postLoginAdmin_try')
+        // loading 상태를 true 로 바꿉니다.
+        setLoading(true)
+
+        // axios     .defaults     .headers     .common['x-access-token'] = jwt
+
+        const response = await axios
+          .post(`http://3.38.35.114/admin/menus`, {
+            id: id,
+            password: password,
+          })
+          .then((response) => {
+            console.log(`response 확인 : ${response.data.code}`)
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+        // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
+      } catch (e) {
+        console.log('postLoginAdmin_catch')
+        console.log(e)
+        setError(e)
+      }
+    }
+    setLoading(false)
+    // loading 끄기
+  }
+
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
@@ -32,7 +75,13 @@ const Login = () => {
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
-                      <CFormInput placeholder="아이디" autoComplete="username" />
+                      <CFormInput
+                        placeholder="아이디"
+                        autoComplete="username"
+                        onChange={(e) => {
+                          setId(e.target.value)
+                        }}
+                      />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
                       <CInputGroupText>
@@ -42,6 +91,9 @@ const Login = () => {
                         type="password"
                         placeholder="비밀번호"
                         autoComplete="current-password"
+                        onChange={(e) => {
+                          setPassword(e.target.value)
+                        }}
                       />
                     </CInputGroup>
                     <CRow>
