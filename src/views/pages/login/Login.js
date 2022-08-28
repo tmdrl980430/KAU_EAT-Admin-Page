@@ -28,7 +28,7 @@ const Login = () => {
     console.log('postLoginAdmin')
     setLoading(true)
 
-    if (id != '' && password != '') {
+    if (id !== '' && password !== '') {
       try {
         // 요청이 시작 할 때에는 error 와 users 를 초기화하고
         setError(null)
@@ -36,10 +36,8 @@ const Login = () => {
         // loading 상태를 true 로 바꿉니다.
         setLoading(true)
 
-        // axios     .defaults     .headers     .common['x-access-token'] = jwt
-
         const response = await axios
-          .post(`http://3.38.35.114/admin/menus`, {
+          .post(`http://3.38.35.114/admin/login`, {
             id: id,
             password: password,
           })
