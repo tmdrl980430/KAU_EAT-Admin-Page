@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   CButton,
   CCard,
@@ -16,13 +16,80 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import axios from 'axios'
+import { useRecoilState } from 'recoil'
+import {
+  isLoginRecoilState,
+  severURLRecoilState,
+  jwtRecoilState,
+  userIdxRecoilState,
+} from 'src/recoil'
 
 const Login = () => {
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [IP, setIP] = useRecoilState(severURLRecoilState)
+
+  const [isLogin, setIsLogin] = useRecoilState(isLoginRecoilState)
+  const [jwt, setJwt] = useRecoilState(jwtRecoilState)
+  const [userIdx, setUserIdx] = useRecoilState(userIdxRecoilState)
 
   const [id, setId] = useState('')
   const [password, setPassword] = useState('')
+
+  useEffect(() => {
+    console.log(`localStorage.getItem('jwt-token')`, localStorage.getItem('jwt-token'))
+    setJwt(localStorage.getItem('jwt-token'))
+    if (jwt === '' || jwt === null) {
+      navigate('/login')
+      return
+    } else {
+      autoLogin()
+      console.log('jwt', jwt)
+    }
+  }, [])
+
+  useEffect(() => {
+    console.log('id', id)
+    console.log('password', password)
+  }, [id, password])
+
+  const autoLogin = async () => {
+    console.log('autoLogin')
+
+    setLoading(true)
+    try {
+      // 요청이 시작 할 때에는 error 와 users 를 초기화하고
+      setError(null)
+      console.log('autoLogin_try')
+      // loading 상태를 true 로 바꿉니다.
+      setLoading(true)
+
+      const response = await axios
+        .get(`${IP}/auth/jwt`, {
+          headers: {
+            'x-access-token': jwt,
+          },
+        })
+        .then((response) => {
+          console.log(`response code확인`, response)
+
+          if (response.data.code === 1001) {
+            console.log('자동 로그인 완료')
+          }
+        })
+        .catch((error) => {
+          console.log(`error : `, error)
+        })
+      // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
+    } catch (e) {
+      console.log('autoLogin_catch')
+      console.log(e)
+      setError(e)
+    }
+    setLoading(false)
+    // loading 끄기
+  }
 
   const postLoginAdmin = async () => {
     console.log('postLoginAdmin')
@@ -37,12 +104,21 @@ const Login = () => {
         setLoading(true)
 
         const response = await axios
-          .post(`http://3.38.35.114/admin/login`, {
+          .post(`${IP}/auth/login`, {
             id: id,
             password: password,
           })
           .then((response) => {
             console.log(`response 확인 : ${response.data.code}`)
+            if (response.data.code === 1000) {
+              setIsLogin(true)
+              setJwt(response.data.result.jwt)
+              setUserIdx(response.data.result.userIdx)
+              localStorage.setItem('jwt-token', jwt)
+              localStorage.setItem('userIdx', userIdx)
+              alert('로그인 성공!')
+              navigate('/')
+            }
           })
           .catch((error) => {
             console.log(error)
@@ -96,7 +172,7 @@ const Login = () => {
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        <CButton color="primary" className="px-4">
+                        <CButton color="primary" className="px-4" onClick={postLoginAdmin}>
                           로그인
                         </CButton>
                       </CCol>

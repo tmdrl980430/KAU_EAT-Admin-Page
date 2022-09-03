@@ -1,16 +1,79 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { CCard, CCardBody, CCardHeader, CCol, CProgress, CProgressBar, CRow } from '@coreui/react'
+import { useRecoilState } from 'recoil'
+import { jwtRecoilState, severURLRecoilState, userIdxRecoilState } from 'src/recoil'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 const Dashboard = () => {
+  const navigate = useNavigate()
+
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const [IP, setIP] = useRecoilState(severURLRecoilState)
+
+  const [jwt, setJwt] = useRecoilState(jwtRecoilState)
+  const [userIdx, setUserIdx] = useRecoilState(userIdxRecoilState)
   const now = new Date()
+
+  useEffect(() => {
+    console.log(`localStorage.getItem('jwt')`, localStorage.getItem('jwt-token'))
+    setJwt(localStorage.getItem('jwt-token'))
+    if (jwt === '' || jwt === null) {
+      navigate('/login')
+      return
+    } else {
+      autoLogin()
+      console.log('jwt', jwt)
+    }
+  }, [])
 
   const utcNow = now.getTime() + now.getTimezoneOffset() * 60 * 1000 // 현재 시간을 utc로 변환한 밀리세컨드값
   const koreaTimeDiff = 9 * 60 * 60 * 1000 // 한국 시간은 UTC보다 9시간 빠름(9시간의 밀리세컨드 표현)
   const koreaNow = new Date(utcNow + koreaTimeDiff) // utc로 변환된 값을 한국 시간으로 변환시키기 위해 9시간(밀리세컨드)를 더함
 
+  const autoLogin = async () => {
+    console.log('autoLogin')
+
+    setLoading(true)
+    try {
+      // 요청이 시작 할 때에는 error 와 users 를 초기화하고
+      setError(null)
+      console.log('autoLogin_try')
+      // loading 상태를 true 로 바꿉니다.
+      setLoading(true)
+
+      const response = await axios
+        .get(`${IP}/auth/jwt`, {
+          headers: {
+            'x-access-token': jwt,
+          },
+        })
+        .then((response) => {
+          console.log(`response code확인`, response)
+
+          if (response.data.code === 1001) {
+            console.log('자동 로그인 완료')
+            getTickets()
+          }
+        })
+        .catch((error) => {
+          console.log(`error : `, error)
+        })
+      // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
+    } catch (e) {
+      console.log('autoLogin_catch')
+      console.log(e)
+      setError(e)
+    }
+    setLoading(false)
+    // loading 끄기
+  }
+
   const todayMonth =
     String(koreaNow.getFullYear()) + '-' + String(koreaNow.getMonth() + 1).padStart(2, '0')
+
   const thisWeekTicketUse = [
     { title: '월요일', value1: 34, value2: 78, value3: 30, value4: 40 },
     { title: '화요일', value1: 34, value2: 78, value3: 30, value4: 40 },
@@ -21,12 +84,7 @@ const Dashboard = () => {
     { title: '일요일', value1: 34, value2: 100, value3: 30, value4: 100 },
   ]
 
-  const thisMonthTicketUse = [
-    { title: '조식', value1: 34, color: 'success' },
-    { title: '중식 | 일품', value1: 34, color: 'info' },
-    { title: '중식 | 한식', value1: 34, color: 'warning' },
-    { title: '석식', value1: 34, color: 'danger' },
-  ]
+  const [thisMonthTicketUse, setThisMonthTicketUse] = useState([])
 
   const thisYearTicketUse = [
     { title: '1월', value1: 34, value2: 78, value3: 30, value4: 40 },
@@ -42,6 +100,55 @@ const Dashboard = () => {
     { title: '11월', value1: 34, value2: 100, value3: 30, value4: 100 },
     { title: '12월', value1: 34, value2: 100, value3: 30, value4: 100 },
   ]
+
+  const getTickets = async () => {
+    console.log('getTickets')
+    setLoading(true)
+    try {
+      // 요청이 시작 할 때에는 error 와 users 를 초기화하고
+      setError(null)
+      console.log('getTickets_try')
+      // loading 상태를 true 로 바꿉니다.
+      setLoading(true)
+
+      const response = await axios
+        .get(`${IP}/mealtickets`, {
+          headers: {
+            'x-access-token': jwt,
+          },
+        })
+        .then((response) => {
+          console.log(`response code확인`, response)
+
+          if (response.data.code === 1000) {
+            setThisMonthTicketUse([
+              { title: '조식', value1: response.data.result.byMonth[0].count, color: 'success' },
+              {
+                title: '중식 | 일품',
+                value1: response.data.result.byMonth[1].count,
+                color: 'info',
+              },
+              {
+                title: '중식 | 한식',
+                value1: response.data.result.byMonth[2].count,
+                color: 'warning',
+              },
+              { title: '석식', value1: response.data.result.byMonth[3].count, color: 'danger' },
+            ])
+          }
+        })
+        .catch((error) => {
+          console.log(`error : `, error)
+        })
+      // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
+    } catch (e) {
+      console.log('getTickets_catch')
+      console.log(e)
+      setError(e)
+    }
+    setLoading(false)
+    // loading 끄기
+  }
 
   return (
     <>
