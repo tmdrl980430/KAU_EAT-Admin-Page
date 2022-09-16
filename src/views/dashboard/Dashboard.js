@@ -55,6 +55,7 @@ const Dashboard = () => {
 
           if (response.data.code === 1001) {
             console.log('자동 로그인 완료')
+            setJwt(jwt)
             getTickets()
           }
         })

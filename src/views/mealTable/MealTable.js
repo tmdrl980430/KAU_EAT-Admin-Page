@@ -2,17 +2,17 @@
 import React, { useEffect, useState } from 'react'
 import { CButton, CCardHeader, CCol, CForm, CFormInput, CFormLabel, CRow } from '@coreui/react'
 import axios from 'axios'
-import DatePicker from 'react-datepicker'
-import DatePickerComponent from './DatePickerComponent'
+import { useRecoilState } from 'recoil'
+import { jwtRecoilState, severURLRecoilState } from 'src/recoil'
 
 const MealTable = () => {
   const now = new Date()
+  const [IP, setIP] = useRecoilState(severURLRecoilState)
+  const [jwt, setJwt] = useRecoilState(jwtRecoilState)
 
   const utcNow = now.getTime() + now.getTimezoneOffset() * 60 * 1000 // 현재 시간을 utc로 변환한 밀리세컨드값
   const koreaTimeDiff = 9 * 60 * 60 * 1000 // 한국 시간은 UTC보다 9시간 빠름(9시간의 밀리세컨드 표현)
   const koreaNow = new Date(utcNow + koreaTimeDiff) // utc로 변환된 값을 한국 시간으로 변환시키기 위해 9시간(밀리세컨드)를 더함
-  const [startDate, setStartDate] = useState(koreaNow)
-  const [isCalendarOpen, setIsCalendarOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
@@ -23,13 +23,13 @@ const MealTable = () => {
   const [dinnerMenu, setDinnerMenu] = useState('')
 
   useEffect(() => {
-    console.log('startDate : ', startDate)
+    console.log('jwt : ', jwt)
     console.log('date : ', date)
     console.log('breakfastMenu : ', breakfastMenu)
     console.log('lunchKoreaMenu : ', lunchKoreaMenu)
     console.log('lunchMenu : ', lunchMenu)
     console.log('dinnerMenu : ', dinnerMenu)
-  }, [date, breakfastMenu, lunchKoreaMenu, lunchMenu, dinnerMenu])
+  }, [date, breakfastMenu, lunchKoreaMenu, lunchMenu, dinnerMenu, jwt])
 
   const today =
     String(koreaNow.getFullYear()) +
@@ -38,32 +38,64 @@ const MealTable = () => {
     '-' +
     String(koreaNow.getDate()).padStart(2, '0')
 
-  // eslint-disable-next-line react/prop-types
-  const ExampleCustomInput = ({ value, onClick }) => (
-    <button className="example-custom-input" onClick={onClick}>
-      {value}
-    </button>
-  )
+  const setDateMealTable = async () => {
+    setBreakfastMenu('')
+    setLunchMenu('')
+    setLunchKoreaMenu('')
+    setDinnerMenu('')
+    console.log('setDateMealTable')
+    setLoading(true)
 
-  // eslint-disable-next-line react/prop-types
-  const CustomInput = ({ value, onClick }) => (
-    // eslint-disable-next-line no-undef
-    <div className="custom-input" onClick={onClick}>
-      {value}
-      <ArrowDropUpIcon />
-    </div>
-  )
+    if (date != '') {
+      try {
+        // 요청이 시작 할 때에는 error 와 users 를 초기화하고
+        setError(null)
+        console.log('setDateMealTable_try')
+        // loading 상태를 true 로 바꿉니다.
+        setLoading(true)
 
-  const dateToString = (date) => {
-    return (
-      date.getFullYear() +
-      '-' +
-      (date.getMonth() + 1).toString().padStart(2, '0') +
-      '-' +
-      date.getDate().toString().padStart(2, '0')
-    )
+        // axios     .defaults     .headers     .common['x-access-token'] = jwt
+
+        const response = await axios
+          .get(`${IP}/menus?date=${date}`, {
+            headers: {
+              'x-access-token': jwt,
+            },
+          })
+          .then((response) => {
+            console.log(`response 확인 : ${response.data.code}`)
+            console.log(`response 확인 : ${response.data}`)
+            console.log(
+              `response.data.result.menus.size 확인 : ${response.data.result.menus.length}`,
+            )
+
+            if (response.data.code === 1000) {
+              for (let i = 0; i < response.data.result.menus.length; i++) {
+                if (response.data.result.menus[i].mealTypeIdx === 1) {
+                  setBreakfastMenu(response.data.result.menus[i].name)
+                } else if (response.data.result.menus[i].mealTypeIdx === 2) {
+                  setLunchMenu(response.data.result.menus[i].name)
+                } else if (response.data.result.menus[i].mealTypeIdx === 3) {
+                  setLunchKoreaMenu(response.data.result.menus[i].name)
+                } else if (response.data.result.menus[i].mealTypeIdx === 4) {
+                  setDinnerMenu(response.data.result.menus[i].name)
+                }
+              }
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+        // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
+      } catch (e) {
+        console.log('setDateMealTable_catch')
+        console.log(e)
+        setError(e)
+      }
+    }
+    setLoading(false)
+    // loading 끄기
   }
-
   const mealTableRegistration = async () => {
     console.log('postMealTableRegist')
     setLoading(true)
@@ -79,7 +111,7 @@ const MealTable = () => {
         // axios     .defaults     .headers     .common['x-access-token'] = jwt
 
         const response = await axios
-          .post(`http://3.38.35.114/admin/menus`, {
+          .post(`${IP}/menus`, {
             menus: [
               { mealTypeIdx: 1, name: breakfastMenu, availableAt: date },
               { mealTypeIdx: 2, name: lunchMenu, availableAt: date },
@@ -104,22 +136,29 @@ const MealTable = () => {
     // loading 끄기
   }
   return (
-    <>
+    <div>
       <CForm>
         <CCardHeader>
           <strong>날짜 등록하기</strong>
         </CCardHeader>
-        <small>{today} 형식으로 입력해주세요.</small>
         <CRow className="mb-3">
           <CFormLabel htmlFor="inputDate" className="col-sm-2 col-form-label">
             날짜
           </CFormLabel>
-          <CCol sm={10}></CCol>
-          <CRow>
-            <DatePickerComponent />
-          </CRow>
+          <CCol sm={10}>
+            <CFormInput
+              type="text"
+              id="inputDate"
+              placeholder="날짜를 2022-09-15 형식으로 입력해주세요."
+              onChange={(e) => {
+                setDate(e.target.value)
+              }}
+            />
+          </CCol>
         </CRow>
-        <CButton type="submit">날짜 조회하기</CButton>
+        <CButton type="submit" onClick={setDateMealTable} color="dark">
+          날짜 조회하기
+        </CButton>
         <CCardHeader>
           <strong>메뉴 등록하기</strong>{' '}
           <small>밥, 스파게티, 국, 김치 형식으로 입력해주세요.</small>
@@ -179,6 +218,9 @@ const MealTable = () => {
                 setDinnerMenu(e.target.value)
               }}
             />
+            <CFormText component="span" id="exampleFormControlInputHelpInline">
+              {dinnerMenu}
+            </CFormText>
           </CCol>
         </CRow>
         <CButton type="submit" onClick={mealTableRegistration}>
@@ -186,7 +228,7 @@ const MealTable = () => {
         </CButton>
         <CButton type="submit">수정하기</CButton>
       </CForm>
-    </>
+    </div>
   )
 }
 
