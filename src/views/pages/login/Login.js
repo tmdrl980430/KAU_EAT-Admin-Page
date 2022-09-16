@@ -38,58 +38,9 @@ const Login = () => {
   const [password, setPassword] = useState('')
 
   useEffect(() => {
-    console.log(`localStorage.getItem('jwt-token')`, localStorage.getItem('jwt-token'))
-    setJwt(localStorage.getItem('jwt-token'))
-    if (jwt === '' || jwt === null) {
-      navigate('/login')
-      return
-    } else {
-      autoLogin()
-      console.log('jwt', jwt)
-    }
-  }, [])
-
-  useEffect(() => {
     console.log('id', id)
     console.log('password', password)
   }, [id, password])
-
-  const autoLogin = async () => {
-    console.log('autoLogin')
-
-    setLoading(true)
-    try {
-      // 요청이 시작 할 때에는 error 와 users 를 초기화하고
-      setError(null)
-      console.log('autoLogin_try')
-      // loading 상태를 true 로 바꿉니다.
-      setLoading(true)
-
-      const response = await axios
-        .get(`${IP}/auth/jwt`, {
-          headers: {
-            'x-access-token': jwt,
-          },
-        })
-        .then((response) => {
-          console.log(`response code확인`, response)
-
-          if (response.data.code === 1001) {
-            console.log('자동 로그인 완료')
-          }
-        })
-        .catch((error) => {
-          console.log(`error : `, error)
-        })
-      // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
-    } catch (e) {
-      console.log('autoLogin_catch')
-      console.log(e)
-      setError(e)
-    }
-    setLoading(false)
-    // loading 끄기
-  }
 
   const postLoginAdmin = async () => {
     console.log('postLoginAdmin')

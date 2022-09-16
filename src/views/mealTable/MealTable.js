@@ -1,6 +1,9 @@
+/* eslint-disable react/jsx-no-undef */
 import React, { useEffect, useState } from 'react'
 import { CButton, CCardHeader, CCol, CForm, CFormInput, CFormLabel, CRow } from '@coreui/react'
 import axios from 'axios'
+import DatePicker from 'react-datepicker'
+import DatePickerComponent from './DatePickerComponent'
 
 const MealTable = () => {
   const now = new Date()
@@ -8,7 +11,8 @@ const MealTable = () => {
   const utcNow = now.getTime() + now.getTimezoneOffset() * 60 * 1000 // 현재 시간을 utc로 변환한 밀리세컨드값
   const koreaTimeDiff = 9 * 60 * 60 * 1000 // 한국 시간은 UTC보다 9시간 빠름(9시간의 밀리세컨드 표현)
   const koreaNow = new Date(utcNow + koreaTimeDiff) // utc로 변환된 값을 한국 시간으로 변환시키기 위해 9시간(밀리세컨드)를 더함
-
+  const [startDate, setStartDate] = useState(koreaNow)
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
@@ -19,6 +23,7 @@ const MealTable = () => {
   const [dinnerMenu, setDinnerMenu] = useState('')
 
   useEffect(() => {
+    console.log('startDate : ', startDate)
     console.log('date : ', date)
     console.log('breakfastMenu : ', breakfastMenu)
     console.log('lunchKoreaMenu : ', lunchKoreaMenu)
@@ -32,6 +37,32 @@ const MealTable = () => {
     String(koreaNow.getMonth() + 1).padStart(2, '0') +
     '-' +
     String(koreaNow.getDate()).padStart(2, '0')
+
+  // eslint-disable-next-line react/prop-types
+  const ExampleCustomInput = ({ value, onClick }) => (
+    <button className="example-custom-input" onClick={onClick}>
+      {value}
+    </button>
+  )
+
+  // eslint-disable-next-line react/prop-types
+  const CustomInput = ({ value, onClick }) => (
+    // eslint-disable-next-line no-undef
+    <div className="custom-input" onClick={onClick}>
+      {value}
+      <ArrowDropUpIcon />
+    </div>
+  )
+
+  const dateToString = (date) => {
+    return (
+      date.getFullYear() +
+      '-' +
+      (date.getMonth() + 1).toString().padStart(2, '0') +
+      '-' +
+      date.getDate().toString().padStart(2, '0')
+    )
+  }
 
   const mealTableRegistration = async () => {
     console.log('postMealTableRegist')
@@ -83,15 +114,10 @@ const MealTable = () => {
           <CFormLabel htmlFor="inputDate" className="col-sm-2 col-form-label">
             날짜
           </CFormLabel>
-          <CCol sm={10}>
-            <CFormInput
-              type="text"
-              id="inputDate"
-              onChange={(e) => {
-                setDate(e.target.value)
-              }}
-            />
-          </CCol>
+          <CCol sm={10}></CCol>
+          <CRow>
+            <DatePickerComponent />
+          </CRow>
         </CRow>
         <CButton type="submit">날짜 조회하기</CButton>
         <CCardHeader>
