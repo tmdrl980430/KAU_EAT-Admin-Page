@@ -1,6 +1,15 @@
 /* eslint-disable react/jsx-no-undef */
 import React, { useEffect, useState } from 'react'
-import { CButton, CCardHeader, CCol, CForm, CFormInput, CFormLabel, CRow } from '@coreui/react'
+import {
+  CButton,
+  CCardHeader,
+  CCol,
+  CForm,
+  CFormInput,
+  CFormLabel,
+  CRow,
+  CFormText,
+} from '@coreui/react'
 import axios from 'axios'
 import { useRecoilState } from 'recoil'
 import { jwtRecoilState, severURLRecoilState } from 'src/recoil'
@@ -170,6 +179,7 @@ const MealTable = () => {
           </CFormLabel>
           <CCol sm={10}>
             <CFormInput
+              value={breakfastMenu}
               type="text"
               id="inputMenu"
               onChange={(e) => {
@@ -184,6 +194,7 @@ const MealTable = () => {
           </CFormLabel>
           <CCol sm={10}>
             <CFormInput
+              value={lunchMenu}
               type="text"
               id="inputMenu"
               onChange={(e) => {
@@ -198,6 +209,7 @@ const MealTable = () => {
           </CFormLabel>
           <CCol sm={10}>
             <CFormInput
+              value={lunchKoreaMenu}
               type="text"
               id="inputMenu"
               onChange={(e) => {
@@ -212,15 +224,13 @@ const MealTable = () => {
           </CFormLabel>
           <CCol sm={10}>
             <CFormInput
+              value={dinnerMenu}
               type="text"
               id="inputMenu"
               onChange={(e) => {
                 setDinnerMenu(e.target.value)
               }}
             />
-            <CFormText component="span" id="exampleFormControlInputHelpInline">
-              {dinnerMenu}
-            </CFormText>
           </CCol>
         </CRow>
         <CButton type="submit" onClick={mealTableRegistration}>
