@@ -1,6 +1,15 @@
 /* eslint-disable react/jsx-no-undef */
 import React, { useEffect, useState } from 'react'
-import { CButton, CCardHeader, CCol, CForm, CFormInput, CFormLabel, CRow } from '@coreui/react'
+import {
+  CButton,
+  CCardHeader,
+  CCol,
+  CForm,
+  CFormInput,
+  CFormLabel,
+  CRow,
+  CFormText,
+} from '@coreui/react'
 import axios from 'axios'
 import { useRecoilState } from 'recoil'
 import { jwtRecoilState, severURLRecoilState } from 'src/recoil'
@@ -21,6 +30,7 @@ const MealTable = () => {
   const [lunchMenu, setLunchMenu] = useState('')
   const [lunchKoreaMenu, setLunchKoreaMenu] = useState('')
   const [dinnerMenu, setDinnerMenu] = useState('')
+  const [isMenu, setIsMenu] = useState(false)
 
   useEffect(() => {
     console.log('jwt : ', jwt)
@@ -30,6 +40,14 @@ const MealTable = () => {
     console.log('lunchMenu : ', lunchMenu)
     console.log('dinnerMenu : ', dinnerMenu)
   }, [date, breakfastMenu, lunchKoreaMenu, lunchMenu, dinnerMenu, jwt])
+
+  useEffect(() => {
+    if (breakfastMenu != '' || lunchKoreaMenu != '' || lunchMenu != '' || dinnerMenu != '') {
+      setIsMenu(true)
+    } else if (breakfastMenu == '' || lunchKoreaMenu == '' || lunchMenu == '' || dinnerMenu == '') {
+      setIsMenu(false)
+    }
+  }, [breakfastMenu, lunchKoreaMenu, lunchMenu, dinnerMenu])
 
   const today =
     String(koreaNow.getFullYear()) +
@@ -111,14 +129,22 @@ const MealTable = () => {
         // axios     .defaults     .headers     .common['x-access-token'] = jwt
 
         const response = await axios
-          .post(`${IP}/menus`, {
-            menus: [
-              { mealTypeIdx: 1, name: breakfastMenu, availableAt: date },
-              { mealTypeIdx: 2, name: lunchMenu, availableAt: date },
-              { mealTypeIdx: 3, name: lunchKoreaMenu, availableAt: date },
-              { mealTypeIdx: 4, name: dinnerMenu, availableAt: date },
-            ],
-          })
+          .post(
+            `${IP}/menus`,
+            {
+              menus: [
+                { mealTypeIdx: 1, name: breakfastMenu, availableAt: date },
+                { mealTypeIdx: 2, name: lunchMenu, availableAt: date },
+                { mealTypeIdx: 3, name: lunchKoreaMenu, availableAt: date },
+                { mealTypeIdx: 4, name: dinnerMenu, availableAt: date },
+              ],
+            },
+            {
+              headers: {
+                'x-access-token': jwt,
+              },
+            },
+          )
           .then((response) => {
             console.log(`response 확인 : ${response.data.code}`)
           })
@@ -170,6 +196,7 @@ const MealTable = () => {
           </CFormLabel>
           <CCol sm={10}>
             <CFormInput
+              value={breakfastMenu}
               type="text"
               id="inputMenu"
               onChange={(e) => {
@@ -184,6 +211,7 @@ const MealTable = () => {
           </CFormLabel>
           <CCol sm={10}>
             <CFormInput
+              value={lunchMenu}
               type="text"
               id="inputMenu"
               onChange={(e) => {
@@ -198,6 +226,7 @@ const MealTable = () => {
           </CFormLabel>
           <CCol sm={10}>
             <CFormInput
+              value={lunchKoreaMenu}
               type="text"
               id="inputMenu"
               onChange={(e) => {
@@ -212,21 +241,22 @@ const MealTable = () => {
           </CFormLabel>
           <CCol sm={10}>
             <CFormInput
+              value={dinnerMenu}
               type="text"
               id="inputMenu"
               onChange={(e) => {
                 setDinnerMenu(e.target.value)
               }}
             />
-            <CFormText component="span" id="exampleFormControlInputHelpInline">
-              {dinnerMenu}
-            </CFormText>
           </CCol>
         </CRow>
-        <CButton type="submit" onClick={mealTableRegistration}>
-          등록하기
-        </CButton>
-        <CButton type="submit">수정하기</CButton>
+        {isMenu ? (
+          <CButton type="submit">수정하기</CButton>
+        ) : (
+          <CButton type="submit" onClick={mealTableRegistration}>
+            등록하기
+          </CButton>
+        )}
       </CForm>
     </div>
   )
