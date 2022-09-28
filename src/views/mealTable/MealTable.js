@@ -31,6 +31,7 @@ const MealTable = () => {
   const [lunchKoreaMenu, setLunchKoreaMenu] = useState('')
   const [dinnerMenu, setDinnerMenu] = useState('')
   const [isMenu, setIsMenu] = useState(false)
+  const [dateClick, setDateClick] = useState(false)
 
   useEffect(() => {
     console.log('jwt : ', jwt)
@@ -40,14 +41,6 @@ const MealTable = () => {
     console.log('lunchMenu : ', lunchMenu)
     console.log('dinnerMenu : ', dinnerMenu)
   }, [date, breakfastMenu, lunchKoreaMenu, lunchMenu, dinnerMenu, jwt])
-
-  useEffect(() => {
-    if (breakfastMenu != '' || lunchKoreaMenu != '' || lunchMenu != '' || dinnerMenu != '') {
-      setIsMenu(true)
-    } else if (breakfastMenu == '' || lunchKoreaMenu == '' || lunchMenu == '' || dinnerMenu == '') {
-      setIsMenu(false)
-    }
-  }, [breakfastMenu, lunchKoreaMenu, lunchMenu, dinnerMenu])
 
   const today =
     String(koreaNow.getFullYear()) +
@@ -88,6 +81,11 @@ const MealTable = () => {
             )
 
             if (response.data.code === 1000) {
+              if (response.data.result.menus.length == 0) {
+                setIsMenu(false)
+              } else {
+                setIsMenu(true)
+              }
               for (let i = 0; i < response.data.result.menus.length; i++) {
                 if (response.data.result.menus[i].mealTypeIdx === 1) {
                   setBreakfastMenu(response.data.result.menus[i].name)
