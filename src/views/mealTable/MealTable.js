@@ -32,6 +32,10 @@ const MealTable = () => {
   const [dinnerMenu, setDinnerMenu] = useState('')
   const [isMenu, setIsMenu] = useState(false)
   const [dateClick, setDateClick] = useState(false)
+  const [breakfastMenuIdx, setBreakfastMenuIdx] = useState(0)
+  const [lunchMenuIdx, setLunchMenuIdx] = useState(0)
+  const [lunchKoreaMenuIdx, setLunchKoreaMenuIdx] = useState(0)
+  const [dinnerMenuIdx, setDinnerMenuIdx] = useState(0)
 
   useEffect(() => {
     console.log('jwt : ', jwt)
@@ -83,18 +87,26 @@ const MealTable = () => {
             if (response.data.code === 1000) {
               if (response.data.result.menus.length == 0) {
                 setIsMenu(false)
+                setBreakfastMenuIdx(0)
+                setLunchMenuIdx(0)
+                setLunchKoreaMenuIdx(0)
+                setDinnerMenuIdx(0)
               } else {
                 setIsMenu(true)
-              }
-              for (let i = 0; i < response.data.result.menus.length; i++) {
-                if (response.data.result.menus[i].mealTypeIdx === 1) {
-                  setBreakfastMenu(response.data.result.menus[i].name)
-                } else if (response.data.result.menus[i].mealTypeIdx === 2) {
-                  setLunchMenu(response.data.result.menus[i].name)
-                } else if (response.data.result.menus[i].mealTypeIdx === 3) {
-                  setLunchKoreaMenu(response.data.result.menus[i].name)
-                } else if (response.data.result.menus[i].mealTypeIdx === 4) {
-                  setDinnerMenu(response.data.result.menus[i].name)
+                for (let i = 0; i < response.data.result.menus.length; i++) {
+                  if (response.data.result.menus[i].mealTypeIdx === 1) {
+                    setBreakfastMenu(response.data.result.menus[i].name)
+                    setBreakfastMenuIdx(response.data.result.menus[i].menuIdx)
+                  } else if (response.data.result.menus[i].mealTypeIdx === 2) {
+                    setLunchMenu(response.data.result.menus[i].name)
+                    setLunchMenuIdx(response.data.result.menus[i].menuIdx)
+                  } else if (response.data.result.menus[i].mealTypeIdx === 3) {
+                    setLunchKoreaMenu(response.data.result.menus[i].name)
+                    setLunchKoreaMenuIdx(response.data.result.menus[i].menuIdx)
+                  } else if (response.data.result.menus[i].mealTypeIdx === 4) {
+                    setDinnerMenu(response.data.result.menus[i].name)
+                    setDinnerMenuIdx(response.data.result.menus[i].menuIdx)
+                  }
                 }
               }
             }
@@ -152,6 +164,61 @@ const MealTable = () => {
         // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
       } catch (e) {
         console.log('postMealTableRegist_catch')
+        console.log(e)
+        setError(e)
+      }
+    }
+    setLoading(false)
+    // loading 끄기
+  }
+  const mealTableRevise = async () => {
+    console.log('postmealTableRevise')
+    setLoading(true)
+
+    if (date != '') {
+      try {
+        // 요청이 시작 할 때에는 error 와 users 를 초기화하고
+        setError(null)
+        console.log('postmealTableRevise_try')
+        // loading 상태를 true 로 바꿉니다.
+        setLoading(true)
+
+        const response = await axios
+          .patch(
+            `${IP}/menus`,
+            {
+              menus: [
+                {
+                  menuIdx: breakfastMenuIdx,
+                  mealTypeIdx: 1,
+                  name: breakfastMenu,
+                  availableAt: date,
+                },
+                { menuIdx: lunchMenuIdx, mealTypeIdx: 2, name: lunchMenu, availableAt: date },
+                {
+                  menuIdx: lunchKoreaMenuIdx,
+                  mealTypeIdx: 3,
+                  name: lunchKoreaMenu,
+                  availableAt: date,
+                },
+                { menuIdx: dinnerMenuIdx, mealTypeIdx: 4, name: dinnerMenu, availableAt: date },
+              ],
+            },
+            {
+              headers: {
+                'x-access-token': jwt,
+              },
+            },
+          )
+          .then((response) => {
+            console.log(`response 확인 : ${response.data.code}`)
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+        // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
+      } catch (e) {
+        console.log('postmealTableRevise_catch')
         console.log(e)
         setError(e)
       }
@@ -249,7 +316,9 @@ const MealTable = () => {
           </CCol>
         </CRow>
         {isMenu ? (
-          <CButton type="submit">수정하기</CButton>
+          <CButton type="submit" onClick={mealTableRevise}>
+            수정하기
+          </CButton>
         ) : (
           <CButton type="submit" onClick={mealTableRegistration}>
             등록하기
