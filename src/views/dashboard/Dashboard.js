@@ -87,20 +87,28 @@ const Dashboard = () => {
 
   const [thisMonthTicketUse, setThisMonthTicketUse] = useState([])
 
+  const [groupByMonthList, setGroupByMonthList] = useState([])
+
+  let basicObject = {
+    title: '0월',
+    value1: 0,
+    value2: 0,
+    value3: 0,
+    value4: 0,
+  }
+  let tempMonth = '0'
   const thisYearTicketUse = [
-    { title: '1월', value1: 34, value2: 78, value3: 30, value4: 40 },
-    { title: '2월', value1: 34, value2: 78, value3: 30, value4: 40 },
-    { title: '3월', value1: 34, value2: 78, value3: 30, value4: 40 },
-    { title: '4월', value1: 34, value2: 78, value3: 30, value4: 40 },
-    { title: '5월', value1: 34, value2: 78, value3: 30, value4: 40 },
     { title: '6월', value1: 34, value2: 78, value3: 30, value4: 40 },
-    { title: '7월', value1: 34, value2: 100, value3: 30, value4: 100 },
     { title: '8월', value1: 34, value2: 100, value3: 30, value4: 100 },
     { title: '9월', value1: 34, value2: 100, value3: 30, value4: 100 },
-    { title: '10월', value1: 34, value2: 100, value3: 30, value4: 100 },
-    { title: '11월', value1: 34, value2: 100, value3: 30, value4: 100 },
-    { title: '12월', value1: 34, value2: 100, value3: 30, value4: 100 },
   ]
+  // var temp = []
+  // let listCount = 0
+  // let listCount2 = 0
+  const [temp, setTemp] = useState([])
+  useEffect(() => {
+    console.log(`groupByMonthList :  ${JSON.stringify(groupByMonthList)}`)
+  }, [groupByMonthList])
 
   const getTickets = async () => {
     console.log('getTickets')
@@ -136,6 +144,37 @@ const Dashboard = () => {
               },
               { title: '석식', value1: response.data.result.byMonth[3].count, color: 'danger' },
             ])
+            console.log(
+              `response.data.result.groupByMonth.length :  ${response.data.result.groupByMonth.length}`,
+            )
+            for (let i = 0; i < response.data.result.groupByMonth.length; i++) {
+              tempMonth = response.data.result.groupByMonth[i].month
+              basicObject.title = `${response.data.result.groupByMonth[i].month}월`
+              if (response.data.result.groupByMonth[i].mealTypeIdx === 1) {
+                basicObject.value1 = response.data.result.groupByMonth[i].count
+              } else if (response.data.result.groupByMonth[i].mealTypeIdx === 2) {
+                basicObject.value2 = response.data.result.groupByMonth[i].count
+              } else if (response.data.result.groupByMonth[i].mealTypeIdx === 3) {
+                basicObject.value3 = response.data.result.groupByMonth[i].count
+              } else if (response.data.result.groupByMonth[i].mealTypeIdx === 4) {
+                basicObject.value4 = response.data.result.groupByMonth[i].count
+              }
+              if (
+                i < response.data.result.groupByMonth.length - 1 &&
+                response.data.result.groupByMonth[i].month !=
+                  response.data.result.groupByMonth[i + 1].month
+              ) {
+                temp.push(basicObject)
+                console.log(`temp :  ${JSON.stringify(temp)}`)
+                console.log(`groupByMonthList :  ${JSON.stringify(groupByMonthList)}`)
+              } else if (i == response.data.result.groupByMonth.length - 1) {
+                temp.push(basicObject)
+                console.log(`temp :  ${JSON.stringify(temp)}`)
+                console.log(`groupByMonthList :  ${JSON.stringify(groupByMonthList)}`)
+              }
+            }
+            setGroupByMonthList([...temp])
+            console.log(`groupByMonthListLast :  ${JSON.stringify(groupByMonthList)}`)
           }
         })
         .catch((error) => {
