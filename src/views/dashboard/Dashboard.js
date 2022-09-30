@@ -148,17 +148,25 @@ const Dashboard = () => {
               `response.data.result.groupByMonth.length :  ${response.data.result.groupByMonth.length}`,
             )
             temp = []
+            setValue1Sum(0)
+            setValue2Sum(0)
+            setValue3Sum(0)
+            setValue4Sum(0)
             for (let i = 0; i < response.data.result.groupByMonth.length; i++) {
               console.log(`temp for문 시작 :  ${JSON.stringify(temp)}`)
               basicObject.title = `${response.data.result.groupByMonth[i].month}월`
               if (response.data.result.groupByMonth[i].mealTypeIdx === 1) {
                 basicObject.value1 = response.data.result.groupByMonth[i].count
+                setValue1Sum(value1Sum + basicObject.value1)
               } else if (response.data.result.groupByMonth[i].mealTypeIdx === 2) {
                 basicObject.value2 = response.data.result.groupByMonth[i].count
+                setValue2Sum(value2Sum + basicObject.value2)
               } else if (response.data.result.groupByMonth[i].mealTypeIdx === 3) {
                 basicObject.value3 = response.data.result.groupByMonth[i].count
+                setValue3Sum(value3Sum + basicObject.value3)
               } else if (response.data.result.groupByMonth[i].mealTypeIdx === 4) {
                 basicObject.value4 = response.data.result.groupByMonth[i].count
+                setValue4Sum(value4Sum + basicObject.value4)
               }
               console.log(`basicObject if문 끝나고 :  ${JSON.stringify(basicObject)}`)
               console.log(`temp if문 끝나고 :  ${JSON.stringify(temp)}`)
@@ -177,12 +185,6 @@ const Dashboard = () => {
                   value3: basicObject.value3,
                   value4: basicObject.value4,
                 })
-
-                setValue1Sum(value1Sum + basicObject.value1)
-                setValue2Sum(value2Sum + basicObject.value2)
-                setValue3Sum(value3Sum + basicObject.value3)
-                setValue4Sum(value4Sum + basicObject.value4)
-
                 console.log(`temp push 후:  ${JSON.stringify(temp)}`)
                 console.log(`groupByMonthList :  ${JSON.stringify(groupByMonthList)}`)
               } else if (i == response.data.result.groupByMonth.length - 1) {
@@ -196,10 +198,6 @@ const Dashboard = () => {
                   value3: basicObject.value3,
                   value4: basicObject.value4,
                 })
-                setValue1Sum(value1Sum + basicObject.value1)
-                setValue2Sum(value2Sum + basicObject.value2)
-                setValue3Sum(value3Sum + basicObject.value3)
-                setValue4Sum(value4Sum + basicObject.value4)
                 console.log(`temp push 후:  ${JSON.stringify(temp)}`)
                 console.log(`groupByMonthList :  ${JSON.stringify(groupByMonthList)}`)
               } else {
