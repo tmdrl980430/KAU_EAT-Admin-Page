@@ -4,7 +4,7 @@ import { atom } from 'recoil'
 
 export const severURLRecoilState = atom({
   key: 'severURLRecoilState',
-  default: 'http://3.38.35.114/admin',
+  default: 'http://gaonnuri-env.eba-y3qcnx5y.ap-northeast-2.elasticbeanstalk.com/admin',
 })
 
 export const jwtRecoilState = atom({ key: 'jwtRecoilState', default: '' })

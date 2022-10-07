@@ -130,20 +130,37 @@ const Dashboard = () => {
           console.log(`response code확인`, response)
 
           if (response.data.code === 1000) {
-            setThisMonthTicketUse([
-              { title: '조식', value1: response.data.result.byMonth[0].count, color: 'success' },
-              {
-                title: '중식 | 일품',
-                value1: response.data.result.byMonth[1].count,
-                color: 'info',
-              },
-              {
-                title: '중식 | 한식',
-                value1: response.data.result.byMonth[2].count,
-                color: 'warning',
-              },
-              { title: '석식', value1: response.data.result.byMonth[3].count, color: 'danger' },
-            ])
+            if (response.data.result.byMonth.length != 0) {
+              setThisMonthTicketUse([
+                { title: '조식', value1: response.data.result.byMonth[0].count, color: 'success' },
+                {
+                  title: '중식 | 일품',
+                  value1: response.data.result.byMonth[1].count,
+                  color: 'info',
+                },
+                {
+                  title: '중식 | 한식',
+                  value1: response.data.result.byMonth[2].count,
+                  color: 'warning',
+                },
+                { title: '석식', value1: response.data.result.byMonth[3].count, color: 'danger' },
+              ])
+            } else {
+              setThisMonthTicketUse([
+                { title: '조식', value1: 0, color: 'success' },
+                {
+                  title: '중식 | 일품',
+                  value1: 0,
+                  color: 'info',
+                },
+                {
+                  title: '중식 | 한식',
+                  value1: 0,
+                  color: 'warning',
+                },
+                { title: '석식', value1: 0, color: 'danger' },
+              ])
+            }
             console.log(
               `response.data.result.groupByMonth.length :  ${response.data.result.groupByMonth.length}`,
             )
