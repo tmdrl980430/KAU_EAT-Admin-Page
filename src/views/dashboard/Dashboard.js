@@ -15,13 +15,18 @@ const Dashboard = () => {
 
   const [jwt, setJwt] = useRecoilState(jwtRecoilState)
   const [userIdx, setUserIdx] = useRecoilState(userIdxRecoilState)
+  const [isLogin, setIsLogin] = useState(false)
+  setJwt(localStorage.getItem('jwt-token'))
+
   const now = new Date()
 
   useEffect(() => {
     console.log(`localStorage.getItem('jwt')`, localStorage.getItem('jwt-token'))
-    setJwt(localStorage.getItem('jwt-token'))
+    console.log(`jwt`, jwt)
+    //setJwt(localStorage.getItem('jwt-token'))
     if (jwt === '' || jwt === null) {
       navigate('/login')
+      setIsLogin(false)
       return
     } else {
       autoLogin()
@@ -57,6 +62,7 @@ const Dashboard = () => {
             console.log('자동 로그인 완료')
             setJwt(jwt)
             getTickets()
+            setIsLogin(true)
           }
         })
         .catch((error) => {
@@ -127,8 +133,6 @@ const Dashboard = () => {
           },
         })
         .then((response) => {
-          console.log(`response code확인`, response)
-
           if (response.data.code === 1000) {
             if (response.data.result.byMonth.length != 0) {
               setThisMonthTicketUse([
@@ -161,16 +165,12 @@ const Dashboard = () => {
                 { title: '석식', value1: 0, color: 'danger' },
               ])
             }
-            console.log(
-              `response.data.result.groupByMonth.length :  ${response.data.result.groupByMonth.length}`,
-            )
             temp = []
             setValue1Sum(0)
             setValue2Sum(0)
             setValue3Sum(0)
             setValue4Sum(0)
             for (let i = 0; i < response.data.result.groupByMonth.length; i++) {
-              console.log(`temp for문 시작 :  ${JSON.stringify(temp)}`)
               basicObject.title = `${response.data.result.groupByMonth[i].month}월`
               if (response.data.result.groupByMonth[i].mealTypeIdx === 1) {
                 basicObject.value1 = response.data.result.groupByMonth[i].count
@@ -185,16 +185,11 @@ const Dashboard = () => {
                 basicObject.value4 = response.data.result.groupByMonth[i].count
                 setValue4Sum(value4Sum + basicObject.value4)
               }
-              console.log(`basicObject if문 끝나고 :  ${JSON.stringify(basicObject)}`)
-              console.log(`temp if문 끝나고 :  ${JSON.stringify(temp)}`)
               if (
                 i < response.data.result.groupByMonth.length - 1 &&
                 response.data.result.groupByMonth[i].month !=
                   response.data.result.groupByMonth[i + 1].month
               ) {
-                console.log(`temp push 전 :  ${JSON.stringify(temp)}`)
-                console.log(`count위 :  ${i}`)
-                console.log(`basicObject :  ${JSON.stringify(basicObject)}`)
                 temp.push({
                   title: basicObject.title,
                   value1: basicObject.value1,
@@ -202,12 +197,7 @@ const Dashboard = () => {
                   value3: basicObject.value3,
                   value4: basicObject.value4,
                 })
-                console.log(`temp push 후:  ${JSON.stringify(temp)}`)
-                console.log(`groupByMonthList :  ${JSON.stringify(groupByMonthList)}`)
               } else if (i == response.data.result.groupByMonth.length - 1) {
-                console.log(`temp push 전 :  ${JSON.stringify(temp)}`)
-                console.log(`count아래 :  ${i}`)
-                console.log(`basicObject :  ${JSON.stringify(basicObject)}`)
                 temp.push({
                   title: basicObject.title,
                   value1: basicObject.value1,
@@ -215,14 +205,10 @@ const Dashboard = () => {
                   value3: basicObject.value3,
                   value4: basicObject.value4,
                 })
-                console.log(`temp push 후:  ${JSON.stringify(temp)}`)
-                console.log(`groupByMonthList :  ${JSON.stringify(groupByMonthList)}`)
               } else {
-                console.log(`count if문 안지났을때 :  ${i}`)
               }
             }
             setGroupByMonthList([...temp])
-            console.log(`groupByMonthListLast :  ${JSON.stringify(groupByMonthList)}`)
           }
         })
         .catch((error) => {
