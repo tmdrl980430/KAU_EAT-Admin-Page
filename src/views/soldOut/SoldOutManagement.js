@@ -81,13 +81,20 @@ const SoldOutManagement = () => {
             조식
           </CFormLabel>
           <CFormCheck
+            value={true}
             type="radio"
             name="Breakfast"
             id="Breakfast"
             label="정상 운영"
             defaultChecked
           />
-          <CFormCheck type="radio" name="Breakfast" id="BreakfastSoldout" label="품절" />
+          <CFormCheck
+            value={false}
+            type="radio"
+            name="Breakfast"
+            id="BreakfastSoldout"
+            label="품절"
+          />
         </CRow>
         <CRow className="mb-3">
           <CFormLabel htmlFor="inputMenu" className="col-sm-2 col-form-label">

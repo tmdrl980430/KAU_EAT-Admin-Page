@@ -16,7 +16,7 @@ const Dashboard = () => {
   const [jwt, setJwt] = useRecoilState(jwtRecoilState)
   const [userIdx, setUserIdx] = useRecoilState(userIdxRecoilState)
   const [isLogin, setIsLogin] = useState(false)
-  setJwt(localStorage.getItem('jwt-token'))
+  //setJwt(localStorage.getItem('jwt-token'))
 
   const now = new Date()
 
