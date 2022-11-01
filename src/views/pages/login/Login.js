@@ -65,8 +65,8 @@ const Login = () => {
               setIsLogin(true)
               setJwt(response.data.result.jwt)
               setUserIdx(response.data.result.userIdx)
-              localStorage.setItem('jwt-token', jwt)
-              localStorage.setItem('userIdx', userIdx)
+              localStorage.setItem('jwt-token', response.data.result.jwt)
+              localStorage.setItem('userIdx', response.data.result.userIdx)
               alert('로그인 성공!')
               navigate('/')
             }

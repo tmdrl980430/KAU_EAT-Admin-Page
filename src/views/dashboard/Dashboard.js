@@ -16,22 +16,13 @@ const Dashboard = () => {
   const [jwt, setJwt] = useRecoilState(jwtRecoilState)
   const [userIdx, setUserIdx] = useRecoilState(userIdxRecoilState)
   const [isLogin, setIsLogin] = useState(false)
-  //setJwt(localStorage.getItem('jwt-token'))
 
   const now = new Date()
 
   useEffect(() => {
-    console.log(`localStorage.getItem('jwt')`, localStorage.getItem('jwt-token'))
-    console.log(`jwt`, jwt)
-    //setJwt(localStorage.getItem('jwt-token'))
-    if (jwt === '' || jwt === null) {
-      navigate('/login')
-      setIsLogin(false)
-      return
-    } else {
-      autoLogin()
-      console.log('jwt', jwt)
-    }
+    setJwt(localStorage.getItem('jwt-token'))
+    autoLogin()
+    getTickets()
   }, [])
 
   const utcNow = now.getTime() + now.getTimezoneOffset() * 60 * 1000 // 현재 시간을 utc로 변환한 밀리세컨드값
@@ -52,7 +43,7 @@ const Dashboard = () => {
       const response = await axios
         .get(`${IP}/auth/jwt`, {
           headers: {
-            'x-access-token': jwt,
+            'x-access-token': localStorage.getItem('jwt-token'),
           },
         })
         .then((response) => {
@@ -60,9 +51,11 @@ const Dashboard = () => {
 
           if (response.data.code === 1001) {
             console.log('자동 로그인 완료')
-            setJwt(jwt)
-            getTickets()
+            setUserIdx(response.data.result.userIdx)
             setIsLogin(true)
+          } else {
+            setIsLogin(false)
+            navigate('/login')
           }
         })
         .catch((error) => {
@@ -109,12 +102,6 @@ const Dashboard = () => {
   const [value2Sum, setValue2Sum] = useState(0)
   const [value3Sum, setValue3Sum] = useState(0)
   const [value4Sum, setValue4Sum] = useState(0)
-  useEffect(() => {
-    let arr = [1, 2, 3]
-    console.log(`arr push 전: ${arr}`)
-    arr.push(4)
-    console.log(`arr push 후: ${arr}`)
-  }, [])
 
   const getTickets = async () => {
     console.log('getTickets')
@@ -129,11 +116,12 @@ const Dashboard = () => {
       const response = await axios
         .get(`${IP}/mealtickets`, {
           headers: {
-            'x-access-token': jwt,
+            'x-access-token': localStorage.getItem('jwt-token'),
           },
         })
         .then((response) => {
           if (response.data.code === 1000) {
+            console.log('사용량 가져오기 완료')
             if (response.data.result.byMonth.length != 0) {
               setThisMonthTicketUse([
                 { title: '조식', value1: response.data.result.byMonth[0].count, color: 'success' },
