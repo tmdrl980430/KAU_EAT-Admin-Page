@@ -43,17 +43,8 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: 'Login',
+    name: 'LogOut',
     to: '/login',
-    icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
-    badge: {
-      color: 'info',
-    },
-  },
-  {
-    component: CNavItem,
-    name: 'Register',
-    to: '/register',
     icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
     badge: {
       color: 'info',
