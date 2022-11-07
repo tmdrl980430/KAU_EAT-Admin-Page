@@ -30,12 +30,14 @@ const MealTable = () => {
   const [lunchMenu, setLunchMenu] = useState('')
   const [lunchKoreaMenu, setLunchKoreaMenu] = useState('')
   const [dinnerMenu, setDinnerMenu] = useState('')
+  const [lunchNoodleMenu, setLunchNoodleMenu] = useState('')
   const [isMenu, setIsMenu] = useState(false)
   const [dateClick, setDateClick] = useState(false)
   const [breakfastMenuIdx, setBreakfastMenuIdx] = useState(0)
   const [lunchMenuIdx, setLunchMenuIdx] = useState(0)
   const [lunchKoreaMenuIdx, setLunchKoreaMenuIdx] = useState(0)
   const [dinnerMenuIdx, setDinnerMenuIdx] = useState(0)
+  const [lunchNoodleMenuIdx, setLunchNoodleMenuIdx] = useState(0)
 
   useEffect(() => {
     console.log('jwt : ', jwt)
@@ -44,7 +46,8 @@ const MealTable = () => {
     console.log('lunchKoreaMenu : ', lunchKoreaMenu)
     console.log('lunchMenu : ', lunchMenu)
     console.log('dinnerMenu : ', dinnerMenu)
-  }, [date, breakfastMenu, lunchKoreaMenu, lunchMenu, dinnerMenu, jwt])
+    console.log('lunchNoodleMenu : ', lunchNoodleMenu)
+  }, [date, breakfastMenu, lunchKoreaMenu, lunchMenu, dinnerMenu, lunchNoodleMenu, jwt])
 
   const today =
     String(koreaNow.getFullYear()) +
@@ -58,6 +61,7 @@ const MealTable = () => {
     setLunchMenu('')
     setLunchKoreaMenu('')
     setDinnerMenu('')
+    setLunchNoodleMenu('')
     console.log('setDateMealTable')
     setLoading(true)
 
@@ -91,6 +95,7 @@ const MealTable = () => {
                 setLunchMenuIdx(0)
                 setLunchKoreaMenuIdx(0)
                 setDinnerMenuIdx(0)
+                setLunchNoodleMenuIdx(0)
               } else {
                 setIsMenu(true)
                 for (let i = 0; i < response.data.result.menus.length; i++) {
@@ -106,6 +111,9 @@ const MealTable = () => {
                   } else if (response.data.result.menus[i].mealTypeIdx === 4) {
                     setDinnerMenu(response.data.result.menus[i].name)
                     setDinnerMenuIdx(response.data.result.menus[i].menuIdx)
+                  } else if (response.data.result.menus[i].mealTypeIdx === 5) {
+                    setLunchNoodleMenu(response.data.result.menus[i].name)
+                    setLunchNoodleMenuIdx(response.data.result.menus[i].menuIdx)
                   }
                 }
               }
@@ -124,11 +132,29 @@ const MealTable = () => {
     setLoading(false)
     // loading 끄기
   }
+
   const mealTableRegistration = async () => {
     console.log('postMealTableRegist')
     setLoading(true)
 
+    let registrationList = []
     if (date != '') {
+      if (breakfastMenu !== '') {
+        registrationList.push({ mealTypeIdx: 1, name: breakfastMenu, availableAt: date })
+      }
+      if (lunchMenu !== '') {
+        registrationList.push({ mealTypeIdx: 2, name: lunchMenu, availableAt: date })
+      }
+      if (lunchKoreaMenu !== '') {
+        registrationList.push({ mealTypeIdx: 3, name: lunchKoreaMenu, availableAt: date })
+      }
+      if (dinnerMenu !== '') {
+        registrationList.push({ mealTypeIdx: 4, name: dinnerMenu, availableAt: date })
+      }
+      if (lunchNoodleMenu !== '') {
+        registrationList.push({ mealTypeIdx: 5, name: lunchNoodleMenu, availableAt: date })
+      }
+
       try {
         // 요청이 시작 할 때에는 error 와 users 를 초기화하고
         setError(null)
@@ -142,12 +168,7 @@ const MealTable = () => {
           .post(
             `${IP}/menus`,
             {
-              menus: [
-                { mealTypeIdx: 1, name: breakfastMenu, availableAt: date },
-                { mealTypeIdx: 2, name: lunchMenu, availableAt: date },
-                { mealTypeIdx: 3, name: lunchKoreaMenu, availableAt: date },
-                { mealTypeIdx: 4, name: dinnerMenu, availableAt: date },
-              ],
+              menus: registrationList,
             },
             {
               headers: {
@@ -175,7 +196,49 @@ const MealTable = () => {
     console.log('postmealTableRevise')
     setLoading(true)
 
+    let reviseList = []
+
     if (date != '') {
+      if (breakfastMenu !== '') {
+        reviseList.push({
+          menuIdx: breakfastMenuIdx,
+          mealTypeIdx: 1,
+          name: breakfastMenu,
+          availableAt: date,
+        })
+      }
+      if (lunchMenu !== '') {
+        reviseList.push({
+          menuIdx: lunchMenuIdx,
+          mealTypeIdx: 2,
+          name: lunchMenu,
+          availableAt: date,
+        })
+      }
+      if (lunchKoreaMenu !== '') {
+        reviseList.push({
+          menuIdx: lunchKoreaMenuIdx,
+          mealTypeIdx: 3,
+          name: lunchKoreaMenu,
+          availableAt: date,
+        })
+      }
+      if (dinnerMenu !== '') {
+        reviseList.push({
+          menuIdx: dinnerMenuIdx,
+          mealTypeIdx: 4,
+          name: dinnerMenu,
+          availableAt: date,
+        })
+      }
+      if (lunchNoodleMenu !== '') {
+        reviseList.push({
+          menuIdx: lunchNoodleMenuIdx,
+          mealTypeIdx: 5,
+          name: lunchNoodleMenu,
+          availableAt: date,
+        })
+      }
       try {
         // 요청이 시작 할 때에는 error 와 users 를 초기화하고
         setError(null)
@@ -187,22 +250,7 @@ const MealTable = () => {
           .patch(
             `${IP}/menus`,
             {
-              menus: [
-                {
-                  menuIdx: breakfastMenuIdx,
-                  mealTypeIdx: 1,
-                  name: breakfastMenu,
-                  availableAt: date,
-                },
-                { menuIdx: lunchMenuIdx, mealTypeIdx: 2, name: lunchMenu, availableAt: date },
-                {
-                  menuIdx: lunchKoreaMenuIdx,
-                  mealTypeIdx: 3,
-                  name: lunchKoreaMenu,
-                  availableAt: date,
-                },
-                { menuIdx: dinnerMenuIdx, mealTypeIdx: 4, name: dinnerMenu, availableAt: date },
-              ],
+              menus: reviseList,
             },
             {
               headers: {
@@ -311,6 +359,21 @@ const MealTable = () => {
               id="inputMenu"
               onChange={(e) => {
                 setDinnerMenu(e.target.value)
+              }}
+            />
+          </CCol>
+        </CRow>
+        <CRow className="mb-3">
+          <CFormLabel htmlFor="inputMenu" className="col-sm-2 col-form-label">
+            중식(면)
+          </CFormLabel>
+          <CCol sm={10}>
+            <CFormInput
+              value={lunchNoodleMenu}
+              type="text"
+              id="inputMenu"
+              onChange={(e) => {
+                setLunchNoodleMenu(e.target.value)
               }}
             />
           </CCol>

@@ -21,6 +21,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     setJwt(localStorage.getItem('jwt-token'))
+    console.log('jwt : ', localStorage.getItem('jwt-token'))
     autoLogin()
     getTickets()
   }, [])
@@ -74,16 +75,6 @@ const Dashboard = () => {
   const todayMonth =
     String(koreaNow.getFullYear()) + '-' + String(koreaNow.getMonth() + 1).padStart(2, '0')
 
-  const thisWeekTicketUse = [
-    { title: '월요일', value1: 34, value2: 78, value3: 30, value4: 40 },
-    { title: '화요일', value1: 34, value2: 78, value3: 30, value4: 40 },
-    { title: '수요일', value1: 34, value2: 78, value3: 30, value4: 40 },
-    { title: '목요일', value1: 34, value2: 78, value3: 30, value4: 40 },
-    { title: '금요일', value1: 34, value2: 78, value3: 30, value4: 40 },
-    { title: '토요일', value1: 34, value2: 78, value3: 30, value4: 40 },
-    { title: '일요일', value1: 34, value2: 100, value3: 30, value4: 100 },
-  ]
-
   const [thisMonthTicketUse, setThisMonthTicketUse] = useState([])
 
   const [groupByMonthList, setGroupByMonthList] = useState([])
@@ -94,6 +85,7 @@ const Dashboard = () => {
     value2: 0,
     value3: 0,
     value4: 0,
+    value5: 0,
   }
   let tempMonth = '0'
 
@@ -102,6 +94,7 @@ const Dashboard = () => {
   const [value2Sum, setValue2Sum] = useState(0)
   const [value3Sum, setValue3Sum] = useState(0)
   const [value4Sum, setValue4Sum] = useState(0)
+  const [value5Sum, setValue5Sum] = useState(0)
 
   const getTickets = async () => {
     console.log('getTickets')
@@ -122,6 +115,7 @@ const Dashboard = () => {
         .then((response) => {
           if (response.data.code === 1000) {
             console.log('사용량 가져오기 완료')
+            console.log('response.data.code', response.data.result)
             if (response.data.result.byMonth.length != 0) {
               setThisMonthTicketUse([
                 { title: '조식', value1: response.data.result.byMonth[0].count, color: 'success' },
@@ -158,6 +152,7 @@ const Dashboard = () => {
             setValue2Sum(0)
             setValue3Sum(0)
             setValue4Sum(0)
+            setValue5Sum(0)
             for (let i = 0; i < response.data.result.groupByMonth.length; i++) {
               basicObject.title = `${response.data.result.groupByMonth[i].month}월`
               if (response.data.result.groupByMonth[i].mealTypeIdx === 1) {
@@ -172,6 +167,9 @@ const Dashboard = () => {
               } else if (response.data.result.groupByMonth[i].mealTypeIdx === 4) {
                 basicObject.value4 = response.data.result.groupByMonth[i].count
                 setValue4Sum(value4Sum + basicObject.value4)
+              } else if (response.data.result.groupByMonth[i].mealTypeIdx === 5) {
+                basicObject.value5 = response.data.result.groupByMonth[i].count
+                setValue5Sum(value5Sum + basicObject.value5)
               }
               if (
                 i < response.data.result.groupByMonth.length - 1 &&
@@ -184,6 +182,7 @@ const Dashboard = () => {
                   value2: basicObject.value2,
                   value3: basicObject.value3,
                   value4: basicObject.value4,
+                  value5: basicObject.value5,
                 })
               } else if (i == response.data.result.groupByMonth.length - 1) {
                 temp.push({
@@ -192,6 +191,7 @@ const Dashboard = () => {
                   value2: basicObject.value2,
                   value3: basicObject.value3,
                   value4: basicObject.value4,
+                  value5: basicObject.value5,
                 })
               } else {
               }
@@ -273,6 +273,12 @@ const Dashboard = () => {
                         <div className="fs-5 fw-semibold">{value4Sum}</div>
                       </div>
                     </CCol>
+                    <CCol sm={6}>
+                      <div className="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
+                        <div className="text-medium-emphasis small">중식(면)</div>
+                        <div className="fs-5 fw-semibold">{value5Sum}</div>
+                      </div>
+                    </CCol>
                   </CRow>
                   <hr className="mt-0" />
                   {groupByMonthList.map((item, index) => (
@@ -298,6 +304,11 @@ const Dashboard = () => {
                         </CProgress>
                         <CProgress>
                           <CProgressBar color="danger" value={item.value4}>
+                            {item.value4}
+                          </CProgressBar>
+                        </CProgress>
+                        <CProgress>
+                          <CProgressBar color="danger" value={item.value5}>
                             {item.value4}
                           </CProgressBar>
                         </CProgress>
