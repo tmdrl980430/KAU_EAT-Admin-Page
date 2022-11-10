@@ -102,6 +102,14 @@ const Dashboard = () => {
   const [valueDay4Sum, setValueDay4Sum] = useState(0)
   const [valueDay5Sum, setValueDay5Sum] = useState(0)
 
+  useEffect(() => {
+    console.log('valueDay1Sum : ', valueDay1Sum)
+    console.log('valueDay2Sum : ', valueDay2Sum)
+    console.log('valueDay3Sum : ', valueDay3Sum)
+    console.log('valueDay4Sum : ', valueDay4Sum)
+    console.log('valueDay5Sum : ', valueDay5Sum)
+  }, [valueDay1Sum, valueDay2Sum, valueDay3Sum, valueDay4Sum, valueDay5Sum])
+
   const getTodayTickets = async () => {
     console.log('getTodayTickets')
     setLoading(true)
@@ -121,10 +129,9 @@ const Dashboard = () => {
         .then((response) => {
           if (response.data.code === 1000) {
             console.log('사용량 가져오기 완료')
-            console.log('response.data.code', response.data.result)
+            console.log('response.data byDay', response.data.result)
             if (response.data.result.byDay.length != 0) {
-              for (let i = 0; i < response.data.result.groupByMonth.length; i++) {
-                basicObject.title = `${response.data.result.groupByMonth[i].month}월`
+              for (let i = 0; i < response.data.result.byDay.length; i++) {
                 if (response.data.result.byDay[i].mealTypeIdx === 1) {
                   setValueDay1Sum(response.data.result.byDay[i].count)
                 } else if (response.data.result.byDay[i].mealTypeIdx === 2) {

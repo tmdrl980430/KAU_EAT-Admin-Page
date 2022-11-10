@@ -1,6 +1,7 @@
 import React from 'react'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
+const dayDashBoard = React.lazy(() => import('./views/dayDashBoard/dayDashBoard'))
 const MealTable = React.lazy(() => import('./views/mealTable/MealTable'))
 const SoldOutManagement = React.lazy(() => import('./views/soldOut/SoldOutManagement'))
 
@@ -18,6 +19,7 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: '식권 사용량', element: Dashboard },
+  { path: '/dayDashBoard', name: '일별 식권 사용량 조회', element: dayDashBoard },
   { path: '/mealTable', name: '식단 관리', element: MealTable },
   { path: '/soldOut', name: '품절 관리', element: SoldOutManagement },
   { path: '/theme', name: 'Theme', element: Colors, exact: true },

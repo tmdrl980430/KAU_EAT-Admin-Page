@@ -25,6 +25,15 @@ const _nav = [
   },
   {
     component: CNavItem,
+    name: '일별 사용량 조회',
+    to: '/dayDashBoard',
+    icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
+    badge: {
+      color: 'info',
+    },
+  },
+  {
+    component: CNavItem,
     name: '식단 관리',
     to: '/mealTable',
     icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
