@@ -2,7 +2,12 @@ import React, { useEffect, useState } from 'react'
 
 import { CCard, CCardBody, CCardHeader, CCol, CProgress, CProgressBar, CRow } from '@coreui/react'
 import { useRecoilState } from 'recoil'
-import { jwtRecoilState, severURLRecoilState, userIdxRecoilState } from 'src/recoil'
+import {
+  dateRecoilState,
+  jwtRecoilState,
+  severURLRecoilState,
+  userIdxRecoilState,
+} from 'src/recoil'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
@@ -17,6 +22,7 @@ const Dashboard = () => {
   const [userIdx, setUserIdx] = useRecoilState(userIdxRecoilState)
   const [isLogin, setIsLogin] = useState(false)
 
+  const [today, setToday] = useRecoilState(dateRecoilState)
   const now = new Date()
 
   useEffect(() => {
@@ -24,6 +30,7 @@ const Dashboard = () => {
     console.log('jwt : ', localStorage.getItem('jwt-token'))
     autoLogin()
     getTickets()
+    getTodayTickets()
   }, [])
 
   const utcNow = now.getTime() + now.getTimezoneOffset() * 60 * 1000 // 현재 시간을 utc로 변환한 밀리세컨드값
@@ -89,6 +96,69 @@ const Dashboard = () => {
   }
   let tempMonth = '0'
 
+  const [valueDay1Sum, setValueDay1Sum] = useState(0)
+  const [valueDay2Sum, setValueDay2Sum] = useState(0)
+  const [valueDay3Sum, setValueDay3Sum] = useState(0)
+  const [valueDay4Sum, setValueDay4Sum] = useState(0)
+  const [valueDay5Sum, setValueDay5Sum] = useState(0)
+
+  const getTodayTickets = async () => {
+    console.log('getTodayTickets')
+    setLoading(true)
+    try {
+      // 요청이 시작 할 때에는 error 와 users 를 초기화하고
+      setError(null)
+      console.log('getTodayTickets_try')
+      // loading 상태를 true 로 바꿉니다.
+      setLoading(true)
+
+      const response = await axios
+        .get(`${IP}/mealtickets/day?date=${today}`, {
+          headers: {
+            'x-access-token': localStorage.getItem('jwt-token'),
+          },
+        })
+        .then((response) => {
+          if (response.data.code === 1000) {
+            console.log('사용량 가져오기 완료')
+            console.log('response.data.code', response.data.result)
+            if (response.data.result.byDay.length != 0) {
+              for (let i = 0; i < response.data.result.groupByMonth.length; i++) {
+                basicObject.title = `${response.data.result.groupByMonth[i].month}월`
+                if (response.data.result.byDay[i].mealTypeIdx === 1) {
+                  setValueDay1Sum(response.data.result.byDay[i].count)
+                } else if (response.data.result.byDay[i].mealTypeIdx === 2) {
+                  setValueDay2Sum(response.data.result.byDay[i].count)
+                } else if (response.data.result.byDay[i].mealTypeIdx === 3) {
+                  setValueDay3Sum(response.data.result.byDay[i].count)
+                } else if (response.data.result.byDay[i].mealTypeIdx === 4) {
+                  setValueDay4Sum(response.data.result.byDay[i].count)
+                } else if (response.data.result.byDay[i].mealTypeIdx === 5) {
+                  setValueDay5Sum(response.data.result.byDay[i].count)
+                }
+              }
+            } else {
+              setValueDay1Sum(0)
+              setValueDay2Sum(0)
+              setValueDay3Sum(0)
+              setValueDay4Sum(0)
+              setValueDay5Sum(0)
+            }
+          }
+        })
+        .catch((error) => {
+          console.log(`error : `, error)
+        })
+      // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
+    } catch (e) {
+      console.log('getTodayTickets_catch')
+      console.log(e)
+      setError(e)
+    }
+    setLoading(false)
+    // loading 끄기
+  }
+
   let temp = []
   const [value1Sum, setValue1Sum] = useState(0)
   const [value2Sum, setValue2Sum] = useState(0)
@@ -130,6 +200,11 @@ const Dashboard = () => {
                   color: 'warning',
                 },
                 { title: '석식', value1: response.data.result.byMonth[3].count, color: 'danger' },
+                {
+                  title: '중식(면)',
+                  value1: response.data.result.byMonth[4].count,
+                  color: 'primary',
+                },
               ])
             } else {
               setThisMonthTicketUse([
@@ -145,6 +220,7 @@ const Dashboard = () => {
                   color: 'warning',
                 },
                 { title: '석식', value1: 0, color: 'danger' },
+                { title: '중식(면)', value1: 0, color: 'primary' },
               ])
             }
             temp = []
@@ -217,6 +293,51 @@ const Dashboard = () => {
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
+            <CCardHeader>{today} 식권 사용량</CCardHeader>
+            <CCardBody>
+              <CRow>
+                <CCol xs={12} md={100} xl={6}>
+                  <CRow>
+                    <CCol sm={6}>
+                      <div className="border-start border-start-4 border-start-success py-1 px-3">
+                        <div className="text-medium-emphasis small">조식</div>
+                        <div className="fs-5 fw-semibold">{valueDay1Sum}</div>
+                      </div>
+                    </CCol>
+                    <CCol sm={6}>
+                      <div className="border-start border-start-4 border-start-info py-1 px-3 mb-3">
+                        <div className="text-medium-emphasis small">중식 | 일품</div>
+                        <div className="fs-5 fw-semibold">{valueDay2Sum}</div>
+                      </div>
+                    </CCol>
+                  </CRow>
+                  <CRow>
+                    <CCol sm={6}>
+                      <div className="border-start border-start-4 border-start-warning py-1 px-3 mb-3">
+                        <div className="text-medium-emphasis small">중식 | 한식</div>
+                        <div className="fs-5 fw-semibold">{valueDay3Sum}</div>
+                      </div>
+                    </CCol>
+                    <CCol sm={6}>
+                      <div className="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
+                        <div className="text-medium-emphasis small">석식</div>
+                        <div className="fs-5 fw-semibold">{valueDay4Sum}</div>
+                      </div>
+                    </CCol>
+                    <CCol sm={6}>
+                      <div className="border-start border-start-4 border-start-primary py-1 px-3 mb-3">
+                        <div className="text-medium-emphasis small">중식(면)</div>
+                        <div className="fs-5 fw-semibold">{valueDay5Sum}</div>
+                      </div>
+                    </CCol>
+                  </CRow>
+                </CCol>
+              </CRow>
+              <br />
+            </CCardBody>
+          </CCard>
+
+          <CCard className="mb-4">
             <CCardHeader>{todayMonth}월 식권 사용량</CCardHeader>
             <CCardBody>
               <CRow>
@@ -274,7 +395,7 @@ const Dashboard = () => {
                       </div>
                     </CCol>
                     <CCol sm={6}>
-                      <div className="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
+                      <div className="border-start border-start-4 border-start-primary py-1 px-3 mb-3">
                         <div className="text-medium-emphasis small">중식(면)</div>
                         <div className="fs-5 fw-semibold">{value5Sum}</div>
                       </div>
@@ -308,7 +429,7 @@ const Dashboard = () => {
                           </CProgressBar>
                         </CProgress>
                         <CProgress>
-                          <CProgressBar color="danger" value={item.value5}>
+                          <CProgressBar color="primary" value={item.value5}>
                             {item.value4}
                           </CProgressBar>
                         </CProgress>
