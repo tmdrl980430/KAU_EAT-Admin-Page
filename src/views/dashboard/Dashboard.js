@@ -340,7 +340,7 @@ const Dashboard = () => {
           <CCard className="mb-4">
             <CCardHeader>{today} 현재 회원 수</CCardHeader>
             <CCardBody>
-              <spam>{users}</spam>
+              <spam>{users}명</spam>
             </CCardBody>
           </CCard>
           <CCard className="mb-4">
