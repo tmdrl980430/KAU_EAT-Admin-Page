@@ -23,6 +23,8 @@ const Dashboard = () => {
   const [isLogin, setIsLogin] = useState(false)
 
   const [today, setToday] = useRecoilState(dateRecoilState)
+  const [users, setUsers] = useState(0)
+
   const now = new Date()
 
   useEffect(() => {
@@ -31,11 +33,47 @@ const Dashboard = () => {
     autoLogin()
     getTickets()
     getTodayTickets()
+    getTodayUser()
   }, [])
 
   const utcNow = now.getTime() + now.getTimezoneOffset() * 60 * 1000 // 현재 시간을 utc로 변환한 밀리세컨드값
   const koreaTimeDiff = 9 * 60 * 60 * 1000 // 한국 시간은 UTC보다 9시간 빠름(9시간의 밀리세컨드 표현)
   const koreaNow = new Date(utcNow + koreaTimeDiff) // utc로 변환된 값을 한국 시간으로 변환시키기 위해 9시간(밀리세컨드)를 더함
+
+  const getTodayUser = async () => {
+    console.log('getTodayUser')
+    setLoading(true)
+    try {
+      // 요청이 시작 할 때에는 error 와 users 를 초기화하고
+      setError(null)
+      console.log('getTodayUser_try')
+      // loading 상태를 true 로 바꿉니다.
+      setLoading(true)
+
+      const response = await axios
+        .get(`${IP}/users`, {
+          headers: {
+            'x-access-token': localStorage.getItem('jwt-token'),
+          },
+        })
+        .then((response) => {
+          console.log(`response 확인 : ${response.data.result.count}`)
+          if (response.data.code === 1000) {
+            setUsers(response.data.result.count)
+          }
+        })
+        .catch((error) => {
+          console.log(`error : `, error)
+        })
+      // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
+    } catch (e) {
+      console.log('getTodayUser_catch')
+      console.log(e)
+      setError(e)
+    }
+    setLoading(false)
+    // loading 끄기
+  }
 
   const autoLogin = async () => {
     console.log('autoLogin')
@@ -299,6 +337,12 @@ const Dashboard = () => {
     <>
       <CRow>
         <CCol xs>
+          <CCard className="mb-4">
+            <CCardHeader>{today} 현재 회원 수</CCardHeader>
+            <CCardBody>
+              <spam>{users}</spam>
+            </CCardBody>
+          </CCard>
           <CCard className="mb-4">
             <CCardHeader>{today} 식권 사용량</CCardHeader>
             <CCardBody>
