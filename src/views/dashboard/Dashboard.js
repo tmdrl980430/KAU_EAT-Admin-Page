@@ -210,6 +210,11 @@ const Dashboard = () => {
   const [value3Sum, setValue3Sum] = useState(0)
   const [value4Sum, setValue4Sum] = useState(0)
   const [value5Sum, setValue5Sum] = useState(0)
+  const [valueMonth1Sum, setValueMonth1Sum] = useState(0)
+  const [valueMonth2Sum, setValueMonth2Sum] = useState(0)
+  const [valueMonth3Sum, setValueMonth3Sum] = useState(0)
+  const [valueMonth4Sum, setValueMonth4Sum] = useState(0)
+  const [valueMonth5Sum, setValueMonth5Sum] = useState(0)
 
   const getTickets = async () => {
     console.log('getTickets')
@@ -232,6 +237,11 @@ const Dashboard = () => {
             console.log('사용량 가져오기 완료')
             console.log('response.data.code', response.data.result)
             if (response.data.result.byMonth.length != 0) {
+              setValueMonth1Sum(response.data.result.byMonth[0].count)
+              setValueMonth2Sum(response.data.result.byMonth[1].count)
+              setValueMonth3Sum(response.data.result.byMonth[2].count)
+              setValueMonth4Sum(response.data.result.byMonth[3].count)
+              setValueMonth5Sum(response.data.result.byMonth[4].count)
               setThisMonthTicketUse([
                 { title: '조식', value1: response.data.result.byMonth[0].count, color: 'success' },
                 {
@@ -269,28 +279,23 @@ const Dashboard = () => {
               ])
             }
             temp = []
-            setValue1Sum(0)
-            setValue2Sum(0)
-            setValue3Sum(0)
-            setValue4Sum(0)
-            setValue5Sum(0)
+            setValue1Sum(response.data.result.byYear[0].count)
+            setValue2Sum(response.data.result.byYear[1].count)
+            setValue3Sum(response.data.result.byYear[2].count)
+            setValue4Sum(response.data.result.byYear[3].count)
+            setValue5Sum(response.data.result.byYear[4].count)
             for (let i = 0; i < response.data.result.groupByMonth.length; i++) {
               basicObject.title = `${response.data.result.groupByMonth[i].month}월`
               if (response.data.result.groupByMonth[i].mealTypeIdx === 1) {
                 basicObject.value1 = response.data.result.groupByMonth[i].count
-                setValue1Sum(value1Sum + basicObject.value1)
               } else if (response.data.result.groupByMonth[i].mealTypeIdx === 2) {
                 basicObject.value2 = response.data.result.groupByMonth[i].count
-                setValue2Sum(value2Sum + basicObject.value2)
               } else if (response.data.result.groupByMonth[i].mealTypeIdx === 3) {
                 basicObject.value3 = response.data.result.groupByMonth[i].count
-                setValue3Sum(value3Sum + basicObject.value3)
               } else if (response.data.result.groupByMonth[i].mealTypeIdx === 4) {
                 basicObject.value4 = response.data.result.groupByMonth[i].count
-                setValue4Sum(value4Sum + basicObject.value4)
               } else if (response.data.result.groupByMonth[i].mealTypeIdx === 5) {
                 basicObject.value5 = response.data.result.groupByMonth[i].count
-                setValue5Sum(value5Sum + basicObject.value5)
               }
               if (
                 i < response.data.result.groupByMonth.length - 1 &&
@@ -391,6 +396,40 @@ const Dashboard = () => {
           <CCard className="mb-4">
             <CCardHeader>{todayMonth}월 식권 사용량</CCardHeader>
             <CCardBody>
+              <CRow>
+                <CCol sm={6}>
+                  <div className="border-start border-start-4 border-start-success py-1 px-3">
+                    <div className="text-medium-emphasis small">조식</div>
+                    <div className="fs-5 fw-semibold">{valueMonth1Sum}</div>
+                  </div>
+                </CCol>
+                <CCol sm={6}>
+                  <div className="border-start border-start-4 border-start-info py-1 px-3 mb-3">
+                    <div className="text-medium-emphasis small">중식 | 일품</div>
+                    <div className="fs-5 fw-semibold">{valueMonth2Sum}</div>
+                  </div>
+                </CCol>
+              </CRow>
+              <CRow>
+                <CCol sm={6}>
+                  <div className="border-start border-start-4 border-start-warning py-1 px-3 mb-3">
+                    <div className="text-medium-emphasis small">중식 | 한식</div>
+                    <div className="fs-5 fw-semibold">{valueMonth3Sum}</div>
+                  </div>
+                </CCol>
+                <CCol sm={6}>
+                  <div className="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
+                    <div className="text-medium-emphasis small">석식</div>
+                    <div className="fs-5 fw-semibold">{valueMonth4Sum}</div>
+                  </div>
+                </CCol>
+                <CCol sm={6}>
+                  <div className="border-start border-start-4 border-start-primary py-1 px-3 mb-3">
+                    <div className="text-medium-emphasis small">중식(면)</div>
+                    <div className="fs-5 fw-semibold">{valueMonth5Sum}</div>
+                  </div>
+                </CCol>
+              </CRow>
               <CRow>
                 <CCol xs={12} md={100} xl={6}>
                   {thisMonthTicketUse.map((item, index) => (
