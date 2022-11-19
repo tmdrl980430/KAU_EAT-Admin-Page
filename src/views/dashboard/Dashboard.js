@@ -58,9 +58,7 @@ const Dashboard = () => {
             setUsers(response.data.result.count)
           }
         })
-        .catch((error) => {
-          console.log(`error : `, error)
-        })
+        .catch((error) => {})
     } catch (e) {
       setError(e)
     }

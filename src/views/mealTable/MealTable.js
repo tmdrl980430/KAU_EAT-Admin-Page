@@ -39,6 +39,10 @@ const MealTable = () => {
   const [dinnerMenuIdx, setDinnerMenuIdx] = useState(0)
   const [lunchNoodleMenuIdx, setLunchNoodleMenuIdx] = useState(0)
 
+  useEffect(() => {
+    setJwt(localStorage.getItem('jwt-token'))
+  }, [])
+
   const today =
     String(koreaNow.getFullYear()) +
     '-' +
