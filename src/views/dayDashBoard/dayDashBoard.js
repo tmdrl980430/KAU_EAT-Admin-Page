@@ -43,6 +43,9 @@ const dayDashBoard = () => {
     getTodayTickets()
   }, [date])
 
+  useEffect(() => {
+    setJwt(localStorage.getItem('jwt-token'))
+  }, [])
   const [valueDay1Sum, setValueDay1Sum] = useState(0)
   const [valueDay2Sum, setValueDay2Sum] = useState(0)
   const [valueDay3Sum, setValueDay3Sum] = useState(0)

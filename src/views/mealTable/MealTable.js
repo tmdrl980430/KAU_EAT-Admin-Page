@@ -274,6 +274,12 @@ const MealTable = () => {
     setLoading(false)
     // loading 끄기
   }
+
+  const handleOnKeyPress = (e) => {
+    if (e.key === 'Enter') {
+    }
+  }
+
   return (
     <div>
       <CForm>
@@ -295,13 +301,13 @@ const MealTable = () => {
             />
           </CCol>
         </CRow>
-        <CButton type="submit" onClick={setDateMealTable} color="dark">
+        <CButton type="button" onClick={setDateMealTable} color="dark">
           날짜 조회하기
         </CButton>
         <CCardHeader>
           <strong>메뉴 등록하기</strong>{' '}
-          <small>밥, 스파게티, 국, 김치 형식으로 입력해주세요.</small>
         </CCardHeader>
+        <small>밥, 스파게티, 국, 김치 형식으로 입력해주세요.</small>
         <small>운영을 하지 않을때는 빈칸으로 입력해주세요.</small>
         <CRow className="mb-3">
           <CFormLabel htmlFor="inputMenu" className="col-sm-2 col-form-label">
@@ -379,11 +385,11 @@ const MealTable = () => {
           </CCol>
         </CRow>
         {isMenu ? (
-          <CButton type="submit" onClick={mealTableRevise}>
+          <CButton type="button" onClick={mealTableRevise}>
             수정하기
           </CButton>
         ) : (
-          <CButton type="submit" onClick={mealTableRegistration}>
+          <CButton type="button" onClick={mealTableRegistration}>
             등록하기
           </CButton>
         )}
