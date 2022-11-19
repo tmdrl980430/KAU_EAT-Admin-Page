@@ -60,7 +60,6 @@ const Login = () => {
             password: password,
           })
           .then((response) => {
-            console.log(`response 확인 : ${response.data.code}`)
             if (response.data.code === 1000) {
               setIsLogin(true)
               setJwt(response.data.result.jwt)
@@ -70,13 +69,9 @@ const Login = () => {
               navigate('/')
             }
           })
-          .catch((error) => {
-            console.log(error)
-          })
+          .catch((error) => {})
         // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
       } catch (e) {
-        console.log('postLoginAdmin_catch')
-        console.log(e)
         setError(e)
       }
     }
