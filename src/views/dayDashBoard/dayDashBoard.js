@@ -39,7 +39,6 @@ const dayDashBoard = () => {
   const [date, setDate] = useState(today)
 
   useEffect(() => {
-    console.log('date : ', date)
     getTodayTickets()
   }, [date])
 
@@ -52,21 +51,12 @@ const dayDashBoard = () => {
   const [valueDay4Sum, setValueDay4Sum] = useState(0)
   const [valueDay5Sum, setValueDay5Sum] = useState(0)
 
-  useEffect(() => {
-    console.log('valueDay1Sum : ', valueDay1Sum)
-    console.log('valueDay2Sum : ', valueDay2Sum)
-    console.log('valueDay3Sum : ', valueDay3Sum)
-    console.log('valueDay4Sum : ', valueDay4Sum)
-    console.log('valueDay5Sum : ', valueDay5Sum)
-  }, [valueDay1Sum, valueDay2Sum, valueDay3Sum, valueDay4Sum, valueDay5Sum])
-
   const getTodayTickets = async () => {
     console.log('getTodayTickets')
     setLoading(true)
     try {
       // 요청이 시작 할 때에는 error 와 users 를 초기화하고
       setError(null)
-      console.log('getTodayTickets_try')
       // loading 상태를 true 로 바꿉니다.
       setLoading(true)
 
@@ -78,8 +68,6 @@ const dayDashBoard = () => {
         })
         .then((response) => {
           if (response.data.code === 1000) {
-            console.log('사용량 가져오기 완료')
-            console.log('response.data.code', response.data.result)
             if (response.data.result.byDay.length != 0) {
               for (let i = 0; i < response.data.result.byDay.length; i++) {
                 if (response.data.result.byDay[i].mealTypeIdx === 1) {
@@ -103,13 +91,9 @@ const dayDashBoard = () => {
             }
           }
         })
-        .catch((error) => {
-          console.log(`error : `, error)
-        })
+        .catch((error) => {})
       // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
     } catch (e) {
-      console.log('getTodayTickets_catch')
-      console.log(e)
       setError(e)
     }
     setLoading(false)
