@@ -37,20 +37,13 @@ const Login = () => {
   const [id, setId] = useState('')
   const [password, setPassword] = useState('')
 
-  useEffect(() => {
-    console.log('id', id)
-    console.log('password', password)
-  }, [id, password])
-
   const postLoginAdmin = async () => {
-    console.log('postLoginAdmin')
     setLoading(true)
 
     if (id !== '' && password !== '') {
       try {
         // 요청이 시작 할 때에는 error 와 users 를 초기화하고
         setError(null)
-        console.log('postLoginAdmin_try')
         // loading 상태를 true 로 바꿉니다.
         setLoading(true)
 
@@ -70,7 +63,6 @@ const Login = () => {
             }
           })
           .catch((error) => {})
-        // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
       } catch (e) {
         setError(e)
       }
