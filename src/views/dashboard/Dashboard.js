@@ -67,7 +67,6 @@ const Dashboard = () => {
   }
 
   const autoLogin = async () => {
-
     setLoading(true)
     try {
       // 요청이 시작 할 때에는 error 와 users 를 초기화하고
@@ -82,7 +81,6 @@ const Dashboard = () => {
           },
         })
         .then((response) => {
-
           if (response.data.code === 1001) {
             setUserIdx(response.data.result.userIdx)
             setIsLogin(true)
