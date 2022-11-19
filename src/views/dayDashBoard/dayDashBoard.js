@@ -52,7 +52,6 @@ const dayDashBoard = () => {
   const [valueDay5Sum, setValueDay5Sum] = useState(0)
 
   const getTodayTickets = async () => {
-    console.log('getTodayTickets')
     setLoading(true)
     try {
       // 요청이 시작 할 때에는 error 와 users 를 초기화하고
@@ -92,7 +91,6 @@ const dayDashBoard = () => {
           }
         })
         .catch((error) => {})
-      // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
     } catch (e) {
       setError(e)
     }

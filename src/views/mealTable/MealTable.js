@@ -39,16 +39,6 @@ const MealTable = () => {
   const [dinnerMenuIdx, setDinnerMenuIdx] = useState(0)
   const [lunchNoodleMenuIdx, setLunchNoodleMenuIdx] = useState(0)
 
-  useEffect(() => {
-    console.log('jwt : ', jwt)
-    console.log('date : ', date)
-    console.log('breakfastMenu : ', breakfastMenu)
-    console.log('lunchKoreaMenu : ', lunchKoreaMenu)
-    console.log('lunchMenu : ', lunchMenu)
-    console.log('dinnerMenu : ', dinnerMenu)
-    console.log('lunchNoodleMenu : ', lunchNoodleMenu)
-  }, [date, breakfastMenu, lunchKoreaMenu, lunchMenu, dinnerMenu, lunchNoodleMenu, jwt])
-
   const today =
     String(koreaNow.getFullYear()) +
     '-' +
@@ -62,14 +52,12 @@ const MealTable = () => {
     setLunchKoreaMenu('')
     setDinnerMenu('')
     setLunchNoodleMenu('')
-    console.log('setDateMealTable')
     setLoading(true)
 
     if (date != '') {
       try {
         // 요청이 시작 할 때에는 error 와 users 를 초기화하고
         setError(null)
-        console.log('setDateMealTable_try')
         // loading 상태를 true 로 바꿉니다.
         setLoading(true)
 
@@ -82,12 +70,6 @@ const MealTable = () => {
             },
           })
           .then((response) => {
-            console.log(`response 확인 : ${response.data.code}`)
-            console.log(`response 확인 : ${response.data}`)
-            console.log(
-              `response.data.result.menus.size 확인 : ${response.data.result.menus.length}`,
-            )
-
             if (response.data.code === 1000) {
               if (response.data.result.menus.length == 0) {
                 setIsMenu(false)
@@ -119,13 +101,8 @@ const MealTable = () => {
               }
             }
           })
-          .catch((error) => {
-            console.log(error)
-          })
-        // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
+          .catch((error) => {})
       } catch (e) {
-        console.log('setDateMealTable_catch')
-        console.log(e)
         setError(e)
       }
     }
@@ -134,7 +111,6 @@ const MealTable = () => {
   }
 
   const mealTableRegistration = async () => {
-    console.log('postMealTableRegist')
     setLoading(true)
 
     let registrationList = []
@@ -158,7 +134,6 @@ const MealTable = () => {
       try {
         // 요청이 시작 할 때에는 error 와 users 를 초기화하고
         setError(null)
-        console.log('postMealTableRegist_try')
         // loading 상태를 true 로 바꿉니다.
         setLoading(true)
 
@@ -176,16 +151,9 @@ const MealTable = () => {
               },
             },
           )
-          .then((response) => {
-            console.log(`response 확인 : ${response.data.code}`)
-          })
-          .catch((error) => {
-            console.log(error)
-          })
-        // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
+          .then((response) => {})
+          .catch((error) => {})
       } catch (e) {
-        console.log('postMealTableRegist_catch')
-        console.log(e)
         setError(e)
       }
     }
@@ -193,7 +161,6 @@ const MealTable = () => {
     // loading 끄기
   }
   const mealTableRevise = async () => {
-    console.log('postmealTableRevise')
     setLoading(true)
 
     let reviseList = []
@@ -242,7 +209,6 @@ const MealTable = () => {
       try {
         // 요청이 시작 할 때에는 error 와 users 를 초기화하고
         setError(null)
-        console.log('postmealTableRevise_try')
         // loading 상태를 true 로 바꿉니다.
         setLoading(true)
 
@@ -258,26 +224,14 @@ const MealTable = () => {
               },
             },
           )
-          .then((response) => {
-            console.log(`response 확인 : ${response.data.code}`)
-          })
-          .catch((error) => {
-            console.log(error)
-          })
-        // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
+          .then((response) => {})
+          .catch((error) => {})
       } catch (e) {
-        console.log('postmealTableRevise_catch')
-        console.log(e)
         setError(e)
       }
     }
     setLoading(false)
     // loading 끄기
-  }
-
-  const handleOnKeyPress = (e) => {
-    if (e.key === 'Enter') {
-    }
   }
 
   return (
