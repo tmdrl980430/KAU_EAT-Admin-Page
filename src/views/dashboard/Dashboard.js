@@ -44,7 +44,6 @@ const Dashboard = () => {
     try {
       // 요청이 시작 할 때에는 error 와 users 를 초기화하고
       setError(null)
-      console.log('getTodayUser_try')
       // loading 상태를 true 로 바꿉니다.
       setLoading(true)
 
@@ -55,7 +54,6 @@ const Dashboard = () => {
           },
         })
         .then((response) => {
-          console.log(`response 확인 : ${response.data.result.count}`)
           if (response.data.code === 1000) {
             setUsers(response.data.result.count)
           }
@@ -63,10 +61,7 @@ const Dashboard = () => {
         .catch((error) => {
           console.log(`error : `, error)
         })
-      // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
     } catch (e) {
-      console.log('getTodayUser_catch')
-      console.log(e)
       setError(e)
     }
     setLoading(false)
@@ -74,13 +69,11 @@ const Dashboard = () => {
   }
 
   const autoLogin = async () => {
-    console.log('autoLogin')
 
     setLoading(true)
     try {
       // 요청이 시작 할 때에는 error 와 users 를 초기화하고
       setError(null)
-      console.log('autoLogin_try')
       // loading 상태를 true 로 바꿉니다.
       setLoading(true)
 
@@ -91,10 +84,8 @@ const Dashboard = () => {
           },
         })
         .then((response) => {
-          console.log(`response code확인`, response)
 
           if (response.data.code === 1001) {
-            console.log('자동 로그인 완료')
             setUserIdx(response.data.result.userIdx)
             setIsLogin(true)
           } else {
@@ -102,13 +93,8 @@ const Dashboard = () => {
             navigate('/login')
           }
         })
-        .catch((error) => {
-          console.log(`error : `, error)
-        })
-      // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
+        .catch((error) => {})
     } catch (e) {
-      console.log('autoLogin_catch')
-      console.log(e)
       setError(e)
     }
     setLoading(false)
@@ -138,21 +124,11 @@ const Dashboard = () => {
   const [valueDay4Sum, setValueDay4Sum] = useState(0)
   const [valueDay5Sum, setValueDay5Sum] = useState(0)
 
-  useEffect(() => {
-    console.log('valueDay1Sum : ', valueDay1Sum)
-    console.log('valueDay2Sum : ', valueDay2Sum)
-    console.log('valueDay3Sum : ', valueDay3Sum)
-    console.log('valueDay4Sum : ', valueDay4Sum)
-    console.log('valueDay5Sum : ', valueDay5Sum)
-  }, [valueDay1Sum, valueDay2Sum, valueDay3Sum, valueDay4Sum, valueDay5Sum])
-
   const getTodayTickets = async () => {
-    console.log('getTodayTickets')
     setLoading(true)
     try {
       // 요청이 시작 할 때에는 error 와 users 를 초기화하고
       setError(null)
-      console.log('getTodayTickets_try')
       // loading 상태를 true 로 바꿉니다.
       setLoading(true)
 
@@ -164,8 +140,6 @@ const Dashboard = () => {
         })
         .then((response) => {
           if (response.data.code === 1000) {
-            console.log('사용량 가져오기 완료')
-            console.log('response.data byDay', response.data.result)
             if (response.data.result.byDay.length != 0) {
               for (let i = 0; i < response.data.result.byDay.length; i++) {
                 if (response.data.result.byDay[i].mealTypeIdx === 1) {
@@ -189,13 +163,8 @@ const Dashboard = () => {
             }
           }
         })
-        .catch((error) => {
-          console.log(`error : `, error)
-        })
-      // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
+        .catch((error) => {})
     } catch (e) {
-      console.log('getTodayTickets_catch')
-      console.log(e)
       setError(e)
     }
     setLoading(false)
@@ -215,12 +184,10 @@ const Dashboard = () => {
   const [valueMonth5Sum, setValueMonth5Sum] = useState(0)
 
   const getTickets = async () => {
-    console.log('getTickets')
     setLoading(true)
     try {
       // 요청이 시작 할 때에는 error 와 users 를 초기화하고
       setError(null)
-      console.log('getTickets_try')
       // loading 상태를 true 로 바꿉니다.
       setLoading(true)
 
@@ -232,8 +199,6 @@ const Dashboard = () => {
         })
         .then((response) => {
           if (response.data.code === 1000) {
-            console.log('사용량 가져오기 완료')
-            console.log('response.data.code', response.data.result)
             if (response.data.result.byMonth.length != 0) {
               setValueMonth1Sum(response.data.result.byMonth[0].count)
               setValueMonth2Sum(response.data.result.byMonth[1].count)
@@ -323,13 +288,8 @@ const Dashboard = () => {
             setGroupByMonthList([...temp])
           }
         })
-        .catch((error) => {
-          console.log(`error : `, error)
-        })
-      // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
+        .catch((error) => {})
     } catch (e) {
-      console.log('getTickets_catch')
-      console.log(e)
       setError(e)
     }
     setLoading(false)
