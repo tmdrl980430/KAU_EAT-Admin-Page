@@ -14,7 +14,7 @@ import axios from 'axios'
 import { useRecoilState } from 'recoil'
 import { jwtRecoilState, severURLRecoilState } from 'src/recoil'
 
-const MealTable = () => {
+const TicketRegistration = () => {
   const now = new Date()
   const [IP, setIP] = useRecoilState(severURLRecoilState)
   const [jwt, setJwt] = useRecoilState(jwtRecoilState)
@@ -24,6 +24,9 @@ const MealTable = () => {
   const koreaNow = new Date(utcNow + koreaTimeDiff) // utc로 변환된 값을 한국 시간으로 변환시키기 위해 9시간(밀리세컨드)를 더함
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+
+  const [name, setName] = useState('')
+  const [phoneNum, setPhoneNum] = useState('')
 
   const [date, setDate] = useState('')
   const [breakfastMenu, setBreakfastMenu] = useState('')
@@ -38,23 +41,6 @@ const MealTable = () => {
   const [lunchKoreaMenuIdx, setLunchKoreaMenuIdx] = useState(0)
   const [dinnerMenuIdx, setDinnerMenuIdx] = useState(0)
   const [lunchNoodleMenuIdx, setLunchNoodleMenuIdx] = useState(0)
-
-  useEffect(() => {
-    console.log('jwt : ', jwt)
-    console.log('date : ', date)
-    console.log('breakfastMenu : ', breakfastMenu)
-    console.log('lunchKoreaMenu : ', lunchKoreaMenu)
-    console.log('lunchMenu : ', lunchMenu)
-    console.log('dinnerMenu : ', dinnerMenu)
-    console.log('lunchNoodleMenu : ', lunchNoodleMenu)
-  }, [date, breakfastMenu, lunchKoreaMenu, lunchMenu, dinnerMenu, lunchNoodleMenu, jwt])
-
-  const today =
-    String(koreaNow.getFullYear()) +
-    '-' +
-    String(koreaNow.getMonth() + 1).padStart(2, '0') +
-    '-' +
-    String(koreaNow.getDate()).padStart(2, '0')
 
   const setDateMealTable = async () => {
     setBreakfastMenu('')
@@ -282,31 +268,38 @@ const MealTable = () => {
     <div>
       <CForm>
         <CCardHeader>
-          <strong>날짜 등록하기</strong>
+          <strong>유저 정보</strong>
         </CCardHeader>
         <CRow className="mb-3">
           <CFormLabel htmlFor="inputDate" className="col-sm-2 col-form-label">
-            날짜
+            이름
           </CFormLabel>
           <CCol sm={10}>
             <CFormInput
               type="text"
               id="inputDate"
-              placeholder="날짜를 2022-09-15 형식으로 입력해주세요."
+              placeholder="가입한 이름을 입력해주세요."
               onChange={(e) => {
-                setDate(e.target.value)
+                setName(e.target.value)
               }}
             />
           </CCol>
         </CRow>
-        <CButton type="submit" onClick={setDateMealTable} color="dark" onKeyPress={handleKeyPress}>
-          날짜 조회하기
-        </CButton>
-        <CCardHeader>
-          <strong>메뉴 등록하기</strong>{' '}
-          <small>밥, 스파게티, 국, 김치 형식으로 입력해주세요.</small>
-        </CCardHeader>
-        <small>운영을 하지 않을때는 빈칸으로 입력해주세요.</small>
+        <CRow className="mb-3">
+          <CFormLabel htmlFor="inputDate" className="col-sm-2 col-form-label">
+            전화번호
+          </CFormLabel>
+          <CCol sm={10}>
+            <CFormInput
+              type="text"
+              id="inputDate"
+              placeholder="전화번호를 010xxxxxxxx 형식으로 입력해주세요."
+              onChange={(e) => {
+                setPhoneNum(e.target.value)
+              }}
+            />
+          </CCol>
+        </CRow>
         <CRow className="mb-3">
           <CFormLabel htmlFor="inputMenu" className="col-sm-2 col-form-label">
             조식
@@ -396,4 +389,4 @@ const MealTable = () => {
   )
 }
 
-export default MealTable
+export default TicketRegistration

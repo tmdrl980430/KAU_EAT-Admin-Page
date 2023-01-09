@@ -52,6 +52,15 @@ const _nav = [
   },
   {
     component: CNavItem,
+    name: '식권 등록',
+    to: '/ticketRegistration',
+    icon: <CIcon icon={cilXCircle} customClassName="nav-icon" />,
+    badge: {
+      color: 'info',
+    },
+  },
+  {
+    component: CNavItem,
     name: 'LogOut',
     to: '/login',
     icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
