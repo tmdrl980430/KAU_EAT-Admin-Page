@@ -37,9 +37,6 @@ const Register = () => {
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/
 
   useEffect(() => {
-    console.log('id', password)
-    console.log(passwordVaild)
-
     if (passwordRegex.test(password) === true) {
       setPasswordVaild(true)
     } else {
@@ -48,9 +45,6 @@ const Register = () => {
   }, [password])
 
   useEffect(() => {
-    console.log('id', passwordCheck)
-    console.log(passwordCheckVaild)
-
     if (password === passwordCheck) {
       setPasswordCheckVaild(true)
     } else {
@@ -59,9 +53,6 @@ const Register = () => {
   }, [passwordCheck])
 
   useEffect(() => {
-    console.log('id', id)
-    console.log(passwordVaild)
-
     if (id.length > 5) {
       setIdValidationCheck(true)
     } else {
@@ -70,14 +61,12 @@ const Register = () => {
   }, [id])
 
   const postSignUpAdmin = async () => {
-    console.log('postSignUpAdmin')
     setLoading(true)
 
     if (id !== '' && password !== '' && passwordCheck === password && idValidationCheck) {
       try {
         // 요청이 시작 할 때에는 error 와 users 를 초기화하고
         setError(null)
-        console.log('postSignUpAdmin_try')
         // loading 상태를 true 로 바꿉니다.
         setLoading(true)
         const response = await axios
@@ -87,22 +76,21 @@ const Register = () => {
             approveNumber: adminKey,
           })
           .then((response) => {
-            console.log(`response 확인 : ${response.data.code}`)
             if (response.data.code === 1000) {
               alert('회원가입 성공!')
               navigate('/login')
-            } else if (response.data.code === 3031) {
+            } else if (response.data.code === 2018) {
+              alert('이미 가입된 아이디입니다.')
+            } else if (response.data.code === 2017) {
               alert('관리자 비밀번호가 틀렸습니다.')
+            } else if (response.data.code === 2004) {
+              alert('비밀번호 형식을 확인해주세요.')
+            } else if (response.data.code === 2002) {
+              alert('아이디 길이를 확인해주세요.')
             }
           })
-          .catch((error) => {
-            console.log('in error')
-            console.log(error)
-          })
-        // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
+          .catch((error) => {})
       } catch (e) {
-        console.log('postSignUpAdmin_catch')
-        console.log(e)
         setError(e)
       }
     }

@@ -29,10 +29,9 @@ const Dashboard = () => {
 
   useEffect(() => {
     setJwt(localStorage.getItem('jwt-token'))
-    console.log('jwt : ', localStorage.getItem('jwt-token'))
     autoLogin()
     getTickets()
-    getTodayTickets()
+    //getTodayTickets()
     getTodayUser()
   }, [])
 
@@ -41,34 +40,26 @@ const Dashboard = () => {
   const koreaNow = new Date(utcNow + koreaTimeDiff) // utc로 변환된 값을 한국 시간으로 변환시키기 위해 9시간(밀리세컨드)를 더함
 
   const getTodayUser = async () => {
-    console.log('getTodayUser')
     setLoading(true)
     try {
       // 요청이 시작 할 때에는 error 와 users 를 초기화하고
       setError(null)
-      console.log('getTodayUser_try')
       // loading 상태를 true 로 바꿉니다.
       setLoading(true)
 
       const response = await axios
-        .get(`${IP}/users`, {
+        .get(`${IP}/users/count`, {
           headers: {
             'x-access-token': localStorage.getItem('jwt-token'),
           },
         })
         .then((response) => {
-          console.log(`response 확인 : ${response.data.result.count}`)
           if (response.data.code === 1000) {
             setUsers(response.data.result.count)
           }
         })
-        .catch((error) => {
-          console.log(`error : `, error)
-        })
-      // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
+        .catch((error) => {})
     } catch (e) {
-      console.log('getTodayUser_catch')
-      console.log(e)
       setError(e)
     }
     setLoading(false)
@@ -76,13 +67,10 @@ const Dashboard = () => {
   }
 
   const autoLogin = async () => {
-    console.log('autoLogin')
-
     setLoading(true)
     try {
       // 요청이 시작 할 때에는 error 와 users 를 초기화하고
       setError(null)
-      console.log('autoLogin_try')
       // loading 상태를 true 로 바꿉니다.
       setLoading(true)
 
@@ -93,10 +81,7 @@ const Dashboard = () => {
           },
         })
         .then((response) => {
-          console.log(`response code확인`, response)
-
-          if (response.data.code === 1001) {
-            console.log('자동 로그인 완료')
+          if (response.data.code === 1000) {
             setUserIdx(response.data.result.userIdx)
             setIsLogin(true)
           } else {
@@ -104,13 +89,8 @@ const Dashboard = () => {
             navigate('/login')
           }
         })
-        .catch((error) => {
-          console.log(`error : `, error)
-        })
-      // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
+        .catch((error) => {})
     } catch (e) {
-      console.log('autoLogin_catch')
-      console.log(e)
       setError(e)
     }
     setLoading(false)
@@ -140,46 +120,34 @@ const Dashboard = () => {
   const [valueDay4Sum, setValueDay4Sum] = useState(0)
   const [valueDay5Sum, setValueDay5Sum] = useState(0)
 
-  useEffect(() => {
-    console.log('valueDay1Sum : ', valueDay1Sum)
-    console.log('valueDay2Sum : ', valueDay2Sum)
-    console.log('valueDay3Sum : ', valueDay3Sum)
-    console.log('valueDay4Sum : ', valueDay4Sum)
-    console.log('valueDay5Sum : ', valueDay5Sum)
-  }, [valueDay1Sum, valueDay2Sum, valueDay3Sum, valueDay4Sum, valueDay5Sum])
-
   const getTodayTickets = async () => {
-    console.log('getTodayTickets')
     setLoading(true)
     try {
       // 요청이 시작 할 때에는 error 와 users 를 초기화하고
       setError(null)
-      console.log('getTodayTickets_try')
       // loading 상태를 true 로 바꿉니다.
       setLoading(true)
 
       const response = await axios
-        .get(`${IP}/mealtickets/day?date=${today}`, {
+        .get(`${IP}/mealtickets/?type=day&date=${today}`, {
           headers: {
             'x-access-token': localStorage.getItem('jwt-token'),
           },
         })
         .then((response) => {
           if (response.data.code === 1000) {
-            console.log('사용량 가져오기 완료')
-            console.log('response.data byDay', response.data.result)
-            if (response.data.result.byDay.length != 0) {
-              for (let i = 0; i < response.data.result.byDay.length; i++) {
-                if (response.data.result.byDay[i].mealTypeIdx === 1) {
-                  setValueDay1Sum(response.data.result.byDay[i].count)
-                } else if (response.data.result.byDay[i].mealTypeIdx === 2) {
-                  setValueDay2Sum(response.data.result.byDay[i].count)
-                } else if (response.data.result.byDay[i].mealTypeIdx === 3) {
-                  setValueDay3Sum(response.data.result.byDay[i].count)
-                } else if (response.data.result.byDay[i].mealTypeIdx === 4) {
-                  setValueDay4Sum(response.data.result.byDay[i].count)
-                } else if (response.data.result.byDay[i].mealTypeIdx === 5) {
-                  setValueDay5Sum(response.data.result.byDay[i].count)
+            if (response.data.result.usedMealTickets.length != 0) {
+              for (let i = 0; i < response.data.result.usedMealTickets.length; i++) {
+                if (response.data.result.usedMealTickets[i].mealTypeIdx === 1) {
+                  setValueDay1Sum(response.data.result.usedMealTickets[i].count)
+                } else if (response.data.result.usedMealTickets[i].mealTypeIdx === 2) {
+                  setValueDay2Sum(response.data.result.usedMealTickets[i].count)
+                } else if (response.data.result.usedMealTickets[i].mealTypeIdx === 3) {
+                  setValueDay3Sum(response.data.result.usedMealTickets[i].count)
+                } else if (response.data.result.usedMealTickets[i].mealTypeIdx === 4) {
+                  setValueDay4Sum(response.data.result.usedMealTickets[i].count)
+                } else if (response.data.result.usedMealTickets[i].mealTypeIdx === 5) {
+                  setValueDay5Sum(response.data.result.usedMealTickets[i].count)
                 }
               }
             } else {
@@ -191,13 +159,8 @@ const Dashboard = () => {
             }
           }
         })
-        .catch((error) => {
-          console.log(`error : `, error)
-        })
-      // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
+        .catch((error) => {})
     } catch (e) {
-      console.log('getTodayTickets_catch')
-      console.log(e)
       setError(e)
     }
     setLoading(false)
@@ -217,47 +180,51 @@ const Dashboard = () => {
   const [valueMonth5Sum, setValueMonth5Sum] = useState(0)
 
   const getTickets = async () => {
-    console.log('getTickets')
     setLoading(true)
     try {
       // 요청이 시작 할 때에는 error 와 users 를 초기화하고
       setError(null)
-      console.log('getTickets_try')
       // loading 상태를 true 로 바꿉니다.
       setLoading(true)
 
       const response = await axios
-        .get(`${IP}/mealtickets`, {
+        .get(`${IP}/mealtickets/?type=month&date=${today}`, {
           headers: {
             'x-access-token': localStorage.getItem('jwt-token'),
           },
         })
         .then((response) => {
           if (response.data.code === 1000) {
-            console.log('사용량 가져오기 완료')
-            console.log('response.data.code', response.data.result)
-            if (response.data.result.byMonth.length != 0) {
-              setValueMonth1Sum(response.data.result.byMonth[0].count)
-              setValueMonth2Sum(response.data.result.byMonth[1].count)
-              setValueMonth3Sum(response.data.result.byMonth[2].count)
-              setValueMonth4Sum(response.data.result.byMonth[3].count)
-              setValueMonth5Sum(response.data.result.byMonth[4].count)
+            if (response.data.result.usedMealTickets.length != 0) {
+              setValueMonth1Sum(response.data.result.usedMealTickets[0].count)
+              setValueMonth2Sum(response.data.result.usedMealTickets[1].count)
+              setValueMonth3Sum(response.data.result.usedMealTickets[2].count)
+              setValueMonth4Sum(response.data.result.usedMealTickets[3].count)
+              setValueMonth5Sum(response.data.result.usedMealTickets[4].count)
               setThisMonthTicketUse([
-                { title: '조식', value1: response.data.result.byMonth[0].count, color: 'success' },
+                {
+                  title: '조식',
+                  value1: response.data.result.usedMealTickets[0].count,
+                  color: 'success',
+                },
                 {
                   title: '중식 | 일품',
-                  value1: response.data.result.byMonth[1].count,
+                  value1: response.data.result.usedMealTickets[1].count,
                   color: 'info',
                 },
                 {
                   title: '중식 | 한식',
-                  value1: response.data.result.byMonth[2].count,
+                  value1: response.data.result.usedMealTickets[2].count,
                   color: 'warning',
                 },
-                { title: '석식', value1: response.data.result.byMonth[3].count, color: 'danger' },
+                {
+                  title: '석식',
+                  value1: response.data.result.usedMealTickets[3].count,
+                  color: 'danger',
+                },
                 {
                   title: '중식(면)',
-                  value1: response.data.result.byMonth[4].count,
+                  value1: response.data.result.usedMealTickets[4].count,
                   color: 'primary',
                 },
               ])
@@ -325,13 +292,8 @@ const Dashboard = () => {
             setGroupByMonthList([...temp])
           }
         })
-        .catch((error) => {
-          console.log(`error : `, error)
-        })
-      // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
+        .catch((error) => {})
     } catch (e) {
-      console.log('getTickets_catch')
-      console.log(e)
       setError(e)
     }
     setLoading(false)

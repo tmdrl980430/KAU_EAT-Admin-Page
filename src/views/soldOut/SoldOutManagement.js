@@ -15,6 +15,7 @@ const SoldOutManagement = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [IP, setIP] = useRecoilState(severURLRecoilState)
+  const [jwt, setJwt] = useRecoilState(jwtRecoilState)
 
   const [choice, setChoice] = useState(0)
 
@@ -31,33 +32,19 @@ const SoldOutManagement = () => {
   const [lunchNoodleMenuStatus, setLunchNoodleMenuStatus] = useState('ACTIVE')
 
   useEffect(() => {
-    getDateMealTable()
+    setJwt(localStorage.getItem('jwt-token'))
+    if (jwt !== '') {
+      getDateMealTable()
+    }
   }, [])
 
-  useEffect(() => {
-    console.log(`breakfastMenuStatus : ${breakfastMenuStatus}`)
-    console.log(`lunchMenuStatus : ${lunchMenuStatus}`)
-
-    console.log(`lunchKoreaMenuStatus : ${lunchKoreaMenuStatus}`)
-    console.log(`dinnerMenuStatus : ${dinnerMenuStatus}`)
-    console.log(`lunchNoodleMenuStatus : ${lunchNoodleMenuStatus}`)
-  }, [
-    breakfastMenuStatus,
-    lunchMenuStatus,
-    lunchKoreaMenuStatus,
-    dinnerMenuStatus,
-    lunchNoodleMenuStatus,
-  ])
-
   const getDateMealTable = async () => {
-    console.log('getDateMealTable')
     setLoading(true)
 
     if (today != '') {
       try {
         // 요청이 시작 할 때에는 error 와 users 를 초기화하고
         setError(null)
-        console.log('getDateMealTable_try')
         // loading 상태를 true 로 바꿉니다.
         setLoading(true)
 
@@ -70,12 +57,6 @@ const SoldOutManagement = () => {
             },
           })
           .then((response) => {
-            console.log(`response 확인 : ${response.data.code}`)
-            console.log(`response 확인 : ${response.data}`)
-            console.log(
-              `response.data.result.menus.size 확인 : ${response.data.result.menus.length}`,
-            )
-
             if (response.data.code === 1000) {
               setBreakfastMenuStatus(response.data.result.menus[0].menuStatus)
               setLunchMenuStatus(response.data.result.menus[1].menuStatus)
@@ -84,13 +65,8 @@ const SoldOutManagement = () => {
               setLunchNoodleMenuStatus(response.data.result.menus[4].menuStatus)
             }
           })
-          .catch((error) => {
-            console.log(error)
-          })
-        // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
+          .catch((error) => {})
       } catch (e) {
-        console.log('getDateMealTable_catch')
-        console.log(e)
         setError(e)
       }
     }
@@ -98,7 +74,6 @@ const SoldOutManagement = () => {
     // loading 끄기
   }
 
-  const [jwt, setJwt] = useRecoilState(jwtRecoilState)
   const today =
     String(koreaNow.getFullYear()) +
     '-' +
@@ -107,13 +82,10 @@ const SoldOutManagement = () => {
     String(koreaNow.getDate()).padStart(2, '0')
 
   const patchSoldOut = async () => {
-    console.log('patchSoldOut')
-
     setLoading(true)
     try {
       // 요청이 시작 할 때에는 error 와 users 를 초기화하고
       setError(null)
-      console.log('patchSoldOut_try')
       // loading 상태를 true 로 바꿉니다.
       setLoading(true)
 
@@ -151,20 +123,9 @@ const SoldOutManagement = () => {
             },
           },
         )
-        .then((response) => {
-          console.log(`response code확인`, response)
-
-          if (response.data.code === 1000) {
-            console.log('품절 등록 완료')
-          }
-        })
-        .catch((error) => {
-          console.log(`error : `, error)
-        })
-      // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
+        .then((response) => {})
+        .catch((error) => {})
     } catch (e) {
-      console.log('patchSoldOut_catch')
-      console.log(e)
       setError(e)
     }
     setLoading(false)

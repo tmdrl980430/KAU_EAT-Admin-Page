@@ -27,234 +27,52 @@ const TicketRegistration = () => {
 
   const [name, setName] = useState('')
   const [phoneNum, setPhoneNum] = useState('')
+  const [point, setPoint] = useState('')
 
-  const [date, setDate] = useState('')
-  const [breakfastMenu, setBreakfastMenu] = useState('')
-  const [lunchMenu, setLunchMenu] = useState('')
-  const [lunchKoreaMenu, setLunchKoreaMenu] = useState('')
-  const [dinnerMenu, setDinnerMenu] = useState('')
-  const [lunchNoodleMenu, setLunchNoodleMenu] = useState('')
-  const [isMenu, setIsMenu] = useState(false)
-  const [dateClick, setDateClick] = useState(false)
-  const [breakfastMenuIdx, setBreakfastMenuIdx] = useState(0)
-  const [lunchMenuIdx, setLunchMenuIdx] = useState(0)
-  const [lunchKoreaMenuIdx, setLunchKoreaMenuIdx] = useState(0)
-  const [dinnerMenuIdx, setDinnerMenuIdx] = useState(0)
-  const [lunchNoodleMenuIdx, setLunchNoodleMenuIdx] = useState(0)
+  useEffect(() => {
+    console.log(jwt)
+  }, [])
 
-  const setDateMealTable = async () => {
-    setBreakfastMenu('')
-    setLunchMenu('')
-    setLunchKoreaMenu('')
-    setDinnerMenu('')
-    setLunchNoodleMenu('')
-    console.log('setDateMealTable')
+  const pointRegistration = async () => {
+    console.log('pointRegistration')
     setLoading(true)
 
-    if (date != '') {
-      try {
-        // 요청이 시작 할 때에는 error 와 users 를 초기화하고
-        setError(null)
-        console.log('setDateMealTable_try')
-        // loading 상태를 true 로 바꿉니다.
-        setLoading(true)
+    try {
+      // 요청이 시작 할 때에는 error 와 users 를 초기화하고
+      setError(null)
+      console.log('pointRegistration_try')
+      // loading 상태를 true 로 바꿉니다.
+      setLoading(true)
 
-        const response = await axios
-          .get(`${IP}/menus?date=${date}`, {
+      // axios     .defaults     .headers     .common['x-access-token'] = jwt
+
+      const response = await axios
+        .patch(
+          `${IP}/users/point`,
+          {
+            name: name,
+            phoneNum: phoneNum,
+            point: point,
+          },
+          {
             headers: {
               'x-access-token': jwt,
             },
-          })
-          .then((response) => {
-            console.log(`response 확인 : ${response.data.code}`)
-            console.log(`response 확인 : ${response.data}`)
-            console.log(
-              `response.data.result.menus.size 확인 : ${response.data.result.menus.length}`,
-            )
-
-            if (response.data.code === 1000) {
-              if (response.data.result.menus.length == 0) {
-                setIsMenu(false)
-                setBreakfastMenuIdx(0)
-                setLunchMenuIdx(0)
-                setLunchKoreaMenuIdx(0)
-                setDinnerMenuIdx(0)
-                setLunchNoodleMenuIdx(0)
-              } else {
-                setIsMenu(true)
-                for (let i = 0; i < response.data.result.menus.length; i++) {
-                  if (response.data.result.menus[i].mealTypeIdx === 1) {
-                    setBreakfastMenu(response.data.result.menus[i].name)
-                    setBreakfastMenuIdx(response.data.result.menus[i].menuIdx)
-                  } else if (response.data.result.menus[i].mealTypeIdx === 2) {
-                    setLunchMenu(response.data.result.menus[i].name)
-                    setLunchMenuIdx(response.data.result.menus[i].menuIdx)
-                  } else if (response.data.result.menus[i].mealTypeIdx === 3) {
-                    setLunchKoreaMenu(response.data.result.menus[i].name)
-                    setLunchKoreaMenuIdx(response.data.result.menus[i].menuIdx)
-                  } else if (response.data.result.menus[i].mealTypeIdx === 4) {
-                    setDinnerMenu(response.data.result.menus[i].name)
-                    setDinnerMenuIdx(response.data.result.menus[i].menuIdx)
-                  } else if (response.data.result.menus[i].mealTypeIdx === 5) {
-                    setLunchNoodleMenu(response.data.result.menus[i].name)
-                    setLunchNoodleMenuIdx(response.data.result.menus[i].menuIdx)
-                  }
-                }
-              }
-            }
-          })
-          .catch((error) => {
-            console.log(error)
-          })
-        // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
-      } catch (e) {
-        console.log('setDateMealTable_catch')
-        console.log(e)
-        setError(e)
-      }
+          },
+        )
+        .then((response) => {
+          console.log(`response 확인 : ${response.data.code}`)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+      // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
+    } catch (e) {
+      console.log('postMealTableRegist_catch')
+      console.log(e)
+      setError(e)
     }
-    setLoading(false)
-    // loading 끄기
-  }
 
-  const mealTableRegistration = async () => {
-    console.log('postMealTableRegist')
-    setLoading(true)
-
-    let registrationList = []
-    if (date != '') {
-      if (breakfastMenu !== '') {
-        registrationList.push({ mealTypeIdx: 1, name: breakfastMenu, availableAt: date })
-      }
-      if (lunchMenu !== '') {
-        registrationList.push({ mealTypeIdx: 2, name: lunchMenu, availableAt: date })
-      }
-      if (lunchKoreaMenu !== '') {
-        registrationList.push({ mealTypeIdx: 3, name: lunchKoreaMenu, availableAt: date })
-      }
-      if (dinnerMenu !== '') {
-        registrationList.push({ mealTypeIdx: 4, name: dinnerMenu, availableAt: date })
-      }
-      if (lunchNoodleMenu !== '') {
-        registrationList.push({ mealTypeIdx: 5, name: lunchNoodleMenu, availableAt: date })
-      }
-
-      try {
-        // 요청이 시작 할 때에는 error 와 users 를 초기화하고
-        setError(null)
-        console.log('postMealTableRegist_try')
-        // loading 상태를 true 로 바꿉니다.
-        setLoading(true)
-
-        // axios     .defaults     .headers     .common['x-access-token'] = jwt
-
-        const response = await axios
-          .post(
-            `${IP}/menus`,
-            {
-              menus: registrationList,
-            },
-            {
-              headers: {
-                'x-access-token': jwt,
-              },
-            },
-          )
-          .then((response) => {
-            console.log(`response 확인 : ${response.data.code}`)
-          })
-          .catch((error) => {
-            console.log(error)
-          })
-        // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
-      } catch (e) {
-        console.log('postMealTableRegist_catch')
-        console.log(e)
-        setError(e)
-      }
-    }
-    setLoading(false)
-    // loading 끄기
-  }
-  const mealTableRevise = async () => {
-    console.log('postmealTableRevise')
-    setLoading(true)
-
-    let reviseList = []
-
-    if (date != '') {
-      if (breakfastMenu !== '') {
-        reviseList.push({
-          menuIdx: breakfastMenuIdx,
-          mealTypeIdx: 1,
-          name: breakfastMenu,
-          availableAt: date,
-        })
-      }
-      if (lunchMenu !== '') {
-        reviseList.push({
-          menuIdx: lunchMenuIdx,
-          mealTypeIdx: 2,
-          name: lunchMenu,
-          availableAt: date,
-        })
-      }
-      if (lunchKoreaMenu !== '') {
-        reviseList.push({
-          menuIdx: lunchKoreaMenuIdx,
-          mealTypeIdx: 3,
-          name: lunchKoreaMenu,
-          availableAt: date,
-        })
-      }
-      if (dinnerMenu !== '') {
-        reviseList.push({
-          menuIdx: dinnerMenuIdx,
-          mealTypeIdx: 4,
-          name: dinnerMenu,
-          availableAt: date,
-        })
-      }
-      if (lunchNoodleMenu !== '') {
-        reviseList.push({
-          menuIdx: lunchNoodleMenuIdx,
-          mealTypeIdx: 5,
-          name: lunchNoodleMenu,
-          availableAt: date,
-        })
-      }
-      try {
-        // 요청이 시작 할 때에는 error 와 users 를 초기화하고
-        setError(null)
-        console.log('postmealTableRevise_try')
-        // loading 상태를 true 로 바꿉니다.
-        setLoading(true)
-
-        const response = await axios
-          .patch(
-            `${IP}/menus`,
-            {
-              menus: reviseList,
-            },
-            {
-              headers: {
-                'x-access-token': jwt,
-              },
-            },
-          )
-          .then((response) => {
-            console.log(`response 확인 : ${response.data.code}`)
-          })
-          .catch((error) => {
-            console.log(error)
-          })
-        // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
-      } catch (e) {
-        console.log('postmealTableRevise_catch')
-        console.log(e)
-        setError(e)
-      }
-    }
     setLoading(false)
     // loading 끄기
   }
@@ -268,7 +86,7 @@ const TicketRegistration = () => {
     <div>
       <CForm>
         <CCardHeader>
-          <strong>유저 정보</strong>
+          <strong>포인트 등록 및 수정</strong>
         </CCardHeader>
         <CRow className="mb-3">
           <CFormLabel htmlFor="inputDate" className="col-sm-2 col-form-label">
@@ -302,88 +120,23 @@ const TicketRegistration = () => {
         </CRow>
         <CRow className="mb-3">
           <CFormLabel htmlFor="inputMenu" className="col-sm-2 col-form-label">
-            조식
+            포인트
           </CFormLabel>
           <CCol sm={10}>
             <CFormInput
-              value={breakfastMenu}
+              value={point}
               type="text"
               id="inputMenu"
+              placeholder="등록할 포인트를 입력해주세요."
               onChange={(e) => {
-                setBreakfastMenu(e.target.value)
+                setPoint(e.target.value)
               }}
             />
           </CCol>
         </CRow>
-        <CRow className="mb-3">
-          <CFormLabel htmlFor="inputMenu" className="col-sm-2 col-form-label">
-            중식 | 일품
-          </CFormLabel>
-          <CCol sm={10}>
-            <CFormInput
-              value={lunchMenu}
-              type="text"
-              id="inputMenu"
-              onChange={(e) => {
-                setLunchMenu(e.target.value)
-              }}
-            />
-          </CCol>
-        </CRow>
-        <CRow className="mb-3">
-          <CFormLabel htmlFor="inputMenu" className="col-sm-2 col-form-label">
-            중식 | 한식
-          </CFormLabel>
-          <CCol sm={10}>
-            <CFormInput
-              value={lunchKoreaMenu}
-              type="text"
-              id="inputMenu"
-              onChange={(e) => {
-                setLunchKoreaMenu(e.target.value)
-              }}
-            />
-          </CCol>
-        </CRow>
-        <CRow className="mb-3">
-          <CFormLabel htmlFor="inputMenu" className="col-sm-2 col-form-label">
-            석식
-          </CFormLabel>
-          <CCol sm={10}>
-            <CFormInput
-              value={dinnerMenu}
-              type="text"
-              id="inputMenu"
-              onChange={(e) => {
-                setDinnerMenu(e.target.value)
-              }}
-            />
-          </CCol>
-        </CRow>
-        <CRow className="mb-3">
-          <CFormLabel htmlFor="inputMenu" className="col-sm-2 col-form-label">
-            중식(면)
-          </CFormLabel>
-          <CCol sm={10}>
-            <CFormInput
-              value={lunchNoodleMenu}
-              type="text"
-              id="inputMenu"
-              onChange={(e) => {
-                setLunchNoodleMenu(e.target.value)
-              }}
-            />
-          </CCol>
-        </CRow>
-        {isMenu ? (
-          <CButton type="submit" onClick={mealTableRevise}>
-            수정하기
-          </CButton>
-        ) : (
-          <CButton type="submit" onClick={mealTableRegistration}>
-            등록하기
-          </CButton>
-        )}
+        <CButton type="submit" onClick={pointRegistration}>
+          등록하기
+        </CButton>
       </CForm>
     </div>
   )

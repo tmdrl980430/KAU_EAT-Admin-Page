@@ -39,56 +39,46 @@ const dayDashBoard = () => {
   const [date, setDate] = useState(today)
 
   useEffect(() => {
-    console.log('date : ', date)
     getTodayTickets()
   }, [date])
 
+  useEffect(() => {
+    setJwt(localStorage.getItem('jwt-token'))
+  }, [])
   const [valueDay1Sum, setValueDay1Sum] = useState(0)
   const [valueDay2Sum, setValueDay2Sum] = useState(0)
   const [valueDay3Sum, setValueDay3Sum] = useState(0)
   const [valueDay4Sum, setValueDay4Sum] = useState(0)
   const [valueDay5Sum, setValueDay5Sum] = useState(0)
 
-  useEffect(() => {
-    console.log('valueDay1Sum : ', valueDay1Sum)
-    console.log('valueDay2Sum : ', valueDay2Sum)
-    console.log('valueDay3Sum : ', valueDay3Sum)
-    console.log('valueDay4Sum : ', valueDay4Sum)
-    console.log('valueDay5Sum : ', valueDay5Sum)
-  }, [valueDay1Sum, valueDay2Sum, valueDay3Sum, valueDay4Sum, valueDay5Sum])
-
   const getTodayTickets = async () => {
-    console.log('getTodayTickets')
     setLoading(true)
     try {
       // 요청이 시작 할 때에는 error 와 users 를 초기화하고
       setError(null)
-      console.log('getTodayTickets_try')
       // loading 상태를 true 로 바꿉니다.
       setLoading(true)
 
       const response = await axios
-        .get(`${IP}/mealtickets/day?date=${date}`, {
+        .get(`${IP}/mealtickets/?type=day&date=${date}`, {
           headers: {
             'x-access-token': localStorage.getItem('jwt-token'),
           },
         })
         .then((response) => {
           if (response.data.code === 1000) {
-            console.log('사용량 가져오기 완료')
-            console.log('response.data.code', response.data.result)
-            if (response.data.result.byDay.length != 0) {
-              for (let i = 0; i < response.data.result.byDay.length; i++) {
-                if (response.data.result.byDay[i].mealTypeIdx === 1) {
-                  setValueDay1Sum(response.data.result.byDay[i].count)
-                } else if (response.data.result.byDay[i].mealTypeIdx === 2) {
-                  setValueDay2Sum(response.data.result.byDay[i].count)
-                } else if (response.data.result.byDay[i].mealTypeIdx === 3) {
-                  setValueDay3Sum(response.data.result.byDay[i].count)
-                } else if (response.data.result.byDay[i].mealTypeIdx === 4) {
-                  setValueDay4Sum(response.data.result.byDay[i].count)
-                } else if (response.data.result.byDay[i].mealTypeIdx === 5) {
-                  setValueDay5Sum(response.data.result.byDay[i].count)
+            if (response.data.result.usedMealTickets.length != 0) {
+              for (let i = 0; i < response.data.result.usedMealTickets.length; i++) {
+                if (response.data.result.usedMealTickets[i].mealTypeIdx === 1) {
+                  setValueDay1Sum(response.data.result.usedMealTickets[i].count)
+                } else if (response.data.result.usedMealTickets[i].mealTypeIdx === 2) {
+                  setValueDay2Sum(response.data.result.usedMealTickets[i].count)
+                } else if (response.data.result.usedMealTickets[i].mealTypeIdx === 3) {
+                  setValueDay3Sum(response.data.result.usedMealTickets[i].count)
+                } else if (response.data.result.usedMealTickets[i].mealTypeIdx === 4) {
+                  setValueDay4Sum(response.data.result.usedMealTickets[i].count)
+                } else if (response.data.result.usedMealTickets[i].mealTypeIdx === 5) {
+                  setValueDay5Sum(response.data.result.usedMealTickets[i].count)
                 }
               }
             } else {
@@ -100,13 +90,8 @@ const dayDashBoard = () => {
             }
           }
         })
-        .catch((error) => {
-          console.log(`error : `, error)
-        })
-      // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
+        .catch((error) => {})
     } catch (e) {
-      console.log('getTodayTickets_catch')
-      console.log(e)
       setError(e)
     }
     setLoading(false)
