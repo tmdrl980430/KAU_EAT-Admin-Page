@@ -57,9 +57,9 @@ const TicketRegistration = () => {
           `${IP}/users/point`,
           {
             name: name,
-            phoneNum: phoneNum,
+            phoneNumber: phoneNum,
             point: point,
-            userId: userId,
+            id: userId,
           },
           {
             headers: {
@@ -68,6 +68,28 @@ const TicketRegistration = () => {
           },
         )
         .then((response) => {
+          if (response.data.code === 1000) {
+            alert(`${name} 포인트 등록 완료`)
+            setName('')
+            setUserId('')
+            setPhoneNum('')
+            setPoint('')
+          } else if (response.data.code === 2023) {
+            alert(`존재하지 않는 유저입니다.`)
+            setName('')
+            setUserId('')
+            setPhoneNum('')
+            setPoint('')
+          } else if (response.data.code === 2002) {
+            alert(`아이디의 길이를 확인해주세요.`)
+            setUserId('')
+          } else if (response.data.code === 2022) {
+            alert(`포인트는 0보다 큰 값을 입력해주세요.`)
+            setPoint('')
+          } else if (response.data.code === 2021) {
+            alert(`포인트를 입력해주세요.`)
+            setPoint('')
+          }
           console.log(`response 확인 : ${response.data.code}`)
         })
         .catch((error) => {
