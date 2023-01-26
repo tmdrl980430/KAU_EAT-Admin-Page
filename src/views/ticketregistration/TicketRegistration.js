@@ -26,10 +26,16 @@ const TicketRegistration = () => {
   const [error, setError] = useState(null)
 
   const [name, setName] = useState('')
+  const [userId, setUserId] = useState('')
   const [phoneNum, setPhoneNum] = useState('')
   const [point, setPoint] = useState('')
 
   useEffect(() => {
+    console.log(jwt)
+  }, [])
+
+  useEffect(() => {
+    setJwt(localStorage.getItem('jwt-token'))
     console.log(jwt)
   }, [])
 
@@ -53,6 +59,7 @@ const TicketRegistration = () => {
             name: name,
             phoneNum: phoneNum,
             point: point,
+            userId: userId,
           },
           {
             headers: {
@@ -94,6 +101,7 @@ const TicketRegistration = () => {
           </CFormLabel>
           <CCol sm={10}>
             <CFormInput
+              value={name}
               type="text"
               id="inputDate"
               placeholder="가입한 이름을 입력해주세요."
@@ -105,10 +113,27 @@ const TicketRegistration = () => {
         </CRow>
         <CRow className="mb-3">
           <CFormLabel htmlFor="inputDate" className="col-sm-2 col-form-label">
+            아이디
+          </CFormLabel>
+          <CCol sm={10}>
+            <CFormInput
+              value={userId}
+              type="text"
+              id="inputDate"
+              placeholder="가입한 아이디를 입력해주세요."
+              onChange={(e) => {
+                setUserId(e.target.value)
+              }}
+            />
+          </CCol>
+        </CRow>
+        <CRow className="mb-3">
+          <CFormLabel htmlFor="inputDate" className="col-sm-2 col-form-label">
             전화번호
           </CFormLabel>
           <CCol sm={10}>
             <CFormInput
+              value={phoneNum}
               type="text"
               id="inputDate"
               placeholder="전화번호를 010xxxxxxxx 형식으로 입력해주세요."
