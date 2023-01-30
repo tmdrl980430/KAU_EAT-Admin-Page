@@ -31,7 +31,7 @@ const Dashboard = () => {
     setJwt(localStorage.getItem('jwt-token'))
     autoLogin()
     getTickets()
-    //getTodayTickets()
+    getTodayTickets()
     getTodayUser()
   }, [])
 
@@ -150,12 +150,6 @@ const Dashboard = () => {
                   setValueDay5Sum(response.data.result.usedMealTickets[i].count)
                 }
               }
-            } else {
-              setValueDay1Sum(0)
-              setValueDay2Sum(0)
-              setValueDay3Sum(0)
-              setValueDay4Sum(0)
-              setValueDay5Sum(0)
             }
           }
         })
@@ -218,12 +212,12 @@ const Dashboard = () => {
                   color: 'warning',
                 },
                 {
-                  title: '석식',
+                  title: '중식(면)',
                   value1: response.data.result.usedMealTickets[3].count,
                   color: 'danger',
                 },
                 {
-                  title: '중식(면)',
+                  title: '석식',
                   value1: response.data.result.usedMealTickets[4].count,
                   color: 'primary',
                 },
@@ -241,8 +235,8 @@ const Dashboard = () => {
                   value1: 0,
                   color: 'warning',
                 },
-                { title: '석식', value1: 0, color: 'danger' },
-                { title: '중식(면)', value1: 0, color: 'primary' },
+                { title: '중식(면)', value1: 0, color: 'danger' },
+                { title: '석식', value1: 0, color: 'primary' },
               ])
             }
             temp = []
@@ -381,13 +375,13 @@ const Dashboard = () => {
                 </CCol>
                 <CCol sm={6}>
                   <div className="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
-                    <div className="text-medium-emphasis small">석식</div>
+                    <div className="text-medium-emphasis small">중식(면)</div>
                     <div className="fs-5 fw-semibold">{valueMonth4Sum}</div>
                   </div>
                 </CCol>
                 <CCol sm={6}>
                   <div className="border-start border-start-4 border-start-primary py-1 px-3 mb-3">
-                    <div className="text-medium-emphasis small">중식(면)</div>
+                    <div className="text-medium-emphasis small">석식</div>
                     <div className="fs-5 fw-semibold">{valueMonth5Sum}</div>
                   </div>
                 </CCol>
@@ -442,13 +436,13 @@ const Dashboard = () => {
                     </CCol>
                     <CCol sm={6}>
                       <div className="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
-                        <div className="text-medium-emphasis small">석식</div>
+                        <div className="text-medium-emphasis small">중식(면)</div>
                         <div className="fs-5 fw-semibold">{value4Sum}</div>
                       </div>
                     </CCol>
                     <CCol sm={6}>
                       <div className="border-start border-start-4 border-start-primary py-1 px-3 mb-3">
-                        <div className="text-medium-emphasis small">중식(면)</div>
+                        <div className="text-medium-emphasis small">석식</div>
                         <div className="fs-5 fw-semibold">{value5Sum}</div>
                       </div>
                     </CCol>

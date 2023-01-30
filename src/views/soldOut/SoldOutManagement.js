@@ -58,11 +58,12 @@ const SoldOutManagement = () => {
           })
           .then((response) => {
             if (response.data.code === 1000) {
+              console.log(response.data.result.menus)
               setBreakfastMenuStatus(response.data.result.menus[0].menuStatus)
               setLunchMenuStatus(response.data.result.menus[1].menuStatus)
               setLunchKoreaMenuStatus(response.data.result.menus[2].menuStatus)
-              setDinnerMenuStatus(response.data.result.menus[3].menuStatus)
-              setLunchNoodleMenuStatus(response.data.result.menus[4].menuStatus)
+              setLunchNoodleMenuStatus(response.data.result.menus[3].menuStatus)
+              setDinnerMenuStatus(response.data.result.menus[4].menuStatus)
             }
           })
           .catch((error) => {})
@@ -109,11 +110,11 @@ const SoldOutManagement = () => {
               },
               {
                 mealTypeIdx: 4,
-                menuStatus: dinnerMenuStatus,
+                menuStatus: lunchNoodleMenuStatus,
               },
               {
                 mealTypeIdx: 5,
-                menuStatus: lunchNoodleMenuStatus,
+                menuStatus: dinnerMenuStatus,
               },
             ],
           },
@@ -123,7 +124,9 @@ const SoldOutManagement = () => {
             },
           },
         )
-        .then((response) => {})
+        .then((response) => {
+          console.log(response.data.code)
+        })
         .catch((error) => {})
     } catch (e) {
       setError(e)

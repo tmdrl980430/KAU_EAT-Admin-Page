@@ -93,10 +93,10 @@ const MealTable = () => {
                   } else if (response.data.result.menus[i].mealTypeIdx === 3) {
                     setLunchKoreaMenu(response.data.result.menus[i].name)
                     setLunchKoreaMenuIdx(response.data.result.menus[i].menuIdx)
-                  } else if (response.data.result.menus[i].mealTypeIdx === 4) {
+                  } else if (response.data.result.menus[i].mealTypeIdx === 5) {
                     setDinnerMenu(response.data.result.menus[i].name)
                     setDinnerMenuIdx(response.data.result.menus[i].menuIdx)
-                  } else if (response.data.result.menus[i].mealTypeIdx === 5) {
+                  } else if (response.data.result.menus[i].mealTypeIdx === 4) {
                     setLunchNoodleMenu(response.data.result.menus[i].name)
                     setLunchNoodleMenuIdx(response.data.result.menus[i].menuIdx)
                   }
@@ -242,21 +242,6 @@ const MealTable = () => {
         </CRow>
         <CRow className="mb-3">
           <CFormLabel htmlFor="inputMenu" className="col-sm-2 col-form-label">
-            석식
-          </CFormLabel>
-          <CCol sm={10}>
-            <CFormInput
-              value={dinnerMenu}
-              type="text"
-              id="inputMenu"
-              onChange={(e) => {
-                setDinnerMenu(e.target.value)
-              }}
-            />
-          </CCol>
-        </CRow>
-        <CRow className="mb-3">
-          <CFormLabel htmlFor="inputMenu" className="col-sm-2 col-form-label">
             중식(면)
           </CFormLabel>
           <CCol sm={10}>
@@ -266,6 +251,21 @@ const MealTable = () => {
               id="inputMenu"
               onChange={(e) => {
                 setLunchNoodleMenu(e.target.value)
+              }}
+            />
+          </CCol>
+        </CRow>
+        <CRow className="mb-3">
+          <CFormLabel htmlFor="inputMenu" className="col-sm-2 col-form-label">
+            석식
+          </CFormLabel>
+          <CCol sm={10}>
+            <CFormInput
+              value={dinnerMenu}
+              type="text"
+              id="inputMenu"
+              onChange={(e) => {
+                setDinnerMenu(e.target.value)
               }}
             />
           </CCol>
