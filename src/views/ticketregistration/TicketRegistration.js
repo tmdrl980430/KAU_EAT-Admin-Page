@@ -30,23 +30,18 @@ const TicketRegistration = () => {
   const [phoneNum, setPhoneNum] = useState('')
   const [point, setPoint] = useState('')
 
-  useEffect(() => {
-    console.log(jwt)
-  }, [])
+
 
   useEffect(() => {
     setJwt(localStorage.getItem('jwt-token'))
-    console.log(jwt)
   }, [])
 
   const pointRegistration = async () => {
-    console.log('pointRegistration')
     setLoading(true)
 
     try {
       // 요청이 시작 할 때에는 error 와 users 를 초기화하고
       setError(null)
-      console.log('pointRegistration_try')
       // loading 상태를 true 로 바꿉니다.
       setLoading(true)
 
@@ -90,15 +85,9 @@ const TicketRegistration = () => {
             alert(`포인트를 입력해주세요.`)
             setPoint('')
           }
-          console.log(`response 확인 : ${response.data.code}`)
         })
-        .catch((error) => {
-          console.log(error)
-        })
-      // 데이터는 response.data.code 안에 들어있다. console.log(response.data.result);
+        .catch((error) => {})
     } catch (e) {
-      console.log('postMealTableRegist_catch')
-      console.log(e)
       setError(e)
     }
 

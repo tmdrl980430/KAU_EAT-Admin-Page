@@ -41,7 +41,6 @@ const MealTable = () => {
 
   useEffect(() => {
     setJwt(localStorage.getItem('jwt-token'))
-    console.log(jwt)
   }, [])
 
   const today =
@@ -133,7 +132,6 @@ const MealTable = () => {
       if (lunchNoodleMenu !== '') {
         registrationList.push({ mealTypeIdx: 5, name: lunchNoodleMenu })
       }
-      console.log(registrationList)
 
       try {
         // 요청이 시작 할 때에는 error 와 users 를 초기화하고

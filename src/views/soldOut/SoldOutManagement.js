@@ -58,7 +58,6 @@ const SoldOutManagement = () => {
           })
           .then((response) => {
             if (response.data.code === 1000) {
-              console.log(response.data.result.menus)
               setBreakfastMenuStatus(response.data.result.menus[0].menuStatus)
               setLunchMenuStatus(response.data.result.menus[1].menuStatus)
               setLunchKoreaMenuStatus(response.data.result.menus[2].menuStatus)
@@ -124,9 +123,7 @@ const SoldOutManagement = () => {
             },
           },
         )
-        .then((response) => {
-          console.log(response.data.code)
-        })
+        .then((response) => {})
         .catch((error) => {})
     } catch (e) {
       setError(e)
@@ -208,27 +205,6 @@ const SoldOutManagement = () => {
         </CRow>
         <CRow className="mb-3">
           <CFormLabel htmlFor="inputMenu" className="col-sm-2 col-form-label">
-            석식
-          </CFormLabel>
-          <Select
-            styles={{
-              // zIndex
-              menu: (provided) => ({ ...provided, zIndex: 999 }),
-            }}
-            value={options.find((op) => {
-              // choice state에 따라 디폴트 option 세팅
-              return op.value === dinnerMenuStatus
-            })}
-            defaultValue={dinnerMenuStatus}
-            onChange={(value) => {
-              onChange(value.value)
-              setDinnerMenuStatus(value.value)
-            }}
-            options={options}
-          />
-        </CRow>
-        <CRow className="mb-3">
-          <CFormLabel htmlFor="inputMenu" className="col-sm-2 col-form-label">
             중식(면)
           </CFormLabel>
           <Select
@@ -244,6 +220,27 @@ const SoldOutManagement = () => {
             onChange={(value) => {
               onChange(value.value)
               setLunchNoodleMenuStatus(value.value)
+            }}
+            options={options}
+          />
+        </CRow>
+        <CRow className="mb-3">
+          <CFormLabel htmlFor="inputMenu" className="col-sm-2 col-form-label">
+            석식
+          </CFormLabel>
+          <Select
+            styles={{
+              // zIndex
+              menu: (provided) => ({ ...provided, zIndex: 999 }),
+            }}
+            value={options.find((op) => {
+              // choice state에 따라 디폴트 option 세팅
+              return op.value === dinnerMenuStatus
+            })}
+            defaultValue={dinnerMenuStatus}
+            onChange={(value) => {
+              onChange(value.value)
+              setDinnerMenuStatus(value.value)
             }}
             options={options}
           />

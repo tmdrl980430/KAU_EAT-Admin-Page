@@ -332,13 +332,13 @@ const Dashboard = () => {
                     </CCol>
                     <CCol sm={6}>
                       <div className="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
-                        <div className="text-medium-emphasis small">석식</div>
+                        <div className="text-medium-emphasis small">중식(면)</div>
                         <div className="fs-5 fw-semibold">{valueDay4Sum}</div>
                       </div>
                     </CCol>
                     <CCol sm={6}>
                       <div className="border-start border-start-4 border-start-primary py-1 px-3 mb-3">
-                        <div className="text-medium-emphasis small">중식(면)</div>
+                        <div className="text-medium-emphasis small">석식</div>
                         <div className="fs-5 fw-semibold">{valueDay5Sum}</div>
                       </div>
                     </CCol>
