@@ -30,8 +30,6 @@ const TicketRegistration = () => {
   const [phoneNum, setPhoneNum] = useState('')
   const [point, setPoint] = useState('')
 
-
-
   useEffect(() => {
     setJwt(localStorage.getItem('jwt-token'))
   }, [])
