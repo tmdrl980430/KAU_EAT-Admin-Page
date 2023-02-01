@@ -33,6 +33,7 @@ const Dashboard = () => {
     getTickets()
     getTodayTickets()
     getTodayUser()
+    getYearTickets()
   }, [])
 
   const utcNow = now.getTime() + now.getTimezoneOffset() * 60 * 1000 // 현재 시간을 utc로 변환한 밀리세컨드값
@@ -239,29 +240,50 @@ const Dashboard = () => {
                 { title: '석식', value1: 0, color: 'primary' },
               ])
             }
+          }
+        })
+        .catch((error) => {})
+    } catch (e) {
+      setError(e)
+    }
+    setLoading(false)
+    // loading 끄기
+  }
+
+  const getYearTickets = async () => {
+    setLoading(true)
+    try {
+      // 요청이 시작 할 때에는 error 와 users 를 초기화하고
+      setError(null)
+      // loading 상태를 true 로 바꿉니다.
+      setLoading(true)
+
+      const response = await axios
+        .get(`${IP}/mealtickets/year`, {
+          headers: {
+            'x-access-token': localStorage.getItem('jwt-token'),
+          },
+        })
+        .then((response) => {
+          if (response.data.code === 1000) {
             temp = []
-            setValue1Sum(response.data.result.byYear[0].count)
-            setValue2Sum(response.data.result.byYear[1].count)
-            setValue3Sum(response.data.result.byYear[2].count)
-            setValue4Sum(response.data.result.byYear[3].count)
-            setValue5Sum(response.data.result.byYear[4].count)
-            for (let i = 0; i < response.data.result.groupByMonth.length; i++) {
-              basicObject.title = `${response.data.result.groupByMonth[i].month}월`
-              if (response.data.result.groupByMonth[i].mealTypeIdx === 1) {
-                basicObject.value1 = response.data.result.groupByMonth[i].count
-              } else if (response.data.result.groupByMonth[i].mealTypeIdx === 2) {
-                basicObject.value2 = response.data.result.groupByMonth[i].count
-              } else if (response.data.result.groupByMonth[i].mealTypeIdx === 3) {
-                basicObject.value3 = response.data.result.groupByMonth[i].count
-              } else if (response.data.result.groupByMonth[i].mealTypeIdx === 4) {
-                basicObject.value4 = response.data.result.groupByMonth[i].count
-              } else if (response.data.result.groupByMonth[i].mealTypeIdx === 5) {
-                basicObject.value5 = response.data.result.groupByMonth[i].count
+            for (let i = 0; i < response.data.result.usedMealTicketsByYear.length; i++) {
+              basicObject.title = `${response.data.result.usedMealTicketsByYear[i].month}월`
+              if (response.data.result.usedMealTicketsByYear[i].mealTypeIdx === 1) {
+                basicObject.value1 = response.data.result.usedMealTicketsByYear[i].count
+              } else if (response.data.result.usedMealTicketsByYear[i].mealTypeIdx === 2) {
+                basicObject.value2 = response.data.result.usedMealTicketsByYear[i].count
+              } else if (response.data.result.usedMealTicketsByYear[i].mealTypeIdx === 3) {
+                basicObject.value3 = response.data.result.usedMealTicketsByYear[i].count
+              } else if (response.data.result.usedMealTicketsByYear[i].mealTypeIdx === 4) {
+                basicObject.value4 = response.data.result.usedMealTicketsByYear[i].count
+              } else if (response.data.result.usedMealTicketsByYear[i].mealTypeIdx === 5) {
+                basicObject.value5 = response.data.result.usedMealTicketsByYear[i].count
               }
               if (
-                i < response.data.result.groupByMonth.length - 1 &&
-                response.data.result.groupByMonth[i].month !=
-                  response.data.result.groupByMonth[i + 1].month
+                i < response.data.result.usedMealTicketsByYear.length - 1 &&
+                response.data.result.usedMealTicketsByYear[i].month !=
+                  response.data.result.usedMealTicketsByYear[i + 1].month
               ) {
                 temp.push({
                   title: basicObject.title,
@@ -271,7 +293,15 @@ const Dashboard = () => {
                   value4: basicObject.value4,
                   value5: basicObject.value5,
                 })
-              } else if (i == response.data.result.groupByMonth.length - 1) {
+                basicObject = {
+                  title: '0월',
+                  value1: 0,
+                  value2: 0,
+                  value3: 0,
+                  value4: 0,
+                  value5: 0,
+                }
+              } else if (i == response.data.result.usedMealTicketsByYear.length - 1) {
                 temp.push({
                   title: basicObject.title,
                   value1: basicObject.value1,
@@ -280,7 +310,6 @@ const Dashboard = () => {
                   value4: basicObject.value4,
                   value5: basicObject.value5,
                 })
-              } else {
               }
             }
             setGroupByMonthList([...temp])
