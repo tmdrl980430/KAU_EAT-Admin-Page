@@ -113,7 +113,6 @@ const Dashboard = () => {
     value4: 0,
     value5: 0,
   }
-  let tempMonth = '0'
 
   const [valueDay1Sum, setValueDay1Sum] = useState(0)
   const [valueDay2Sum, setValueDay2Sum] = useState(0)
@@ -173,6 +172,28 @@ const Dashboard = () => {
   const [valueMonth3Sum, setValueMonth3Sum] = useState(0)
   const [valueMonth4Sum, setValueMonth4Sum] = useState(0)
   const [valueMonth5Sum, setValueMonth5Sum] = useState(0)
+
+  useEffect(() => {
+    console.log(groupByMonthList)
+    let sum1 = 0
+    let sum2 = 0
+    let sum3 = 0
+    let sum4 = 0
+    let sum5 = 0
+
+    for (let i = 0; i < groupByMonthList.length; i++) {
+      sum1 += groupByMonthList[i].value1
+      sum2 += groupByMonthList[i].value2
+      sum3 += groupByMonthList[i].value3
+      sum4 += groupByMonthList[i].value4
+      sum5 += groupByMonthList[i].value5
+    }
+    setValue1Sum(sum1)
+    setValue2Sum(sum2)
+    setValue3Sum(sum3)
+    setValue4Sum(sum4)
+    setValue5Sum(sum5)
+  }, [groupByMonthList])
 
   const getTickets = async () => {
     setLoading(true)
@@ -265,6 +286,7 @@ const Dashboard = () => {
           },
         })
         .then((response) => {
+          console.log(response.data.result)
           if (response.data.code === 1000) {
             temp = []
             for (let i = 0; i < response.data.result.usedMealTicketsByYear.length; i++) {
@@ -505,7 +527,7 @@ const Dashboard = () => {
                         </CProgress>
                         <CProgress>
                           <CProgressBar color="primary" value={item.value5}>
-                            {item.value4}
+                            {item.value5}
                           </CProgressBar>
                         </CProgress>
                       </div>
