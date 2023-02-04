@@ -127,10 +127,10 @@ const MealTable = () => {
         registrationList.push({ mealTypeIdx: 3, name: lunchKoreaMenu })
       }
       if (dinnerMenu !== '') {
-        registrationList.push({ mealTypeIdx: 4, name: dinnerMenu })
+        registrationList.push({ mealTypeIdx: 5, name: dinnerMenu })
       }
       if (lunchNoodleMenu !== '') {
-        registrationList.push({ mealTypeIdx: 5, name: lunchNoodleMenu })
+        registrationList.push({ mealTypeIdx: 4, name: lunchNoodleMenu })
       }
 
       try {

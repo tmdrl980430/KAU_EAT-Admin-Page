@@ -58,11 +58,19 @@ const SoldOutManagement = () => {
           })
           .then((response) => {
             if (response.data.code === 1000) {
-              setBreakfastMenuStatus(response.data.result.menus[0].menuStatus)
-              setLunchMenuStatus(response.data.result.menus[1].menuStatus)
-              setLunchKoreaMenuStatus(response.data.result.menus[2].menuStatus)
-              setLunchNoodleMenuStatus(response.data.result.menus[3].menuStatus)
-              setDinnerMenuStatus(response.data.result.menus[4].menuStatus)
+              for (let i = 0; i < response.data.result.menus.length; i++) {
+                if (response.data.result.menus[i].mealTypeIdx === 1) {
+                  setBreakfastMenuStatus(response.data.result.menus[i].menuStatus)
+                } else if (response.data.result.menus[i].mealTypeIdx === 2) {
+                  setLunchMenuStatus(response.data.result.menus[i].menuStatus)
+                } else if (response.data.result.menus[i].mealTypeIdx === 3) {
+                  setLunchKoreaMenuStatus(response.data.result.menus[i].menuStatus)
+                } else if (response.data.result.menus[i].mealTypeIdx === 4) {
+                  setLunchNoodleMenuStatus(response.data.result.menus[i].menuStatus)
+                } else if (response.data.result.menus[i].mealTypeIdx === 5) {
+                  setDinnerMenuStatus(response.data.result.menus[i].menuStatus)
+                }
+              }
             }
           })
           .catch((error) => {})
