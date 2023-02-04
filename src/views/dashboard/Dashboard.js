@@ -174,7 +174,6 @@ const Dashboard = () => {
   const [valueMonth5Sum, setValueMonth5Sum] = useState(0)
 
   useEffect(() => {
-    console.log(groupByMonthList)
     let sum1 = 0
     let sum2 = 0
     let sum3 = 0
@@ -286,7 +285,6 @@ const Dashboard = () => {
           },
         })
         .then((response) => {
-          console.log(response.data.result)
           if (response.data.code === 1000) {
             temp = []
             for (let i = 0; i < response.data.result.usedMealTicketsByYear.length; i++) {
