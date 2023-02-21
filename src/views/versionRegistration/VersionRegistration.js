@@ -57,7 +57,6 @@ const VersionRegistration = () => {
           },
         )
         .then((response) => {
-          console.log(response.data.code)
           if (response.data.code === 1000) {
             alert(`버전 업데이트 완료`)
             setCurrentVersion(version)
