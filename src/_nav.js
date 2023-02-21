@@ -51,6 +51,15 @@ const _nav = [
   },
   {
     component: CNavItem,
+    name: '버전 관리',
+    to: '/versionRegistration',
+    icon: <CIcon icon={cilXCircle} customClassName="nav-icon" />,
+    badge: {
+      color: 'info',
+    },
+  },
+  {
+    component: CNavItem,
     name: 'LogOut',
     to: '/login',
     icon: <CIcon icon={cilStar} customClassName="nav-icon" />,

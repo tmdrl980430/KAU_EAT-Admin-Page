@@ -5,6 +5,9 @@ const dayDashBoard = React.lazy(() => import('./views/dayDashBoard/dayDashBoard'
 const MealTable = React.lazy(() => import('./views/mealTable/MealTable'))
 const SoldOutManagement = React.lazy(() => import('./views/soldOut/SoldOutManagement'))
 const TicketRegistration = React.lazy(() => import('./views/ticketregistration/TicketRegistration'))
+const VersionRegistration = React.lazy(() =>
+  import('./views/versionRegistration/VersionRegistration'),
+)
 
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
@@ -24,6 +27,7 @@ const routes = [
   { path: '/mealTable', name: '식단 관리', element: MealTable },
   { path: '/soldOut', name: '품절 관리', element: SoldOutManagement },
   { path: '/ticketRegistration', name: '식권 등록 관리', element: TicketRegistration },
+  { path: '/versionRegistration', name: '식권 등록 관리', element: VersionRegistration },
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },
