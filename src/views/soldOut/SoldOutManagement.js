@@ -99,7 +99,7 @@ const SoldOutManagement = () => {
 
       const response = await axios
         .patch(
-          `${IP}/menus/status`,
+          `${IP}/menus/menu-status`,
           {
             date: today,
             mealTypeAndStatus: [
