@@ -122,7 +122,6 @@ const userSearch = () => {
           },
         )
         .then((response) => {
-          console.log(response.data.code)
           if (response.data.code === 1000) {
             alert('수정되었습니다.')
             setUserIdx()

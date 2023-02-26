@@ -47,7 +47,6 @@ const userAdmin = () => {
 
   useEffect(() => {
     getUsers()
-    console.log(userData)
   }, [page])
 
   useEffect(() => {
@@ -171,16 +170,7 @@ const userAdmin = () => {
           </CButton>
         </div>
         <CRow>
-          <CTable
-            columns={columns}
-            items={userData}
-            striped
-            hover
-            onClick={(e) => {
-              // console.log('obj: %o', e)
-              console.log()
-            }}
-          />
+          <CTable columns={columns} items={userData} striped hover />
         </CRow>
         <div>
           <CButton type="button" onClick={pageMinus}>
