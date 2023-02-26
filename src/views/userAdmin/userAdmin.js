@@ -149,24 +149,6 @@ const userAdmin = () => {
   return (
     <div>
       <CForm>
-        <CCardHeader>
-          <strong>유저 조회하기</strong>
-        </CCardHeader>
-        <CRow className="mb-3">
-          <CFormLabel htmlFor="inputDate" className="col-sm-2 col-form-label">
-            전화번호
-          </CFormLabel>
-          <CCol sm={10}>
-            <CFormInput
-              type="text"
-              id="inputDate"
-              placeholder="찾으시는 유저의 전화번호를 입력해주세요."
-              onChange={(e) => {
-                setDate(e.target.value)
-              }}
-            />
-          </CCol>
-        </CRow>
         <div>
           <CButton
             type="button"
@@ -189,7 +171,16 @@ const userAdmin = () => {
           </CButton>
         </div>
         <CRow>
-          <CTable columns={columns} items={userData} />
+          <CTable
+            columns={columns}
+            items={userData}
+            striped
+            hover
+            onClick={(e) => {
+              // console.log('obj: %o', e)
+              console.log()
+            }}
+          />
         </CRow>
         <div>
           <CButton type="button" onClick={pageMinus}>
