@@ -66,7 +66,6 @@ const userAdmin = () => {
   }, [phoneNumber])
 
   useEffect(() => {
-    console.log(userData)
     if (userData != null && phoneNumber.length > 7) {
       setUserIdx(userData[0].idx)
       setUserId(userData[0].id)

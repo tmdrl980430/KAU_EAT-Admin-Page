@@ -115,6 +115,18 @@ const MealTable = () => {
                   } else if (response.data.result.menus[i].mealTypeIdx === 4) {
                     setLunchNoodleMenu(response.data.result.menus[i].name)
                     setLunchNoodleMenuIdx(response.data.result.menus[i].menuIdx)
+                  } else if (response.data.result.menus[i].mealTypeIdx === 6) {
+                    setRamenMenu(response.data.result.menus[i].name)
+                    setRamenMenuIdx(response.data.result.menus[i].menuIdx)
+                  } else if (response.data.result.menus[i].mealTypeIdx === 7) {
+                    setKimbabMenu(response.data.result.menus[i].name)
+                    setKimbabMenuIdx(response.data.result.menus[i].menuIdx)
+                  } else if (response.data.result.menus[i].mealTypeIdx === 9) {
+                    setHotdogMenu(response.data.result.menus[i].name)
+                    setHotdogMenuIdx(response.data.result.menus[i].menuIdx)
+                  } else if (response.data.result.menus[i].mealTypeIdx === 10) {
+                    setChickenMenu(response.data.result.menus[i].name)
+                    setChickenMenuIdx(response.data.result.menus[i].menuIdx)
                   }
                 }
               }

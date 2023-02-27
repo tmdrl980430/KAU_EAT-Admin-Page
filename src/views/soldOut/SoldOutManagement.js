@@ -44,12 +44,8 @@ const SoldOutManagement = () => {
 
     if (today != '') {
       try {
-        // 요청이 시작 할 때에는 error 와 users 를 초기화하고
         setError(null)
-        // loading 상태를 true 로 바꿉니다.
         setLoading(true)
-
-        // axios     .defaults     .headers     .common['x-access-token'] = jwt
 
         const response = await axios
           .get(`${IP}/menus?date=${today}`, {
@@ -59,18 +55,27 @@ const SoldOutManagement = () => {
           })
           .then((response) => {
             if (response.data.code === 1000) {
-              console.log(response.data.result)
               for (let i = 0; i < response.data.result.menus.length; i++) {
                 if (response.data.result.menus[i].mealTypeIdx === 1) {
-                  setBreakfastMenuStatus(response.data.result.menus[i].menuStatus)
+                  if (response.data.result.menus[i].menuStatus === '품절') {
+                    setBreakfastMenuStatus('SOLDOUT')
+                  }
                 } else if (response.data.result.menus[i].mealTypeIdx === 2) {
-                  setLunchMenuStatus(response.data.result.menus[i].menuStatus)
+                  if (response.data.result.menus[i].menuStatus === '품절') {
+                    setLunchMenuStatus('SOLDOUT')
+                  }
                 } else if (response.data.result.menus[i].mealTypeIdx === 3) {
-                  setLunchKoreaMenuStatus(response.data.result.menus[i].menuStatus)
+                  if (response.data.result.menus[i].menuStatus === '품절') {
+                    setLunchKoreaMenuStatus('SOLDOUT')
+                  }
                 } else if (response.data.result.menus[i].mealTypeIdx === 4) {
-                  setLunchNoodleMenuStatus(response.data.result.menus[i].menuStatus)
+                  if (response.data.result.menus[i].menuStatus === '품절') {
+                    setLunchNoodleMenuStatus('SOLDOUT')
+                  }
                 } else if (response.data.result.menus[i].mealTypeIdx === 5) {
-                  setDinnerMenuStatus(response.data.result.menus[i].menuStatus)
+                  if (response.data.result.menus[i].menuStatus === '품절') {
+                    setDinnerMenuStatus('SOLDOUT')
+                  }
                 }
               }
             }
@@ -134,6 +139,9 @@ const SoldOutManagement = () => {
           },
         )
         .then((response) => {
+          if (response.data.code === 1000) {
+            alert('등록되었습니다.')
+          }
           getDateMealTable()
         })
         .catch((error) => {})
