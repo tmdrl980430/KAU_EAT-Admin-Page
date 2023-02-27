@@ -16,30 +16,19 @@ import { useRecoilState } from 'recoil'
 import { jwtRecoilState, severURLRecoilState } from 'src/recoil'
 
 const userAdmin = () => {
-  const now = new Date()
-
   const [IP, setIP] = useRecoilState(severURLRecoilState)
   const [jwt, setJwt] = useRecoilState(jwtRecoilState)
-
-  const utcNow = now.getTime() + now.getTimezoneOffset() * 60 * 1000 // 현재 시간을 utc로 변환한 밀리세컨드값
-  const koreaTimeDiff = 9 * 60 * 60 * 1000 // 한국 시간은 UTC보다 9시간 빠름(9시간의 밀리세컨드 표현)
-  const koreaNow = new Date(utcNow + koreaTimeDiff) // utc로 변환된 값을 한국 시간으로 변환시키기 위해 9시간(밀리세컨드)를 더함
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
-
-  const today =
-    String(koreaNow.getFullYear()) +
-    '-' +
-    String(koreaNow.getMonth() + 1).padStart(2, '0') +
-    '-' +
-    String(koreaNow.getDate()).padStart(2, '0')
-
-  const [date, setDate] = useState(today)
 
   const [userData, setUserData] = useState(null)
   const [page, setPage] = useState(1)
   const [maxPage, setMaxPage] = useState(1)
   const [sortString, setSortString] = useState('DESC')
+
+  useEffect(() => {
+    setJwt(localStorage.getItem('jwt-token'))
+  }, [])
 
   useEffect(() => {
     getUsers()

@@ -31,6 +31,10 @@ const MealTable = () => {
   const [lunchKoreaMenu, setLunchKoreaMenu] = useState('')
   const [dinnerMenu, setDinnerMenu] = useState('')
   const [lunchNoodleMenu, setLunchNoodleMenu] = useState('')
+  const [ramenMenu, setRamenMenu] = useState('')
+  const [kimbabMenu, setKimbabMenu] = useState('')
+  const [hotdogMenu, setHotdogMenu] = useState('')
+  const [chickenMenu, setChickenMenu] = useState('')
   const [isMenu, setIsMenu] = useState(false)
   const [dateClick, setDateClick] = useState(false)
   const [breakfastMenuIdx, setBreakfastMenuIdx] = useState(0)
@@ -38,9 +42,14 @@ const MealTable = () => {
   const [lunchKoreaMenuIdx, setLunchKoreaMenuIdx] = useState(0)
   const [dinnerMenuIdx, setDinnerMenuIdx] = useState(0)
   const [lunchNoodleMenuIdx, setLunchNoodleMenuIdx] = useState(0)
+  const [ramenMenuIdx, setRamenMenuIdx] = useState(0)
+  const [kimbabMenuIdx, setKimbabMenuIdx] = useState(0)
+  const [hotdogMenuIdx, setHotdogMenuIdx] = useState(0)
+  const [chickenMenuIdx, setChickenMenuIdx] = useState(0)
 
   useEffect(() => {
     setJwt(localStorage.getItem('jwt-token'))
+    setDate(today)
   }, [])
 
   const today =
@@ -80,6 +89,10 @@ const MealTable = () => {
                 setLunchKoreaMenuIdx(0)
                 setDinnerMenuIdx(0)
                 setLunchNoodleMenuIdx(0)
+                setRamenMenuIdx(0)
+                setKimbabMenuIdx(0)
+                setHotdogMenuIdx(0)
+                setChickenMenuIdx(0)
               } else {
                 setIsMenu(true)
                 for (let i = 0; i < response.data.result.menus.length; i++) {
@@ -132,6 +145,10 @@ const MealTable = () => {
       if (lunchNoodleMenu !== '') {
         registrationList.push({ mealTypeIdx: 4, name: lunchNoodleMenu })
       }
+      registrationList.push({ mealTypeIdx: 6, name: ramenMenu })
+      registrationList.push({ mealTypeIdx: 7, name: kimbabMenu })
+      registrationList.push({ mealTypeIdx: 9, name: hotdogMenu })
+      registrationList.push({ mealTypeIdx: 10, name: chickenMenu })
 
       try {
         // 요청이 시작 할 때에는 error 와 users 를 초기화하고
@@ -176,6 +193,7 @@ const MealTable = () => {
           </CFormLabel>
           <CCol sm={10}>
             <CFormInput
+              value={date}
               type="text"
               id="inputDate"
               placeholder="날짜를 2022-09-15 형식으로 입력해주세요."
@@ -264,6 +282,66 @@ const MealTable = () => {
               id="inputMenu"
               onChange={(e) => {
                 setDinnerMenu(e.target.value)
+              }}
+            />
+          </CCol>
+        </CRow>
+        <CRow className="mb-3">
+          <CFormLabel htmlFor="inputMenu" className="col-sm-2 col-form-label">
+            라면
+          </CFormLabel>
+          <CCol sm={10}>
+            <CFormInput
+              value={ramenMenu}
+              type="text"
+              id="inputMenu"
+              onChange={(e) => {
+                setRamenMenu(e.target.value)
+              }}
+            />
+          </CCol>
+        </CRow>
+        <CRow className="mb-3">
+          <CFormLabel htmlFor="inputMenu" className="col-sm-2 col-form-label">
+            김밥
+          </CFormLabel>
+          <CCol sm={10}>
+            <CFormInput
+              value={kimbabMenu}
+              type="text"
+              id="inputMenu"
+              onChange={(e) => {
+                setKimbabMenu(e.target.value)
+              }}
+            />
+          </CCol>
+        </CRow>
+        <CRow className="mb-3">
+          <CFormLabel htmlFor="inputMenu" className="col-sm-2 col-form-label">
+            핫도그
+          </CFormLabel>
+          <CCol sm={10}>
+            <CFormInput
+              value={hotdogMenu}
+              type="text"
+              id="inputMenu"
+              onChange={(e) => {
+                setHotdogMenu(e.target.value)
+              }}
+            />
+          </CCol>
+        </CRow>
+        <CRow className="mb-3">
+          <CFormLabel htmlFor="inputMenu" className="col-sm-2 col-form-label">
+            치킨
+          </CFormLabel>
+          <CCol sm={10}>
+            <CFormInput
+              value={chickenMenu}
+              type="text"
+              id="inputMenu"
+              onChange={(e) => {
+                setChickenMenu(e.target.value)
               }}
             />
           </CCol>

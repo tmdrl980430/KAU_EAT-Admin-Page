@@ -4,6 +4,7 @@ import { useRecoilState } from 'recoil'
 import { jwtRecoilState, severURLRecoilState } from 'src/recoil'
 import axios from 'axios'
 import Select from 'react-select'
+import { configs } from 'eslint-plugin-prettier'
 
 const SoldOutManagement = () => {
   const now = new Date()
@@ -58,6 +59,7 @@ const SoldOutManagement = () => {
           })
           .then((response) => {
             if (response.data.code === 1000) {
+              console.log(response.data.result)
               for (let i = 0; i < response.data.result.menus.length; i++) {
                 if (response.data.result.menus[i].mealTypeIdx === 1) {
                   setBreakfastMenuStatus(response.data.result.menus[i].menuStatus)
@@ -131,7 +133,9 @@ const SoldOutManagement = () => {
             },
           },
         )
-        .then((response) => {})
+        .then((response) => {
+          getDateMealTable()
+        })
         .catch((error) => {})
     } catch (e) {
       setError(e)
