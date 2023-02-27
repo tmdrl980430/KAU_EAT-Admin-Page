@@ -10,6 +10,11 @@ import {
   CFormLabel,
   CRow,
   CTable,
+  CTableBody,
+  CTableDataCell,
+  CTableHead,
+  CTableHeaderCell,
+  CTableRow,
 } from '@coreui/react'
 import axios from 'axios'
 import { useRecoilState } from 'recoil'
@@ -61,6 +66,7 @@ const userAdmin = () => {
   }, [phoneNumber])
 
   useEffect(() => {
+    console.log(userData)
     if (userData != null && phoneNumber.length > 7) {
       setUserIdx(userData[0].idx)
       setUserId(userData[0].id)
@@ -292,7 +298,7 @@ const userAdmin = () => {
           </CButton>
         </div>
         <CRow>
-          <CTable columns={columns} items={userData} striped hover />
+          <CTable columns={columns} items={userData} striped hover></CTable>
         </CRow>
         {maxPage > 1 && (
           <div>
