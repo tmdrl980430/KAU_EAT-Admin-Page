@@ -25,16 +25,16 @@ const MealTable = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
-  const [date, setDate] = useState('')
-  const [breakfastMenu, setBreakfastMenu] = useState('')
-  const [lunchMenu, setLunchMenu] = useState('')
-  const [lunchKoreaMenu, setLunchKoreaMenu] = useState('')
-  const [dinnerMenu, setDinnerMenu] = useState('')
-  const [lunchNoodleMenu, setLunchNoodleMenu] = useState('')
-  const [ramenMenu, setRamenMenu] = useState('')
-  const [kimbabMenu, setKimbabMenu] = useState('')
-  const [hotdogMenu, setHotdogMenu] = useState('')
-  const [chickenMenu, setChickenMenu] = useState('')
+  const [date, setDate] = useState(null)
+  const [breakfastMenu, setBreakfastMenu] = useState(null)
+  const [lunchMenu, setLunchMenu] = useState(null)
+  const [lunchKoreaMenu, setLunchKoreaMenu] = useState(null)
+  const [dinnerMenu, setDinnerMenu] = useState(null)
+  const [lunchNoodleMenu, setLunchNoodleMenu] = useState(null)
+  const [ramenMenu, setRamenMenu] = useState(null)
+  const [kimbabMenu, setKimbabMenu] = useState(null)
+  const [hotdogMenu, setHotdogMenu] = useState(null)
+  const [chickenMenu, setChickenMenu] = useState(null)
   const [isMenu, setIsMenu] = useState(false)
   const [dateClick, setDateClick] = useState(false)
   const [breakfastMenuIdx, setBreakfastMenuIdx] = useState(0)
@@ -60,11 +60,15 @@ const MealTable = () => {
     String(koreaNow.getDate()).padStart(2, '0')
 
   const setDateMealTable = async () => {
-    setBreakfastMenu('')
-    setLunchMenu('')
-    setLunchKoreaMenu('')
-    setDinnerMenu('')
-    setLunchNoodleMenu('')
+    setBreakfastMenu(null)
+    setLunchMenu(null)
+    setLunchKoreaMenu(null)
+    setDinnerMenu(null)
+    setLunchNoodleMenu(null)
+    setRamenMenu(null)
+    setKimbabMenu(null)
+    setHotdogMenu(null)
+    setChickenMenu(null)
     setLoading(true)
 
     if (date != '') {
@@ -114,6 +118,8 @@ const MealTable = () => {
                   }
                 }
               }
+            } else {
+              alert(response.data.message)
             }
           })
           .catch((error) => {})
@@ -130,26 +136,33 @@ const MealTable = () => {
 
     let registrationList = []
     if (date != '') {
-      if (breakfastMenu !== '') {
+      if (breakfastMenu !== null) {
         registrationList.push({ mealTypeIdx: 1, name: breakfastMenu })
       }
-      if (lunchMenu !== '') {
+      if (lunchMenu !== null) {
         registrationList.push({ mealTypeIdx: 2, name: lunchMenu })
       }
-      if (lunchKoreaMenu !== '') {
+      if (lunchKoreaMenu !== null) {
         registrationList.push({ mealTypeIdx: 3, name: lunchKoreaMenu })
       }
-      if (dinnerMenu !== '') {
+      if (dinnerMenu !== null) {
         registrationList.push({ mealTypeIdx: 5, name: dinnerMenu })
       }
-      if (lunchNoodleMenu !== '') {
+      if (lunchNoodleMenu !== null) {
         registrationList.push({ mealTypeIdx: 4, name: lunchNoodleMenu })
       }
-      registrationList.push({ mealTypeIdx: 6, name: ramenMenu })
-      registrationList.push({ mealTypeIdx: 7, name: kimbabMenu })
-      registrationList.push({ mealTypeIdx: 9, name: hotdogMenu })
-      registrationList.push({ mealTypeIdx: 10, name: chickenMenu })
-
+      if (ramenMenu !== null) {
+        registrationList.push({ mealTypeIdx: 6, name: ramenMenu })
+      }
+      if (kimbabMenu !== null) {
+        registrationList.push({ mealTypeIdx: 7, name: kimbabMenu })
+      }
+      if (hotdogMenu !== null) {
+        registrationList.push({ mealTypeIdx: 9, name: hotdogMenu })
+      }
+      if (chickenMenu !== null) {
+        registrationList.push({ mealTypeIdx: 10, name: chickenMenu })
+      }
       try {
         // 요청이 시작 할 때에는 error 와 users 를 초기화하고
         setError(null)
@@ -171,7 +184,13 @@ const MealTable = () => {
               },
             },
           )
-          .then((response) => {})
+          .then((response) => {
+            if (response.data.code === 1000) {
+              alert(`${date} 식단이 등록 되었습니다.`)
+            } else {
+              alert(response.data.message)
+            }
+          })
           .catch((error) => {})
       } catch (e) {
         setError(e)

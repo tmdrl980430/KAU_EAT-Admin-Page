@@ -5,7 +5,6 @@ import {
   cilSpeedometer,
   cilStar,
   cilXCircle,
-  cilAddressBook,
   cilGroup,
   cilHistory,
   cilMonitor,
@@ -54,15 +53,6 @@ const _nav = [
     name: '유저 조회',
     to: '/userAdmin',
     icon: <CIcon icon={cilGroup} customClassName="nav-icon" />,
-    badge: {
-      color: 'info',
-    },
-  },
-  {
-    component: CNavItem,
-    name: '유저 검색 및 수정',
-    to: '/userSearch',
-    icon: <CIcon icon={cilAddressBook} customClassName="nav-icon" />,
     badge: {
       color: 'info',
     },
