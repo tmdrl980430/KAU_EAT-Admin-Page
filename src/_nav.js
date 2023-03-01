@@ -32,7 +32,7 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: '식단 관리',
+    name: '메뉴 관리',
     to: '/mealTable',
     icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
     badge: {

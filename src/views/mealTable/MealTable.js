@@ -122,10 +122,10 @@ const MealTable = () => {
                   } else if (response.data.result.menus[i].mealTypeIdx === 7) {
                     setKimbabMenu(response.data.result.menus[i].name)
                     setKimbabMenuIdx(response.data.result.menus[i].menuIdx)
-                  } else if (response.data.result.menus[i].mealTypeIdx === 9) {
+                  } else if (response.data.result.menus[i].mealTypeIdx === 8) {
                     setHotdogMenu(response.data.result.menus[i].name)
                     setHotdogMenuIdx(response.data.result.menus[i].menuIdx)
-                  } else if (response.data.result.menus[i].mealTypeIdx === 10) {
+                  } else if (response.data.result.menus[i].mealTypeIdx === 9) {
                     setChickenMenu(response.data.result.menus[i].name)
                     setChickenMenuIdx(response.data.result.menus[i].menuIdx)
                   }
@@ -171,10 +171,10 @@ const MealTable = () => {
         registrationList.push({ mealTypeIdx: 7, name: kimbabMenu })
       }
       if (hotdogMenu !== null) {
-        registrationList.push({ mealTypeIdx: 9, name: hotdogMenu })
+        registrationList.push({ mealTypeIdx: 8, name: hotdogMenu })
       }
       if (chickenMenu !== null) {
-        registrationList.push({ mealTypeIdx: 10, name: chickenMenu })
+        registrationList.push({ mealTypeIdx: 9, name: chickenMenu })
       }
       try {
         // 요청이 시작 할 때에는 error 와 users 를 초기화하고

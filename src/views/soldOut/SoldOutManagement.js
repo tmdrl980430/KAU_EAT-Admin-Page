@@ -31,6 +31,10 @@ const SoldOutManagement = () => {
   const [lunchKoreaMenuStatus, setLunchKoreaMenuStatus] = useState('ACTIVE')
   const [dinnerMenuStatus, setDinnerMenuStatus] = useState('ACTIVE')
   const [lunchNoodleMenuStatus, setLunchNoodleMenuStatus] = useState('ACTIVE')
+  const [ramenMenuStatus, setRamenMenuStatus] = useState('ACTIVE')
+  const [kimbabMenuStatus, setkimbabMenuStatus] = useState('ACTIVE')
+  const [hotdogMenuStatus, setHotdogMenuStatus] = useState('ACTIVE')
+  const [chickenMenuStatus, setChickenMenuStatus] = useState('ACTIVE')
 
   useEffect(() => {
     setJwt(localStorage.getItem('jwt-token'))
@@ -75,6 +79,22 @@ const SoldOutManagement = () => {
                 } else if (response.data.result.menus[i].mealTypeIdx === 5) {
                   if (response.data.result.menus[i].menuStatus === '품절') {
                     setDinnerMenuStatus('SOLDOUT')
+                  }
+                } else if (response.data.result.menus[i].mealTypeIdx === 6) {
+                  if (response.data.result.menus[i].menuStatus === '품절') {
+                    setRamenMenuStatus('SOLDOUT')
+                  }
+                } else if (response.data.result.menus[i].mealTypeIdx === 7) {
+                  if (response.data.result.menus[i].menuStatus === '품절') {
+                    setkimbabMenuStatus('SOLDOUT')
+                  }
+                } else if (response.data.result.menus[i].mealTypeIdx === 8) {
+                  if (response.data.result.menus[i].menuStatus === '품절') {
+                    setHotdogMenuStatus('SOLDOUT')
+                  }
+                } else if (response.data.result.menus[i].mealTypeIdx === 9) {
+                  if (response.data.result.menus[i].menuStatus === '품절') {
+                    setChickenMenuStatus('SOLDOUT')
                   }
                 }
               }
@@ -129,6 +149,22 @@ const SoldOutManagement = () => {
               {
                 mealTypeIdx: 5,
                 menuStatus: dinnerMenuStatus,
+              },
+              {
+                mealTypeIdx: 6,
+                menuStatus: ramenMenuStatus,
+              },
+              {
+                mealTypeIdx: 7,
+                menuStatus: kimbabMenuStatus,
+              },
+              {
+                mealTypeIdx: 8,
+                menuStatus: hotdogMenuStatus,
+              },
+              {
+                mealTypeIdx: 9,
+                menuStatus: chickenMenuStatus,
               },
             ],
           },
@@ -261,6 +297,90 @@ const SoldOutManagement = () => {
             onChange={(value) => {
               onChange(value.value)
               setDinnerMenuStatus(value.value)
+            }}
+            options={options}
+          />
+        </CRow>
+        <CRow className="mb-3">
+          <CFormLabel htmlFor="inputMenu" className="col-sm-2 col-form-label">
+            라면
+          </CFormLabel>
+          <Select
+            styles={{
+              // zIndex
+              menu: (provided) => ({ ...provided, zIndex: 999 }),
+            }}
+            value={options.find((op) => {
+              // choice state에 따라 디폴트 option 세팅
+              return op.value === ramenMenuStatus
+            })}
+            defaultValue={ramenMenuStatus}
+            onChange={(value) => {
+              onChange(value.value)
+              setRamenMenuStatus(value.value)
+            }}
+            options={options}
+          />
+        </CRow>
+        <CRow className="mb-3">
+          <CFormLabel htmlFor="inputMenu" className="col-sm-2 col-form-label">
+            김밥
+          </CFormLabel>
+          <Select
+            styles={{
+              // zIndex
+              menu: (provided) => ({ ...provided, zIndex: 999 }),
+            }}
+            value={options.find((op) => {
+              // choice state에 따라 디폴트 option 세팅
+              return op.value === kimbabMenuStatus
+            })}
+            defaultValue={kimbabMenuStatus}
+            onChange={(value) => {
+              onChange(value.value)
+              setkimbabMenuStatus(value.value)
+            }}
+            options={options}
+          />
+        </CRow>
+        <CRow className="mb-3">
+          <CFormLabel htmlFor="inputMenu" className="col-sm-2 col-form-label">
+            핫도그
+          </CFormLabel>
+          <Select
+            styles={{
+              // zIndex
+              menu: (provided) => ({ ...provided, zIndex: 999 }),
+            }}
+            value={options.find((op) => {
+              // choice state에 따라 디폴트 option 세팅
+              return op.value === hotdogMenuStatus
+            })}
+            defaultValue={hotdogMenuStatus}
+            onChange={(value) => {
+              onChange(value.value)
+              setHotdogMenuStatus(value.value)
+            }}
+            options={options}
+          />
+        </CRow>
+        <CRow className="mb-3">
+          <CFormLabel htmlFor="inputMenu" className="col-sm-2 col-form-label">
+            치킨
+          </CFormLabel>
+          <Select
+            styles={{
+              // zIndex
+              menu: (provided) => ({ ...provided, zIndex: 999 }),
+            }}
+            value={options.find((op) => {
+              // choice state에 따라 디폴트 option 세팅
+              return op.value === chickenMenuStatus
+            })}
+            defaultValue={chickenMenuStatus}
+            onChange={(value) => {
+              onChange(value.value)
+              setChickenMenuStatus(value.value)
             }}
             options={options}
           />
