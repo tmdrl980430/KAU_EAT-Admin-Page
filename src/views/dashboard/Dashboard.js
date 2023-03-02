@@ -285,22 +285,22 @@ const Dashboard = () => {
                 {
                   title: '라면',
                   value1: response.data.result.usedMealTickets[5].count,
-                  color: 'primary',
+                  color: 'light-gradient',
                 },
                 {
                   title: '김밥',
                   value1: response.data.result.usedMealTickets[6].count,
-                  color: 'primary',
+                  color: 'dark',
                 },
                 {
                   title: '핫도그',
                   value1: response.data.result.usedMealTickets[7].count,
-                  color: 'primary',
+                  color: 'light',
                 },
                 {
                   title: '치킨',
                   value1: response.data.result.usedMealTickets[8].count,
-                  color: 'primary',
+                  color: 'secondary',
                 },
               ])
             } else {
@@ -318,10 +318,10 @@ const Dashboard = () => {
                 },
                 { title: '중식(면)', value1: 0, color: 'danger' },
                 { title: '석식', value1: 0, color: 'primary' },
-                { title: '라면', value1: 0, color: 'primary' },
-                { title: '김밥', value1: 0, color: 'primary' },
-                { title: '핫도그', value1: 0, color: 'primary' },
-                { title: '치킨', value1: 0, color: 'primary' },
+                { title: '라면', value1: 0, color: 'light-gradient' },
+                { title: '김밥', value1: 0, color: 'dark' },
+                { title: '핫도그', value1: 0, color: 'light' },
+                { title: '치킨', value1: 0, color: 'secondary' },
               ])
             }
           }
@@ -478,25 +478,25 @@ const Dashboard = () => {
                   </CRow>
                   <CRow>
                     <CCol sm={6}>
-                      <div className="border-start border-start-4 border-start-warning py-1 px-3 mb-3">
+                      <div className="border-start border-start-4 border-start-light-gradient py-1 px-3 mb-3">
                         <div className="text-medium-emphasis small">라면</div>
                         <div className="fs-5 fw-semibold">{valueDay6Sum}</div>
                       </div>
                     </CCol>
                     <CCol sm={6}>
-                      <div className="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
+                      <div className="border-start border-start-4 border-start-dark py-1 px-3 mb-3">
                         <div className="text-medium-emphasis small">김밥</div>
                         <div className="fs-5 fw-semibold">{valueDay7Sum}</div>
                       </div>
                     </CCol>
                     <CCol sm={6}>
-                      <div className="border-start border-start-4 border-start-primary py-1 px-3 mb-3">
+                      <div className="border-start border-start-4 border-start-light py-1 px-3 mb-3">
                         <div className="text-medium-emphasis small">핫도그</div>
                         <div className="fs-5 fw-semibold">{valueDay8Sum}</div>
                       </div>
                     </CCol>
                     <CCol sm={6}>
-                      <div className="border-start border-start-4 border-start-primary py-1 px-3 mb-3">
+                      <div className="border-start border-start-4 border-start-secondary py-1 px-3 mb-3">
                         <div className="text-medium-emphasis small">치킨</div>
                         <div className="fs-5 fw-semibold">{valueDay9Sum}</div>
                       </div>
@@ -547,25 +547,25 @@ const Dashboard = () => {
               </CRow>
               <CRow>
                 <CCol sm={6}>
-                  <div className="border-start border-start-4 border-start-warning py-1 px-3 mb-3">
+                  <div className="border-start border-start-4 border-start-light-gradient py-1 px-3 mb-3">
                     <div className="text-medium-emphasis small">라면</div>
                     <div className="fs-5 fw-semibold">{valueMonth6Sum}</div>
                   </div>
                 </CCol>
                 <CCol sm={6}>
-                  <div className="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
+                  <div className="border-start border-start-4 border-start-dark py-1 px-3 mb-3">
                     <div className="text-medium-emphasis small">김밥</div>
                     <div className="fs-5 fw-semibold">{valueMonth7Sum}</div>
                   </div>
                 </CCol>
                 <CCol sm={6}>
-                  <div className="border-start border-start-4 border-start-primary py-1 px-3 mb-3">
+                  <div className="border-start border-start-4 border-start-ligth py-1 px-3 mb-3">
                     <div className="text-medium-emphasis small">핫도그</div>
                     <div className="fs-5 fw-semibold">{valueMonth8Sum}</div>
                   </div>
                 </CCol>
                 <CCol sm={6}>
-                  <div className="border-start border-start-4 border-start-primary py-1 px-3 mb-3">
+                  <div className="border-start border-start-4 border-start-secondary py-1 px-3 mb-3">
                     <div className="text-medium-emphasis small">치킨</div>
                     <div className="fs-5 fw-semibold">{valueMonth9Sum}</div>
                   </div>
@@ -634,25 +634,25 @@ const Dashboard = () => {
                   </CRow>
                   <CRow>
                     <CCol sm={6}>
-                      <div className="border-start border-start-4 border-start-warning py-1 px-3 mb-3">
+                      <div className="border-start border-start-4 border-start-light-gradient py-1 px-3 mb-3">
                         <div className="text-medium-emphasis small">라면</div>
                         <div className="fs-5 fw-semibold">{value6Sum}</div>
                       </div>
                     </CCol>
                     <CCol sm={6}>
-                      <div className="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
+                      <div className="border-start border-start-4 border-start-dark py-1 px-3 mb-3">
                         <div className="text-medium-emphasis small">김밥</div>
                         <div className="fs-5 fw-semibold">{value7Sum}</div>
                       </div>
                     </CCol>
                     <CCol sm={6}>
-                      <div className="border-start border-start-4 border-start-primary py-1 px-3 mb-3">
+                      <div className="border-start border-start-4 border-start-light py-1 px-3 mb-3">
                         <div className="text-medium-emphasis small">핫도그</div>
                         <div className="fs-5 fw-semibold">{value8Sum}</div>
                       </div>
                     </CCol>
                     <CCol sm={6}>
-                      <div className="border-start border-start-4 border-start-primary py-1 px-3 mb-3">
+                      <div className="border-start border-start-4 border-start-secondary py-1 px-3 mb-3">
                         <div className="text-medium-emphasis small">치킨</div>
                         <div className="fs-5 fw-semibold">{value9Sum}</div>
                       </div>
@@ -691,22 +691,22 @@ const Dashboard = () => {
                           </CProgressBar>
                         </CProgress>
                         <CProgress>
-                          <CProgressBar color="primary" value={item.value6}>
+                          <CProgressBar color="light-gradient" value={item.value6}>
                             {item.value6}
                           </CProgressBar>
                         </CProgress>
                         <CProgress>
-                          <CProgressBar color="primary" value={item.value7}>
+                          <CProgressBar color="dark" value={item.value7}>
                             {item.value7}
                           </CProgressBar>
                         </CProgress>
                         <CProgress>
-                          <CProgressBar color="primary" value={item.value8}>
+                          <CProgressBar color="light" value={item.value8}>
                             {item.value8}
                           </CProgressBar>
                         </CProgress>
                         <CProgress>
-                          <CProgressBar color="primary" value={item.value9}>
+                          <CProgressBar color="secondary" value={item.value9}>
                             {item.value9}
                           </CProgressBar>
                         </CProgress>
