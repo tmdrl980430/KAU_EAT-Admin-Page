@@ -112,6 +112,10 @@ const Dashboard = () => {
     value3: 0,
     value4: 0,
     value5: 0,
+    value6: 0,
+    value7: 0,
+    value8: 0,
+    value9: 0,
   }
 
   const [valueDay1Sum, setValueDay1Sum] = useState(0)
@@ -119,6 +123,10 @@ const Dashboard = () => {
   const [valueDay3Sum, setValueDay3Sum] = useState(0)
   const [valueDay4Sum, setValueDay4Sum] = useState(0)
   const [valueDay5Sum, setValueDay5Sum] = useState(0)
+  const [valueDay6Sum, setValueDay6Sum] = useState(0)
+  const [valueDay7Sum, setValueDay7Sum] = useState(0)
+  const [valueDay8Sum, setValueDay8Sum] = useState(0)
+  const [valueDay9Sum, setValueDay9Sum] = useState(0)
 
   const getTodayTickets = async () => {
     setLoading(true)
@@ -148,6 +156,14 @@ const Dashboard = () => {
                   setValueDay4Sum(response.data.result.usedMealTickets[i].count)
                 } else if (response.data.result.usedMealTickets[i].mealTypeIdx === 5) {
                   setValueDay5Sum(response.data.result.usedMealTickets[i].count)
+                } else if (response.data.result.usedMealTickets[i].mealTypeIdx === 6) {
+                  setValueDay6Sum(response.data.result.usedMealTickets[i].count)
+                } else if (response.data.result.usedMealTickets[i].mealTypeIdx === 7) {
+                  setValueDay7Sum(response.data.result.usedMealTickets[i].count)
+                } else if (response.data.result.usedMealTickets[i].mealTypeIdx === 8) {
+                  setValueDay8Sum(response.data.result.usedMealTickets[i].count)
+                } else if (response.data.result.usedMealTickets[i].mealTypeIdx === 9) {
+                  setValueDay9Sum(response.data.result.usedMealTickets[i].count)
                 }
               }
             }
@@ -167,11 +183,19 @@ const Dashboard = () => {
   const [value3Sum, setValue3Sum] = useState(0)
   const [value4Sum, setValue4Sum] = useState(0)
   const [value5Sum, setValue5Sum] = useState(0)
+  const [value6Sum, setValue6Sum] = useState(0)
+  const [value7Sum, setValue7Sum] = useState(0)
+  const [value8Sum, setValue8Sum] = useState(0)
+  const [value9Sum, setValue9Sum] = useState(0)
   const [valueMonth1Sum, setValueMonth1Sum] = useState(0)
   const [valueMonth2Sum, setValueMonth2Sum] = useState(0)
   const [valueMonth3Sum, setValueMonth3Sum] = useState(0)
   const [valueMonth4Sum, setValueMonth4Sum] = useState(0)
   const [valueMonth5Sum, setValueMonth5Sum] = useState(0)
+  const [valueMonth6Sum, setValueMonth6Sum] = useState(0)
+  const [valueMonth7Sum, setValueMonth7Sum] = useState(0)
+  const [valueMonth8Sum, setValueMonth8Sum] = useState(0)
+  const [valueMonth9Sum, setValueMonth9Sum] = useState(0)
 
   useEffect(() => {
     let sum1 = 0
@@ -179,6 +203,10 @@ const Dashboard = () => {
     let sum3 = 0
     let sum4 = 0
     let sum5 = 0
+    let sum6 = 0
+    let sum7 = 0
+    let sum8 = 0
+    let sum9 = 0
 
     for (let i = 0; i < groupByMonthList.length; i++) {
       sum1 += groupByMonthList[i].value1
@@ -186,12 +214,20 @@ const Dashboard = () => {
       sum3 += groupByMonthList[i].value3
       sum4 += groupByMonthList[i].value4
       sum5 += groupByMonthList[i].value5
+      sum6 += groupByMonthList[i].value6
+      sum7 += groupByMonthList[i].value7
+      sum8 += groupByMonthList[i].value8
+      sum9 += groupByMonthList[i].value9
     }
     setValue1Sum(sum1)
     setValue2Sum(sum2)
     setValue3Sum(sum3)
     setValue4Sum(sum4)
     setValue5Sum(sum5)
+    setValue6Sum(sum6)
+    setValue7Sum(sum7)
+    setValue8Sum(sum8)
+    setValue9Sum(sum9)
   }, [groupByMonthList])
 
   const getTickets = async () => {
@@ -216,6 +252,10 @@ const Dashboard = () => {
               setValueMonth3Sum(response.data.result.usedMealTickets[2].count)
               setValueMonth4Sum(response.data.result.usedMealTickets[3].count)
               setValueMonth5Sum(response.data.result.usedMealTickets[4].count)
+              setValueMonth6Sum(response.data.result.usedMealTickets[5].count)
+              setValueMonth7Sum(response.data.result.usedMealTickets[6].count)
+              setValueMonth8Sum(response.data.result.usedMealTickets[7].count)
+              setValueMonth9Sum(response.data.result.usedMealTickets[8].count)
               setThisMonthTicketUse([
                 {
                   title: '조식',
@@ -242,6 +282,26 @@ const Dashboard = () => {
                   value1: response.data.result.usedMealTickets[4].count,
                   color: 'primary',
                 },
+                {
+                  title: '라면',
+                  value1: response.data.result.usedMealTickets[5].count,
+                  color: 'primary',
+                },
+                {
+                  title: '김밥',
+                  value1: response.data.result.usedMealTickets[6].count,
+                  color: 'primary',
+                },
+                {
+                  title: '핫도그',
+                  value1: response.data.result.usedMealTickets[7].count,
+                  color: 'primary',
+                },
+                {
+                  title: '치킨',
+                  value1: response.data.result.usedMealTickets[8].count,
+                  color: 'primary',
+                },
               ])
             } else {
               setThisMonthTicketUse([
@@ -258,6 +318,10 @@ const Dashboard = () => {
                 },
                 { title: '중식(면)', value1: 0, color: 'danger' },
                 { title: '석식', value1: 0, color: 'primary' },
+                { title: '라면', value1: 0, color: 'primary' },
+                { title: '김밥', value1: 0, color: 'primary' },
+                { title: '핫도그', value1: 0, color: 'primary' },
+                { title: '치킨', value1: 0, color: 'primary' },
               ])
             }
           }
@@ -299,6 +363,14 @@ const Dashboard = () => {
                 basicObject.value4 = response.data.result.usedMealTicketsByYear[i].count
               } else if (response.data.result.usedMealTicketsByYear[i].mealTypeIdx === 5) {
                 basicObject.value5 = response.data.result.usedMealTicketsByYear[i].count
+              } else if (response.data.result.usedMealTicketsByYear[i].mealTypeIdx === 6) {
+                basicObject.value6 = response.data.result.usedMealTicketsByYear[i].count
+              } else if (response.data.result.usedMealTicketsByYear[i].mealTypeIdx === 7) {
+                basicObject.value7 = response.data.result.usedMealTicketsByYear[i].count
+              } else if (response.data.result.usedMealTicketsByYear[i].mealTypeIdx === 8) {
+                basicObject.value8 = response.data.result.usedMealTicketsByYear[i].count
+              } else if (response.data.result.usedMealTicketsByYear[i].mealTypeIdx === 9) {
+                basicObject.value9 = response.data.result.usedMealTicketsByYear[i].count
               }
               if (
                 i < response.data.result.usedMealTicketsByYear.length - 1 &&
@@ -312,6 +384,10 @@ const Dashboard = () => {
                   value3: basicObject.value3,
                   value4: basicObject.value4,
                   value5: basicObject.value5,
+                  value6: basicObject.value6,
+                  value7: basicObject.value7,
+                  value8: basicObject.value8,
+                  value9: basicObject.value9,
                 })
                 basicObject = {
                   title: '0월',
@@ -320,6 +396,10 @@ const Dashboard = () => {
                   value3: 0,
                   value4: 0,
                   value5: 0,
+                  value6: 0,
+                  value7: 0,
+                  value8: 0,
+                  value9: 0,
                 }
               } else if (i == response.data.result.usedMealTicketsByYear.length - 1) {
                 temp.push({
@@ -329,6 +409,10 @@ const Dashboard = () => {
                   value3: basicObject.value3,
                   value4: basicObject.value4,
                   value5: basicObject.value5,
+                  value6: basicObject.value6,
+                  value7: basicObject.value7,
+                  value8: basicObject.value8,
+                  value9: basicObject.value9,
                 })
               }
             }
@@ -392,6 +476,32 @@ const Dashboard = () => {
                       </div>
                     </CCol>
                   </CRow>
+                  <CRow>
+                    <CCol sm={6}>
+                      <div className="border-start border-start-4 border-start-warning py-1 px-3 mb-3">
+                        <div className="text-medium-emphasis small">라면</div>
+                        <div className="fs-5 fw-semibold">{valueDay6Sum}</div>
+                      </div>
+                    </CCol>
+                    <CCol sm={6}>
+                      <div className="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
+                        <div className="text-medium-emphasis small">김밥</div>
+                        <div className="fs-5 fw-semibold">{valueDay7Sum}</div>
+                      </div>
+                    </CCol>
+                    <CCol sm={6}>
+                      <div className="border-start border-start-4 border-start-primary py-1 px-3 mb-3">
+                        <div className="text-medium-emphasis small">핫도그</div>
+                        <div className="fs-5 fw-semibold">{valueDay8Sum}</div>
+                      </div>
+                    </CCol>
+                    <CCol sm={6}>
+                      <div className="border-start border-start-4 border-start-primary py-1 px-3 mb-3">
+                        <div className="text-medium-emphasis small">치킨</div>
+                        <div className="fs-5 fw-semibold">{valueDay9Sum}</div>
+                      </div>
+                    </CCol>
+                  </CRow>
                 </CCol>
               </CRow>
               <br />
@@ -432,6 +542,32 @@ const Dashboard = () => {
                   <div className="border-start border-start-4 border-start-primary py-1 px-3 mb-3">
                     <div className="text-medium-emphasis small">석식</div>
                     <div className="fs-5 fw-semibold">{valueMonth5Sum}</div>
+                  </div>
+                </CCol>
+              </CRow>
+              <CRow>
+                <CCol sm={6}>
+                  <div className="border-start border-start-4 border-start-warning py-1 px-3 mb-3">
+                    <div className="text-medium-emphasis small">라면</div>
+                    <div className="fs-5 fw-semibold">{valueMonth6Sum}</div>
+                  </div>
+                </CCol>
+                <CCol sm={6}>
+                  <div className="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
+                    <div className="text-medium-emphasis small">김밥</div>
+                    <div className="fs-5 fw-semibold">{valueMonth7Sum}</div>
+                  </div>
+                </CCol>
+                <CCol sm={6}>
+                  <div className="border-start border-start-4 border-start-primary py-1 px-3 mb-3">
+                    <div className="text-medium-emphasis small">핫도그</div>
+                    <div className="fs-5 fw-semibold">{valueMonth8Sum}</div>
+                  </div>
+                </CCol>
+                <CCol sm={6}>
+                  <div className="border-start border-start-4 border-start-primary py-1 px-3 mb-3">
+                    <div className="text-medium-emphasis small">치킨</div>
+                    <div className="fs-5 fw-semibold">{valueMonth9Sum}</div>
                   </div>
                 </CCol>
               </CRow>
@@ -496,6 +632,32 @@ const Dashboard = () => {
                       </div>
                     </CCol>
                   </CRow>
+                  <CRow>
+                    <CCol sm={6}>
+                      <div className="border-start border-start-4 border-start-warning py-1 px-3 mb-3">
+                        <div className="text-medium-emphasis small">라면</div>
+                        <div className="fs-5 fw-semibold">{value6Sum}</div>
+                      </div>
+                    </CCol>
+                    <CCol sm={6}>
+                      <div className="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
+                        <div className="text-medium-emphasis small">김밥</div>
+                        <div className="fs-5 fw-semibold">{value7Sum}</div>
+                      </div>
+                    </CCol>
+                    <CCol sm={6}>
+                      <div className="border-start border-start-4 border-start-primary py-1 px-3 mb-3">
+                        <div className="text-medium-emphasis small">핫도그</div>
+                        <div className="fs-5 fw-semibold">{value8Sum}</div>
+                      </div>
+                    </CCol>
+                    <CCol sm={6}>
+                      <div className="border-start border-start-4 border-start-primary py-1 px-3 mb-3">
+                        <div className="text-medium-emphasis small">치킨</div>
+                        <div className="fs-5 fw-semibold">{value9Sum}</div>
+                      </div>
+                    </CCol>
+                  </CRow>
                   <hr className="mt-0" />
                   {groupByMonthList.map((item, index) => (
                     <div className="progress-group mb-4" key={index}>
@@ -526,6 +688,26 @@ const Dashboard = () => {
                         <CProgress>
                           <CProgressBar color="primary" value={item.value5}>
                             {item.value5}
+                          </CProgressBar>
+                        </CProgress>
+                        <CProgress>
+                          <CProgressBar color="primary" value={item.value6}>
+                            {item.value6}
+                          </CProgressBar>
+                        </CProgress>
+                        <CProgress>
+                          <CProgressBar color="primary" value={item.value7}>
+                            {item.value7}
+                          </CProgressBar>
+                        </CProgress>
+                        <CProgress>
+                          <CProgressBar color="primary" value={item.value8}>
+                            {item.value8}
+                          </CProgressBar>
+                        </CProgress>
+                        <CProgress>
+                          <CProgressBar color="primary" value={item.value9}>
+                            {item.value9}
                           </CProgressBar>
                         </CProgress>
                       </div>

@@ -50,6 +50,10 @@ const dayDashBoard = () => {
   const [valueDay3Sum, setValueDay3Sum] = useState(0)
   const [valueDay4Sum, setValueDay4Sum] = useState(0)
   const [valueDay5Sum, setValueDay5Sum] = useState(0)
+  const [valueDay6Sum, setValueDay6Sum] = useState(0)
+  const [valueDay7Sum, setValueDay7Sum] = useState(0)
+  const [valueDay8Sum, setValueDay8Sum] = useState(0)
+  const [valueDay9Sum, setValueDay9Sum] = useState(0)
 
   const getTodayTickets = async () => {
     setLoading(true)
@@ -79,6 +83,14 @@ const dayDashBoard = () => {
                   setValueDay4Sum(response.data.result.usedMealTickets[i].count)
                 } else if (response.data.result.usedMealTickets[i].mealTypeIdx === 5) {
                   setValueDay5Sum(response.data.result.usedMealTickets[i].count)
+                } else if (response.data.result.usedMealTickets[i].mealTypeIdx === 6) {
+                  setValueDay6Sum(response.data.result.usedMealTickets[i].count)
+                } else if (response.data.result.usedMealTickets[i].mealTypeIdx === 7) {
+                  setValueDay7Sum(response.data.result.usedMealTickets[i].count)
+                } else if (response.data.result.usedMealTickets[i].mealTypeIdx === 8) {
+                  setValueDay8Sum(response.data.result.usedMealTickets[i].count)
+                } else if (response.data.result.usedMealTickets[i].mealTypeIdx === 9) {
+                  setValueDay9Sum(response.data.result.usedMealTickets[i].count)
                 }
               }
             } else {
@@ -87,6 +99,10 @@ const dayDashBoard = () => {
               setValueDay3Sum(0)
               setValueDay4Sum(0)
               setValueDay5Sum(0)
+              setValueDay6Sum(0)
+              setValueDay7Sum(0)
+              setValueDay8Sum(0)
+              setValueDay9Sum(0)
             }
           }
         })
@@ -161,6 +177,32 @@ const dayDashBoard = () => {
                       </CCol>
                     </CRow>
                   </CCol>
+                  <CRow>
+                    <CCol sm={6}>
+                      <div className="border-start border-start-4 border-start-warning py-1 px-3 mb-3">
+                        <div className="text-medium-emphasis small">라면</div>
+                        <div className="fs-5 fw-semibold">{valueDay6Sum}</div>
+                      </div>
+                    </CCol>
+                    <CCol sm={6}>
+                      <div className="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
+                        <div className="text-medium-emphasis small">김밥</div>
+                        <div className="fs-5 fw-semibold">{valueDay7Sum}</div>
+                      </div>
+                    </CCol>
+                    <CCol sm={6}>
+                      <div className="border-start border-start-4 border-start-primary py-1 px-3 mb-3">
+                        <div className="text-medium-emphasis small">핫도그</div>
+                        <div className="fs-5 fw-semibold">{valueDay8Sum}</div>
+                      </div>
+                    </CCol>
+                    <CCol sm={6}>
+                      <div className="border-start border-start-4 border-start-primary py-1 px-3 mb-3">
+                        <div className="text-medium-emphasis small">치킨</div>
+                        <div className="fs-5 fw-semibold">{valueDay9Sum}</div>
+                      </div>
+                    </CCol>
+                  </CRow>
                 </CRow>
                 <br />
               </CCardBody>
