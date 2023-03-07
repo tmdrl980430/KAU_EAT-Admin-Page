@@ -62,7 +62,7 @@ const userAdmin = () => {
   }, [sortString])
 
   useEffect(() => {
-    if (phoneNumber == '') {
+    if (phoneNumber == '' || phoneNumber == null) {
       setPage(1)
       getUsers()
     } else {
@@ -77,7 +77,6 @@ const userAdmin = () => {
       setUserPhoneNum(userData[0].phoneNumber)
       setUserName(userData[0].name)
       setUserPoint(userData[0].point)
-      getUserInfo()
     } else {
       setUserIdx()
       setUserId('')
@@ -91,6 +90,11 @@ const userAdmin = () => {
     if (userData != null) {
       getUserInfo()
     } else {
+      setUserTiketBreakfast('')
+      setUserTiketLunch('')
+      setUserLunchKorea('')
+      setUserTiketLunchNoodle('')
+      setUserTiketDinner('')
     }
   }, [userIdx])
 
@@ -148,6 +152,28 @@ const userAdmin = () => {
             phoneNumber: userPhoneNum,
             id: userId,
             point: userPoint,
+            mealTickets: [
+              {
+                mealTypeIdx: 1,
+                mealTicketCount: userTiketBreakfast,
+              },
+              {
+                mealTypeIdx: 2,
+                mealTicketCount: userTiketLunch,
+              },
+              {
+                mealTypeIdx: 3,
+                mealTicketCount: userTiketLunchKorea,
+              },
+              {
+                mealTypeIdx: 4,
+                mealTicketCount: userTiketLunchNoodle,
+              },
+              {
+                mealTypeIdx: 5,
+                mealTicketCount: userTiketDinner,
+              },
+            ],
           },
           {
             headers: {
@@ -158,12 +184,18 @@ const userAdmin = () => {
         .then((response) => {
           if (response.data.code === 1000) {
             alert('수정되었습니다.')
-            setUserIdx()
+            setUserIdx(null)
             setUserId('')
-            setUserPhoneNum('')
+            setUserPhoneNum(null)
             setUserName('')
-            setUserPoint()
+            setUserPoint('')
             setUserData(null)
+            setUserTiketBreakfast('')
+            setUserTiketLunch('')
+            setUserLunchKorea('')
+            setUserTiketLunchNoodle('')
+            setUserTiketDinner('')
+            setPhoneNumber('')
           }
         })
         .catch((error) => {})
@@ -324,6 +356,7 @@ const userAdmin = () => {
             <CFormInput
               type="text"
               id="inputDate"
+              value={phoneNumber}
               placeholder="찾으시는 유저의 전화번호를 입력해주세요."
               onChange={(e) => {
                 setPhoneNumber(e.target.value)
