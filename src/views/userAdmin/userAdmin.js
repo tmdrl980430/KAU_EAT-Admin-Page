@@ -38,6 +38,11 @@ const userAdmin = () => {
   const [userPhoneNum, setUserPhoneNum] = useState('')
   const [userName, setUserName] = useState('')
   const [userPoint, setUserPoint] = useState('')
+  const [userTiketBreakfast, setUserTiketBreakfast] = useState('')
+  const [userTiketLunch, setUserTiketLunch] = useState('')
+  const [userTiketLunchKorea, setUserLunchKorea] = useState('')
+  const [userTiketLunchNoodle, setUserTiketLunchNoodle] = useState('')
+  const [userTiketDinner, setUserTiketDinner] = useState('')
 
   useEffect(() => {
     setJwt(localStorage.getItem('jwt-token'))
@@ -72,6 +77,7 @@ const userAdmin = () => {
       setUserPhoneNum(userData[0].phoneNumber)
       setUserName(userData[0].name)
       setUserPoint(userData[0].point)
+      getUserInfo()
     } else {
       setUserIdx()
       setUserId('')
@@ -80,6 +86,13 @@ const userAdmin = () => {
       setUserPoint()
     }
   }, [userData])
+
+  useEffect(() => {
+    if (userData != null) {
+      getUserInfo()
+    } else {
+    }
+  }, [userIdx])
 
   const searchUsers = async () => {
     setLoading(true)
@@ -158,6 +171,49 @@ const userAdmin = () => {
       setError(e)
     }
 
+    setLoading(false)
+    // loading 끄기
+  }
+
+  const getUserInfo = async () => {
+    setLoading(true)
+    try {
+      // 요청이 시작 할 때에는 error 와 users 를 초기화하고
+      setError(null)
+      // loading 상태를 true 로 바꿉니다.
+      setLoading(true)
+
+      const response = await axios
+        .get(`${IP}/users/${userIdx}`, {
+          headers: {
+            'x-access-token': localStorage.getItem('jwt-token'),
+          },
+        })
+        .then((response) => {
+          console.log(response)
+          if (response.data.code === 1000) {
+            console.log(response.data.result)
+            if (response.data.result.user.mealTickets.length != 0) {
+              for (let i = 0; i < response.data.result.user.mealTickets.length; i++) {
+                if (response.data.result.user.mealTickets[i].mealTypeIdx === 1) {
+                  setUserTiketBreakfast(response.data.result.user.mealTickets[i].mealTicketCount)
+                } else if (response.data.result.user.mealTickets[i].mealTypeIdx === 2) {
+                  setUserTiketLunch(response.data.result.user.mealTickets[i].mealTicketCount)
+                } else if (response.data.result.user.mealTickets[i].mealTypeIdx === 3) {
+                  setUserLunchKorea(response.data.result.user.mealTickets[i].mealTicketCount)
+                } else if (response.data.result.user.mealTickets[i].mealTypeIdx === 4) {
+                  setUserTiketLunchNoodle(response.data.result.user.mealTickets[i].mealTicketCount)
+                } else if (response.data.result.user.mealTickets[i].mealTypeIdx === 5) {
+                  setUserTiketDinner(response.data.result.user.mealTickets[i].mealTicketCount)
+                }
+              }
+            }
+          }
+        })
+        .catch((error) => {})
+    } catch (e) {
+      setError(e)
+    }
     setLoading(false)
     // loading 끄기
   }
@@ -372,6 +428,86 @@ const userAdmin = () => {
                   placeholder="수정하실 아이디를 적어주세요."
                   onChange={(e) => {
                     setUserPoint(e.target.value)
+                  }}
+                />
+              </CCol>
+            </CRow>
+            <CRow className="mb-3">
+              <CFormLabel htmlFor="inputMenu" className="col-sm-2 col-form-label">
+                조식
+              </CFormLabel>
+              <CCol sm={10}>
+                <CFormInput
+                  value={userTiketBreakfast}
+                  type="text"
+                  id="inputMenu"
+                  placeholder="수정하실 식권의 개수를 적어주세요."
+                  onChange={(e) => {
+                    setUserTiketBreakfast(e.target.value)
+                  }}
+                />
+              </CCol>
+            </CRow>
+            <CRow className="mb-3">
+              <CFormLabel htmlFor="inputMenu" className="col-sm-2 col-form-label">
+                중식|일품
+              </CFormLabel>
+              <CCol sm={10}>
+                <CFormInput
+                  value={userTiketLunch}
+                  type="text"
+                  id="inputMenu"
+                  placeholder="수정하실 식권의 개수를 적어주세요."
+                  onChange={(e) => {
+                    setUserTiketLunch(e.target.value)
+                  }}
+                />
+              </CCol>
+            </CRow>
+            <CRow className="mb-3">
+              <CFormLabel htmlFor="inputMenu" className="col-sm-2 col-form-label">
+                중식|한식
+              </CFormLabel>
+              <CCol sm={10}>
+                <CFormInput
+                  value={userTiketLunchKorea}
+                  type="text"
+                  id="inputMenu"
+                  placeholder="수정하실 식권의 개수를 적어주세요."
+                  onChange={(e) => {
+                    setUserLunchKorea(e.target.value)
+                  }}
+                />
+              </CCol>
+            </CRow>
+            <CRow className="mb-3">
+              <CFormLabel htmlFor="inputMenu" className="col-sm-2 col-form-label">
+                중식(면)
+              </CFormLabel>
+              <CCol sm={10}>
+                <CFormInput
+                  value={userTiketLunchNoodle}
+                  type="text"
+                  id="inputMenu"
+                  placeholder="수정하실 식권의 개수를 적어주세요."
+                  onChange={(e) => {
+                    setUserTiketLunchNoodle(e.target.value)
+                  }}
+                />
+              </CCol>
+            </CRow>
+            <CRow className="mb-3">
+              <CFormLabel htmlFor="inputMenu" className="col-sm-2 col-form-label">
+                석식
+              </CFormLabel>
+              <CCol sm={10}>
+                <CFormInput
+                  value={userTiketDinner}
+                  type="text"
+                  id="inputMenu"
+                  placeholder="수정하실 식권의 개수를 적어주세요."
+                  onChange={(e) => {
+                    setUserTiketDinner(e.target.value)
                   }}
                 />
               </CCol>
