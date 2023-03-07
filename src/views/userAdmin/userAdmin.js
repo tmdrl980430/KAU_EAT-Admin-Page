@@ -222,9 +222,7 @@ const userAdmin = () => {
           },
         })
         .then((response) => {
-          console.log(response)
           if (response.data.code === 1000) {
-            console.log(response.data.result)
             if (response.data.result.user.mealTickets.length != 0) {
               for (let i = 0; i < response.data.result.user.mealTickets.length; i++) {
                 if (response.data.result.user.mealTickets[i].mealTypeIdx === 1) {
