@@ -65,7 +65,7 @@ const userAdmin = () => {
     if (phoneNumber == '' || phoneNumber == null) {
       setPage(1)
       getUsers()
-    } else {
+    } else if (phoneNumber.length > 7) {
       searchUsers()
     }
   }, [phoneNumber])
@@ -120,6 +120,9 @@ const userAdmin = () => {
             } else {
               setMaxPage(parseInt(response.data.result.usersCount / 20))
             }
+          } else if (response.data.code === 2047) {
+            alert('존재하지 않는 유저입니다.')
+            setPhoneNumber('')
           } else {
             setUserData(null)
           }
@@ -424,7 +427,7 @@ const userAdmin = () => {
                   value={userName}
                   type="text"
                   id="inputMenu"
-                  placeholder="수정하실 아이디를 적어주세요."
+                  placeholder="수정하실 이름을 적어주세요."
                   onChange={(e) => {
                     setUserName(e.target.value)
                   }}
@@ -440,7 +443,7 @@ const userAdmin = () => {
                   value={userPhoneNum}
                   type="text"
                   id="inputMenu"
-                  placeholder="수정하실 아이디를 적어주세요."
+                  placeholder="수정하실 전화번호를 적어주세요."
                   onChange={(e) => {
                     setUserPhoneNum(e.target.value)
                   }}
@@ -456,7 +459,7 @@ const userAdmin = () => {
                   value={userPoint}
                   type="text"
                   id="inputMenu"
-                  placeholder="수정하실 아이디를 적어주세요."
+                  placeholder="수정하실 포인트를 적어주세요."
                   onChange={(e) => {
                     setUserPoint(e.target.value)
                   }}
@@ -472,7 +475,7 @@ const userAdmin = () => {
                   value={userTiketBreakfast}
                   type="text"
                   id="inputMenu"
-                  placeholder="수정하실 식권의 개수를 적어주세요."
+                  placeholder="수정하실 조식의 개수를 적어주세요."
                   onChange={(e) => {
                     setUserTiketBreakfast(e.target.value)
                   }}
@@ -488,7 +491,7 @@ const userAdmin = () => {
                   value={userTiketLunch}
                   type="text"
                   id="inputMenu"
-                  placeholder="수정하실 식권의 개수를 적어주세요."
+                  placeholder="수정하실 일품의 개수를 적어주세요."
                   onChange={(e) => {
                     setUserTiketLunch(e.target.value)
                   }}
@@ -504,7 +507,7 @@ const userAdmin = () => {
                   value={userTiketLunchKorea}
                   type="text"
                   id="inputMenu"
-                  placeholder="수정하실 식권의 개수를 적어주세요."
+                  placeholder="수정하실 한식의 개수를 적어주세요."
                   onChange={(e) => {
                     setUserLunchKorea(e.target.value)
                   }}
@@ -520,7 +523,7 @@ const userAdmin = () => {
                   value={userTiketLunchNoodle}
                   type="text"
                   id="inputMenu"
-                  placeholder="수정하실 식권의 개수를 적어주세요."
+                  placeholder="수정하실 면의 개수를 적어주세요."
                   onChange={(e) => {
                     setUserTiketLunchNoodle(e.target.value)
                   }}
@@ -536,7 +539,7 @@ const userAdmin = () => {
                   value={userTiketDinner}
                   type="text"
                   id="inputMenu"
-                  placeholder="수정하실 식권의 개수를 적어주세요."
+                  placeholder="수정하실 석식의 개수를 적어주세요."
                   onChange={(e) => {
                     setUserTiketDinner(e.target.value)
                   }}
