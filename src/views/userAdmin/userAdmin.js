@@ -19,6 +19,8 @@ import {
 import axios from 'axios'
 import { useRecoilState } from 'recoil'
 import { jwtRecoilState, severURLRecoilState } from 'src/recoil'
+import * as FileSaver from 'file-saver'
+import * as XLSX from 'xlsx'
 
 const userAdmin = () => {
   const [IP, setIP] = useRecoilState(severURLRecoilState)
@@ -343,8 +345,124 @@ const userAdmin = () => {
     },
   ]
 
+  let tempData = [
+    {
+      idx: null,
+      id: '',
+      phoneNumber: '',
+      name: '',
+      point: null,
+      createdAt: '',
+    },
+  ]
+
+  let idx = 0
+  let id = ''
+  let userphoneNumber = ''
+  let name = ''
+  let point = 0
+  let createdAt = ''
+
+  const getAllUsers = async (page1) => {
+    setLoading(true)
+    try {
+      // 요청이 시작 할 때에는 error 와 users 를 초기화하고
+      setError(null)
+      // loading 상태를 true 로 바꿉니다.
+      setLoading(true)
+
+      const response = await axios
+        .get(`${IP}/users?orderType=ASC&page=${page1}`, {
+          headers: {
+            'x-access-token': localStorage.getItem('jwt-token'),
+          },
+        })
+        .then((response) => {
+          tempData = [
+            {
+              idx: null,
+              id: '',
+              phoneNumber: '',
+              name: '',
+              point: null,
+              createdAt: '',
+            },
+          ]
+          if (response.data.code === 1000) {
+            for (let j = 0; j < response.data.result.users.length; j++) {
+              // eslint-disable-next-line no-unused-vars
+              idx = response.data.result.users[j].idx
+              id = response.data.result.users[j].id
+              userphoneNumber = response.data.result.users[j].phoneNumber
+              name = response.data.result.users[j].name
+              point = response.data.result.users[j].point
+              createdAt = response.data.result.users[j].createdAt
+              tempData.push({
+                idx: idx,
+                id: id,
+                phoneNumber: userphoneNumber,
+                name: name,
+                point: point,
+                createdAt: createdAt,
+              })
+            }
+            excelDownload(tempData, page1)
+          }
+        })
+        .catch((error) => {})
+    } catch (e) {
+      setError(e)
+    }
+    setLoading(false)
+    // loading 끄기
+  }
+
+  const excelFileType =
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+  const excelFileExtension = '.xlsx'
+  const excelFileName = '항식당유저리스트'
+  const ws = XLSX.utils.aoa_to_sheet([
+    ['유저번호', '아이디', '전화번호', '이름', '포인트', '가입날짜'],
+    [],
+  ])
+
+  const excelDownload = (excelData, sheet) => {
+    excelData.map((user) => {
+      XLSX.utils.sheet_add_aoa(
+        ws,
+        [[user.idx, user.id, user.phoneNumber, user.name, user.point, user.createdAt]],
+        { origin: -1 },
+      )
+      ws['!cols'] = [
+        { wpx: 100 },
+        { wpx: 100 },
+        { wpx: 100 },
+        { wpx: 100 },
+        { wpx: 100 },
+        { wpx: 100 },
+      ]
+    })
+    if (sheet === maxPage) {
+      const wb = { Sheets: { data: ws }, SheetNames: [`data`] }
+      const excelButter = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
+      const excelFile = new Blob([excelButter], { type: excelFileType })
+      FileSaver.saveAs(excelFile, excelFileName + excelFileExtension)
+    }
+  }
+
   return (
     <div>
+      <CButton
+        type="button"
+        color="secondary"
+        onClick={() => {
+          for (let z = 0; z <= maxPage; z++) {
+            getAllUsers(z)
+          }
+        }}
+      >
+        엑셀 다운로드
+      </CButton>
       <CForm>
         <CCardHeader>
           <strong>유저 조회하기</strong>
