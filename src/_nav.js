@@ -8,6 +8,7 @@ import {
   cilGroup,
   cilHistory,
   cilMonitor,
+  cilBarcode,
 } from '@coreui/icons'
 import { CNavItem } from '@coreui/react'
 
@@ -51,6 +52,15 @@ const _nav = [
   {
     component: CNavItem,
     name: '유저 조회',
+    to: '/useTicketList',
+    icon: <CIcon icon={cilBarcode} customClassName="nav-icon" />,
+    badge: {
+      color: 'info',
+    },
+  },
+  {
+    component: CNavItem,
+    name: '식권 사용내역 조회',
     to: '/userAdmin',
     icon: <CIcon icon={cilGroup} customClassName="nav-icon" />,
     badge: {

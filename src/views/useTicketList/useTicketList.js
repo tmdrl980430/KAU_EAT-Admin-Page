@@ -22,7 +22,7 @@ import { jwtRecoilState, severURLRecoilState } from 'src/recoil'
 import * as FileSaver from 'file-saver'
 import * as XLSX from 'xlsx'
 
-const userAdmin = () => {
+const useTicketList = () => {
   const [IP, setIP] = useRecoilState(severURLRecoilState)
   const [jwt, setJwt] = useRecoilState(jwtRecoilState)
   const [loading, setLoading] = useState(false)
@@ -676,4 +676,4 @@ const userAdmin = () => {
   )
 }
 
-export default userAdmin
+export default useTicketList

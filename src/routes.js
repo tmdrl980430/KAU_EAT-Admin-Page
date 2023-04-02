@@ -10,6 +10,8 @@ const VersionRegistration = React.lazy(() =>
 )
 const UserAdmin = React.lazy(() => import('./views/userAdmin/userAdmin'))
 
+const UseTicketList = React.lazy(() => import('./views/useTicketList/useTicketList'))
+
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
 
@@ -28,6 +30,7 @@ const routes = [
   { path: '/mealTable', name: '식단 관리', element: MealTable },
   { path: '/soldOut', name: '품절 관리', element: SoldOutManagement },
   { path: '/userAdmin', name: '유저 조회', element: UserAdmin },
+  { path: '/useTicketList', name: '식권 사용 내역 조회', element: UseTicketList },
   { path: '/ticketRegistration', name: '식권 등록 관리', element: TicketRegistration },
   { path: '/versionRegistration', name: '버전 등록 관리', element: VersionRegistration },
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
