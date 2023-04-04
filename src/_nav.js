@@ -52,7 +52,7 @@ const _nav = [
   {
     component: CNavItem,
     name: '유저 조회',
-    to: '/useTicketList',
+    to: '/userAdmin',
     icon: <CIcon icon={cilBarcode} customClassName="nav-icon" />,
     badge: {
       color: 'info',
@@ -61,7 +61,7 @@ const _nav = [
   {
     component: CNavItem,
     name: '식권 사용내역 조회',
-    to: '/userAdmin',
+    to: '/useTicketList',
     icon: <CIcon icon={cilGroup} customClassName="nav-icon" />,
     badge: {
       color: 'info',

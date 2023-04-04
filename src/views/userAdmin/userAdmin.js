@@ -10,11 +10,6 @@ import {
   CFormLabel,
   CRow,
   CTable,
-  CTableBody,
-  CTableDataCell,
-  CTableHead,
-  CTableHeaderCell,
-  CTableRow,
 } from '@coreui/react'
 import axios from 'axios'
 import { useRecoilState } from 'recoil'
