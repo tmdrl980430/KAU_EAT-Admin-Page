@@ -47,7 +47,7 @@ const useTicketList = () => {
   }, [jwt, page])
 
   useEffect(() => {
-    if (useData != null) {
+    if (useData != null && useData.length != 0) {
       setUserIdx(useData[0].idx)
       setUserId(useData[0].id)
       setUserName(useData[0].userName)
