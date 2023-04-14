@@ -141,7 +141,7 @@ const dayDashBoard = () => {
               <CCardHeader>{date} 식권 사용량</CCardHeader>
               <CCardBody>
                 <CRow>
-                  <CCol xs={12} md={100} xl={6}>
+                  <CCol>
                     <CRow>
                       <CCol sm={6}>
                         <div className="border-start border-start-4 border-start-success py-1 px-3">

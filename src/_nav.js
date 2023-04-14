@@ -33,6 +33,15 @@ const _nav = [
   },
   {
     component: CNavItem,
+    name: '월별 사용량 조회',
+    to: '/monthDashBoard',
+    icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
+    badge: {
+      color: 'info',
+    },
+  },
+  {
+    component: CNavItem,
     name: '메뉴 관리',
     to: '/mealTable',
     icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
