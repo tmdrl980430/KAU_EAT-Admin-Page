@@ -667,47 +667,47 @@ const Dashboard = () => {
                       <div className="progress-group-bars">
                         <CProgress>
                           <CProgressBar color="success" value={item.value1}>
-                            {item.value1}
+                            {item.value1} (조식)
                           </CProgressBar>
                         </CProgress>
                         <CProgress>
                           <CProgressBar color="info" value={item.value2}>
-                            {item.value2}
+                            {item.value2} (중식 | 일품)
                           </CProgressBar>
                         </CProgress>
                         <CProgress>
                           <CProgressBar color="warning" value={item.value3}>
-                            {item.value3}
+                            {item.value3} (중식 | 한식)
                           </CProgressBar>
                         </CProgress>
                         <CProgress>
                           <CProgressBar color="danger" value={item.value4}>
-                            {item.value4}
+                            {item.value4} (중식 | 면)
                           </CProgressBar>
                         </CProgress>
                         <CProgress>
                           <CProgressBar color="primary" value={item.value5}>
-                            {item.value5}
+                            {item.value5} (석식)
                           </CProgressBar>
                         </CProgress>
                         <CProgress>
                           <CProgressBar color="light-gradient" value={item.value6}>
-                            {item.value6}
+                            {item.value6} (라면)
                           </CProgressBar>
                         </CProgress>
                         <CProgress>
                           <CProgressBar color="dark" value={item.value7}>
-                            {item.value7}
+                            {item.value7} (김밥)
                           </CProgressBar>
                         </CProgress>
                         <CProgress>
                           <CProgressBar color="light" value={item.value8}>
-                            {item.value8}
+                            {item.value8} (핫도그)
                           </CProgressBar>
                         </CProgress>
                         <CProgress>
                           <CProgressBar color="secondary" value={item.value9}>
-                            {item.value9}
+                            {item.value9} (치킨)
                           </CProgressBar>
                         </CProgress>
                       </div>
